@@ -2,7 +2,7 @@
 
 An app for the Software Developement III module Project at Wits University
 
-The development process should be agile in the scrum methodloogy
+The development process should be agile in the scrum methodology
 
 ## Clients
 
