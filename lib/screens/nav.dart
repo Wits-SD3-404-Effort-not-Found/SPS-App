@@ -27,7 +27,7 @@ class _NavBar extends State<NavBar> {
     return Scaffold(
       appBar: AppBar(
           leading: Image.asset(
-            './lib//Icons/WitsLogo.png',
+            'lib/assets/wits_logo_blue.png',
             fit: BoxFit.fitHeight,
           ),
           title: const Text(
