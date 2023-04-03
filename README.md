@@ -1,5 +1,7 @@
 # SPS-App
 
+[![codecov](https://codecov.io/gh/Wits-SD3-404-Effort-not-Found/SPS-App/branch/main/graph/badge.svg?token=C94J2JWHG2)](https://codecov.io/gh/Wits-SD3-404-Effort-not-Found/SPS-App)
+
 An app for the Software Developement III module Project at Wits University
 
 The development process should be agile in the scrum methodology
