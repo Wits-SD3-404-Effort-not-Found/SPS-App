@@ -7,6 +7,7 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
+//initialises the calendar page and is used in the nav bar as one of the pages
 class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
