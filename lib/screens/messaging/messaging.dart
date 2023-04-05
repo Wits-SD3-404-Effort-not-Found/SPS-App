@@ -7,6 +7,7 @@ class MessagingPage extends StatefulWidget {
   State<MessagingPage> createState() => _MessagingPageState();
 }
 
+//initialises the calendar page and is used in the nav bar as one of the pages
 class _MessagingPageState extends State<MessagingPage> {
   @override
   Widget build(BuildContext context) {

@@ -20,6 +20,13 @@ doc/api/
 *.js.deps
 *.js.map
 
+.idea/
+.vscode/
+
+.flutter-plugins*
+
+coverage/
+
 macos/
 windows/
 linux/

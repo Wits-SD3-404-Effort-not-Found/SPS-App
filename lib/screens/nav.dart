@@ -15,6 +15,7 @@ class NavBar extends StatefulWidget {
 class _NavBar extends State<NavBar> {
   int _selectedIndex = 0;
 
+  // list of all the screens that the navbar accesses
   final screens = [
     const CalendarPage(),
     const NotesPage(),
@@ -26,6 +27,7 @@ class _NavBar extends State<NavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          //this is the top bar of the App and contains a notification button which will open up a new page in the future
           leading: Image.asset(
             'lib/assets/wits_logo_blue.png',
             fit: BoxFit.fitHeight,
@@ -47,11 +49,15 @@ class _NavBar extends State<NavBar> {
                   16, 12, 25, 12), //padding of the notification icon
             )
           ]),
+      // Center: the page will change dependent on the selected index of the nav bar
       body: Center(
         child: screens[_selectedIndex],
       ),
+      // This is the UI for the bottom navigator which contains the icons that represent each page
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
+
+        // this changes the pages depending on the selected index
         onTap: (value) {
           setState(() {
             _selectedIndex = value;
