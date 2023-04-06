@@ -28,14 +28,14 @@ class _SettingsPageState extends State<SettingsPage> {
                       MaterialPageRoute(
                           builder: (context) => const LoginPage()));
                 },
-                child: const Text('Logout'),
                 style: TextButton.styleFrom(
-                  foregroundColor: Color(0xFF043673),
+                  foregroundColor: const Color(0xFF043673),
                   padding: const EdgeInsets.all(16.0),
                   textStyle: const TextStyle(
                     fontSize: 20,
                   ),
-                ))
+                ),
+                child: const Text('Logout'))
           ],
         ),
       ),
