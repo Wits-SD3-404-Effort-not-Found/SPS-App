@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/screens/authentication/forgot_password.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/screens/nav.dart';
 
@@ -85,8 +86,17 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 // creates forgot password object
-                const ForgotPassword(),
                 // login button to validate,login and transfer user to next page
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ForgotPasswordPage()),
+                    );
+                  },
+                  child: const Text('Forgot Password?'),
+                ),
                 ElevatedButton(
                   onPressed: () {
                     LoginManager.setUsername(myUsernameController.text);
@@ -115,37 +125,6 @@ class _LoginPageState extends State<LoginPage> {
               ],
             )
         )
-    );
-  }
-}
-
-// class for the forgot password word popup UI
-class ForgotPassword extends StatelessWidget {
-  const ForgotPassword({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () => showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-            title: const Text('Forgot Password'),
-            content: const Text("Enter your email"),
-            actions: <Widget>[
-              // for user to enter smail that the OTP will be sent to
-              TextFormField(
-                decoration: const InputDecoration(hintText: 'Email'),
-              ),
-              TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel')),
-              TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Send'))
-            ]
-        ),
-      ),
-      child: const Text('Forgot Password?'),
     );
   }
 }
