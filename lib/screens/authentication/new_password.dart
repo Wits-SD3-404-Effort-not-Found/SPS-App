@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/screens/authentication/login_manager.dart';
 
 import 'login.dart';
 
@@ -10,6 +11,15 @@ class NewPasswordPage extends StatefulWidget {
 }
 
 class _NewPasswordPageState extends State<NewPasswordPage>{
+  final newPasswordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose(){
+    newPasswordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
   @override
   Widget build (BuildContext context){
     return Scaffold(
@@ -49,6 +59,7 @@ class _NewPasswordPageState extends State<NewPasswordPage>{
                           labelStyle: TextStyle(fontWeight: FontWeight.w500),
                         ),
                         cursorColor: const Color(0xff917248),
+                        controller: newPasswordController
                       ),
                     )
                 ),
@@ -71,12 +82,14 @@ class _NewPasswordPageState extends State<NewPasswordPage>{
                           labelStyle: TextStyle(fontWeight: FontWeight.w500),
                         ),
                         cursorColor: const Color(0xff917248),
+                        controller: confirmPasswordController
                       ),
                     )
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
+                    //cancel button
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -91,13 +104,23 @@ class _NewPasswordPageState extends State<NewPasswordPage>{
                       child: const Text('Cancel'),
                     ),
                     const SizedBox(width:20),
+                    //confirm button
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
-                        );
+                        if (newPasswordController.text == confirmPasswordController.text){
+                          // set new pass word function
+                          if (LoginManager.changePassword(newPasswordController.text) == true) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()),
+                            );
+                          }else{
+                            debugPrint("reset pass word failed");
+                          }
+                        }else{
+                          debugPrint("passwords do not match");
+                        }
                       },
                       // styles login button
                       style: ElevatedButton.styleFrom(
