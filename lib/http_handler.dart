@@ -52,4 +52,19 @@ class HTTPManager {
       throw Exception('OTP incorrect');
     }
   }
+
+  static Future<bool> postNewPassword(String accountID, String email, String otp, String newPassword) async {
+    var data = {'account_id': accountID, 'email': email, 'otp': otp, 'new_password': newPassword};
+    final response = await http.post(
+      Uri.parse('http://164.92.183.156:80/account/password'),
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception('Password unable to be reset');
+    }
+  }
+
 }
