@@ -8,7 +8,8 @@ class LoginManager {
 
   static String username = "";
   static String password = "";
-  static String _accountId ="";
+  static String _accountId = "";
+  static String _otp = "";
 
 
   static void setUsername(String inputUsername) {
@@ -35,6 +36,24 @@ class LoginManager {
     return _hashPassword().toString();
   }
 
+  static void setOTP(String otp){
+    _otp = otp;
+  }
+
+  static bool changePassword(String newPassword){
+    bool status = true;
+    password = newPassword;
+    HTTPManager.postNewPassword(_accountId, getUsername(), _otp, getPassword()).then((value)=>{
+      if (value == true){
+        status = true
+      }else{
+        status =  false
+    }
+    });
+    return status;
+  }
+
+
   // to control access into the app by validating credentials with backend
   static Future<bool> validateLogin() async {
     bool valid =
@@ -43,15 +62,21 @@ class LoginManager {
   }
 
   // to validate the email, to control weather OTP will be sent
-  static Future<bool> validateEmail() async {
-    bool valid =
-        await HTTPManager.postEmail(getUsername());
+  static bool validateEmail(){
+    bool valid = true;
+    HTTPManager.postEmail(getUsername()).then((value)=>{
+      if (value == true){
+        valid = true
+      }else{
+        valid =  false
+      }
+    });
     return valid;
   }
 
-  static Future<bool> validateOTP(String otp) async{
+  static Future<bool> validateOTP() async{
     bool valid =
-      await HTTPManager.postOTP(getAccountID(), otp);
+      await HTTPManager.postOTP(getAccountID(), _otp);
     return valid;
   }
 
