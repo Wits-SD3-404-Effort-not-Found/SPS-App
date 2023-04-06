@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/screens/authentication/login.dart';
+import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/screens/authentication/otp.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -10,6 +11,15 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage>{
+  final emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,12 +59,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage>{
                             labelStyle: TextStyle(fontWeight: FontWeight.w500),
                           ),
                           cursorColor: const Color(0xff917248),
+                          controller: emailController
                       ),
                     )
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
+                    // cancel button
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -69,13 +81,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage>{
                       child: const Text('Cancel'),
                     ),
                     const SizedBox(width:20),
+                    // send button
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
+                        LoginManager.setUsername(emailController.text);
+                        if (LoginManager.validateEmail() == true){
+                          Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const OTPPage()),
-                        );
+                          builder: (context) => const OTPPage())
+                          );
+                        }else{
+                            debugPrint("password incorrect");}
                       },
                       // styles login button
                       style: ElevatedButton.styleFrom(
