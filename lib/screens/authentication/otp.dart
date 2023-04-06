@@ -45,7 +45,7 @@ class _OTPPageState extends State<OTPPage>{
                           enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Color(0xff917248), width: 3)
                           ),
-                          labelText: 'Email',
+                          labelText: 'OTP',
                           labelStyle: TextStyle(fontWeight: FontWeight.w500),
                         ),
                         cursorColor: const Color(0xff917248),
