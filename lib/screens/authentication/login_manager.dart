@@ -55,9 +55,15 @@ class LoginManager {
 
 
   // to control access into the app by validating credentials with backend
-  static Future<bool> validateLogin() async {
-    bool valid =
-        await HTTPManager.postLoginCredentials(getUsername(), getPassword());
+  static bool validateLogin(){
+    bool valid = true;
+    HTTPManager.postLoginCredentials(getUsername(), getPassword()).then((value)=>{
+      if (value == true){
+        valid = true
+      }else{
+        valid = false
+    }
+    });
     return valid;
   }
 
@@ -74,9 +80,15 @@ class LoginManager {
     return valid;
   }
 
-  static Future<bool> validateOTP() async{
-    bool valid =
-      await HTTPManager.postOTP(getAccountID(), _otp);
+  static bool validateOTP(){
+    bool valid = true;
+    HTTPManager.postOTP(getAccountID(), _otp).then((value)=>{
+      if (value == true){
+        valid = true
+      }else{
+        valid = false
+      }
+    });
     return valid;
   }
 

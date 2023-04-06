@@ -84,17 +84,15 @@ class _OTPPageState extends State<OTPPage>{
                     ElevatedButton(
                       onPressed: () {
                         LoginManager.setOTP(otpController.text);
-                        LoginManager.validateOTP().then((value)=>{
-                          if (value == true){
+                          if ( LoginManager.validateOTP() == true){
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const NewPasswordPage()),
-                            )
+                            );
                           }else{
-                            {debugPrint("otp incorrect")}
+                            debugPrint("otp incorrect");
                           }
-                        });
                       },
                       // styles login button
                       style: ElevatedButton.styleFrom(

@@ -104,20 +104,18 @@ class _LoginPageState extends State<LoginPage> {
                     LoginManager.setPassword(myPasswordController.text);
                     // to check if users credentials are correct
                     // to control access into the app
-                    LoginManager.validateLogin().then((value) => {
-                      if (value == true)
+                      if (LoginManager.validateLogin()== true)
                       {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const NavBar()),
-                        )
+                        );
                       }
                       else
-                      {debugPrint("password incorrect")}
-                    });
-                //.catchError((error)=>debugPrint("password incorrect"));
-                  },
+                      {debugPrint("password incorrect");
+                      }
+                    },
                   // styles login button
                   style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xff043673)),
