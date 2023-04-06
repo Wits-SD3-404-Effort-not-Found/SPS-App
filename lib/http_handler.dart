@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:sps_app/screens/authentication/login_manager.dart';
+
 // handles all the http requests for the data transfer with the backend
 class HTTPManager {
   HTTPManager();
@@ -18,6 +20,36 @@ class HTTPManager {
       return Future.value(true);
     } else {
       throw Exception('Login Credentials incorrect');
+    }
+  }
+
+  static Future<bool> postEmail(String username) async {
+    var email = {'email': username };
+    final response = await http.post(
+      Uri.parse('http://164.92.183.156:80/authentication/forgot'),
+      body: jsonEncode(email),
+    );
+
+    if (response.statusCode == 200) {
+      LoginManager.setAccountID(jsonDecode(response.body)['account_id']);
+      return Future.value(true);
+    } else {
+      throw Exception('Invalid Email');
+    }
+
+  }
+
+  static Future<bool> postOTP(String accountID, String otp) async {
+    var data = {'account_id': accountID, 'otp': otp};
+    final response = await http.post(
+      Uri.parse('http://164.92.183.156:80/authentication/otp'),
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception('OTP incorrect');
     }
   }
 }
