@@ -68,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: ConstrainedBox(
                     constraints: BoxConstraints.tight(const Size(300, 80)),
                     child: TextFormField(
+                      obscureText: true,
                       // styles user input text box
                       decoration: const InputDecoration(
                         focusedBorder: UnderlineInputBorder(
