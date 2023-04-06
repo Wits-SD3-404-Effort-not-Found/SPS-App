@@ -12,6 +12,17 @@ class OTPPage extends StatefulWidget {
 
 class _OTPPageState extends State<OTPPage> {
   final otpController = TextEditingController();
+  String _invalidMessage = "";
+
+  void _isValidMessage(bool value) {
+    setState(() {
+      if (value == true) {
+        _invalidMessage = "";
+      } else {
+        _invalidMessage = "Incorrect OTP";
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -61,6 +72,13 @@ class _OTPPageState extends State<OTPPage> {
                       cursorColor: const Color(0xff917248),
                       controller: otpController),
                 )),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                child: ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(300, 25)),
+                    child: Text(_invalidMessage,
+                        style: const TextStyle(color: Colors.red, fontSize: 16),
+                        textAlign: TextAlign.center))),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -91,12 +109,11 @@ class _OTPPageState extends State<OTPPage> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const NewPasswordPage()),
-                              )
+                              ),
+                              _isValidMessage(value)
                             }
                           else
-                            {
-                              {debugPrint("otp incorrect")}
-                            }
+                            {_isValidMessage(value)}
                         });
                   },
                   // styles login button

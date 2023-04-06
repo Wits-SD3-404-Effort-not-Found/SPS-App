@@ -12,6 +12,17 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final emailController = TextEditingController();
+  String _invalidMessage = "";
+
+  void _isValidMessage(bool value) {
+    setState(() {
+      if (value == true) {
+        _invalidMessage = "";
+      } else {
+        _invalidMessage = "Please enter a valid email address";
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -62,6 +73,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       cursorColor: const Color(0xff917248),
                       controller: emailController),
                 )),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                child: ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(300, 25)),
+                    child: Text(_invalidMessage,
+                        style: const TextStyle(color: Colors.red, fontSize: 16),
+                        textAlign: TextAlign.center))),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -90,10 +108,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const OTPPage()))
+                                      builder: (context) => const OTPPage())),
+                              _isValidMessage(value)
                             }
                           else
-                            {debugPrint("email invalid")}
+                            {_isValidMessage(value)}
                         });
                   },
                   // styles login button

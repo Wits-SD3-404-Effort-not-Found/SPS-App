@@ -13,6 +13,17 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final myUsernameController = TextEditingController();
   final myPasswordController = TextEditingController();
+  String _invalidMessage = "";
+
+  void _isValidMessage(bool value) {
+    setState(() {
+      if (value == true) {
+        _invalidMessage = "";
+      } else {
+        _invalidMessage = "Incorrect email or password";
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -38,11 +49,10 @@ class _LoginPageState extends State<LoginPage> {
             const Text('SPS-App', style: TextStyle(fontSize: 18)),
             // padding for email text box for better UI layout
             Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 // constrained box to encapsulate user input text box
                 child: ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  constraints: BoxConstraints.tight(const Size(300, 70)),
                   child: TextFormField(
                       // styles user input text box
                       decoration: const InputDecoration(
@@ -61,10 +71,10 @@ class _LoginPageState extends State<LoginPage> {
                 )),
             // padding for password text box for better UI layout
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               // constrained box to encapsulate user input text box
               child: ConstrainedBox(
-                constraints: BoxConstraints.tight(const Size(300, 80)),
+                constraints: BoxConstraints.tight(const Size(300, 70)),
                 child: TextFormField(
                   obscureText: true,
                   // styles user input text box
@@ -84,6 +94,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                child: ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(300, 25)),
+                    child: Text(_invalidMessage,
+                        style: const TextStyle(color: Colors.red, fontSize: 16),
+                        textAlign: TextAlign.center))),
             // creates forgot password object
             // login button to validate,login and transfer user to next page
             TextButton(
@@ -109,12 +126,12 @@ class _LoginPageState extends State<LoginPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const NavBar()),
-                          )
+                          ),
+                          _isValidMessage(value)
                         }
                       else
-                        {debugPrint("password incorrect")}
+                        {_isValidMessage(value)}
                     });
-                //.catchError((error)=>debugPrint("password incorrect"));
               },
               // styles login button
               style: ElevatedButton.styleFrom(

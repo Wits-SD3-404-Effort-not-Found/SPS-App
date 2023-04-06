@@ -13,6 +13,17 @@ class NewPasswordPage extends StatefulWidget {
 class _NewPasswordPageState extends State<NewPasswordPage> {
   final newPasswordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  String _invalidMessage = "";
+
+  void _isValidMessage(bool value) {
+    setState(() {
+      if (value == true) {
+        _invalidMessage = "";
+      } else {
+        _invalidMessage = "Passwords do not match";
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -85,6 +96,13 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                       cursorColor: const Color(0xff917248),
                       controller: confirmPasswordController),
                 )),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                child: ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(300, 25)),
+                    child: Text(_invalidMessage,
+                        style: const TextStyle(color: Colors.red, fontSize: 16),
+                        textAlign: TextAlign.center))),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -118,13 +136,14 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               const LoginPage()),
-                                    )
+                                    ),
+                                    _isValidMessage(value)
                                   }
                                 else
                                   {debugPrint("reset pass word failed")}
                               });
                     } else {
-                      debugPrint("passwords do not match");
+                      _isValidMessage(false);
                     }
                   },
                   // styles login button

@@ -19,12 +19,13 @@ class HTTPManager {
     if (response.statusCode == 200) {
       return Future.value(true);
     } else {
-      throw Exception('Login Credentials incorrect');
+      //throw Exception('Login Credentials incorrect');
+      return Future.value(false);
     }
   }
 
   static Future<bool> postEmail(String username) async {
-    var email = {'email': username };
+    var email = {'email': username};
     final response = await http.post(
       Uri.parse('http://164.92.183.156:80/authentication/forgot'),
       body: jsonEncode(email),
@@ -34,9 +35,9 @@ class HTTPManager {
       LoginManager.setAccountID(jsonDecode(response.body)['account_id']);
       return Future.value(true);
     } else {
-      throw Exception('Invalid Email');
+      //throw Exception('Invalid Email');
+      return Future.value(false);
     }
-
   }
 
   static Future<bool> postOTP(String accountID, String otp) async {
@@ -49,12 +50,19 @@ class HTTPManager {
     if (response.statusCode == 200) {
       return Future.value(true);
     } else {
-      throw Exception('OTP incorrect');
+      //throw Exception('OTP incorrect');
+      return Future.value(false);
     }
   }
 
-  static Future<bool> postNewPassword(String accountID, String email, String otp, String newPassword) async {
-    var data = {'account_id': accountID, 'email': email, 'otp': otp, 'new_password': newPassword};
+  static Future<bool> postNewPassword(
+      String accountID, String email, String otp, String newPassword) async {
+    var data = {
+      'account_id': accountID,
+      'email': email,
+      'otp': otp,
+      'new_password': newPassword
+    };
     final response = await http.post(
       Uri.parse('http://164.92.183.156:80/account/password'),
       body: jsonEncode(data),
@@ -63,8 +71,8 @@ class HTTPManager {
     if (response.statusCode == 200) {
       return Future.value(true);
     } else {
-      throw Exception('Password unable to be reset');
+      //throw Exception('Password unable to be reset');
+      return Future.value(false);
     }
   }
-
 }
