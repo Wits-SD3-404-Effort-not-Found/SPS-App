@@ -8,6 +8,8 @@ class LoginManager {
 
   static String username = "";
   static String password = "";
+  static String _accountId ="";
+
 
   static void setUsername(String inputUsername) {
     username = inputUsername;
@@ -15,6 +17,14 @@ class LoginManager {
 
   static void setPassword(String inputPassword) {
     password = inputPassword;
+  }
+
+  static void setAccountID(String givenAccountId){
+    _accountId = givenAccountId;
+  }
+
+  static String getAccountID(){
+    return _accountId;
   }
 
   static String getUsername() {
@@ -27,9 +37,22 @@ class LoginManager {
 
   // to control access into the app by validating credentials with backend
   static Future<bool> validateLogin() async {
-    bool status =
+    bool valid =
         await HTTPManager.postLoginCredentials(getUsername(), getPassword());
-    return status;
+    return valid;
+  }
+
+  // to validate the email, to control weather OTP will be sent
+  static Future<bool> validateEmail() async {
+    bool valid =
+        await HTTPManager.postEmail(getUsername());
+    return valid;
+  }
+
+  static Future<bool> validateOTP(String otp) async{
+    bool valid =
+      await HTTPManager.postOTP(getAccountID(), otp);
+    return valid;
   }
 
   //hash password for secure data transfer over the internet.
