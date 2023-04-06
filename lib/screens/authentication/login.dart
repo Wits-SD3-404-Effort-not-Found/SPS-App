@@ -3,7 +3,6 @@ import 'package:sps_app/screens/authentication/forgot_password.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/screens/nav.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -29,101 +28,100 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: const Color(0xfffcfbfb),
         // to center the widgets/UI elements on the page
         body: Center(
-          // to structure the UI elements in a single column
+            // to structure the UI elements in a single column
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // inserts the medical school logo
-                Image.asset('lib/assets/images/health_science_logo.png',
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // inserts the medical school logo
+            Image.asset('lib/assets/images/health_science_logo.png',
                 height: 200, scale: 0.5),
-                const Text('SPS-App', style: TextStyle(fontSize: 18)),
-                // padding for email text box for better UI layout
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    // constrained box to encapsulate user input text box
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints.tight(const Size(300, 80)),
-                      child: TextFormField(
-                        // styles user input text box
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xff917248), width: 3)
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xff917248), width: 3)
-                          ),
-                          labelText: 'Enter your email',
-                          labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                        cursorColor: const Color(0xff917248),
-                        // to retrieve the user input text from the TextFormField
-                        controller: myUsernameController
-                      ),
-                    )
-                ),
-                // padding for password text box for better UI layout
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  // constrained box to encapsulate user input text box
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints.tight(const Size(300, 80)),
-                    child: TextFormField(
-                      obscureText: true,
+            const Text('SPS-App', style: TextStyle(fontSize: 18)),
+            // padding for email text box for better UI layout
+            Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                // constrained box to encapsulate user input text box
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  child: TextFormField(
                       // styles user input text box
                       decoration: const InputDecoration(
                         focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff917248), width: 3)
-                        ),
+                            borderSide:
+                                BorderSide(color: Color(0xff917248), width: 3)),
                         enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff917248), width: 3)
-                        ),
-                        labelText: 'Enter your password',
+                            borderSide:
+                                BorderSide(color: Color(0xff917248), width: 3)),
+                        labelText: 'Enter your email',
                         labelStyle: TextStyle(fontWeight: FontWeight.w500),
                       ),
                       cursorColor: const Color(0xff917248),
                       // to retrieve the user input text from the TextFormField
-                      controller: myPasswordController,
-                    ),
+                      controller: myUsernameController),
+                )),
+            // padding for password text box for better UI layout
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              // constrained box to encapsulate user input text box
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tight(const Size(300, 80)),
+                child: TextFormField(
+                  obscureText: true,
+                  // styles user input text box
+                  decoration: const InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xff917248), width: 3)),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xff917248), width: 3)),
+                    labelText: 'Enter your password',
+                    labelStyle: TextStyle(fontWeight: FontWeight.w500),
                   ),
+                  cursorColor: const Color(0xff917248),
+                  // to retrieve the user input text from the TextFormField
+                  controller: myPasswordController,
                 ),
-                // creates forgot password object
-                // login button to validate,login and transfer user to next page
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordPage()),
-                    );
-                  },
-                  child: const Text('Forgot Password?'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    LoginManager.setUsername(myUsernameController.text);
-                    LoginManager.setPassword(myPasswordController.text);
-                    // to check if users credentials are correct
-                    // to control access into the app
-                      if (LoginManager.validateLogin()== true)
-                      {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const NavBar()),
-                        );
-                      }
+              ),
+            ),
+            // creates forgot password object
+            // login button to validate,login and transfer user to next page
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ForgotPasswordPage()),
+                );
+              },
+              child: const Text('Forgot Password?'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                LoginManager.setUsername(myUsernameController.text);
+                LoginManager.setPassword(myPasswordController.text);
+                // to check if users credentials are correct
+                // to control access into the app
+                LoginManager.validateLogin().then((value) => {
+                      if (value == true)
+                        {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const NavBar()),
+                          )
+                        }
                       else
-                      {debugPrint("password incorrect");
-                      }
-                    },
-                  // styles login button
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff043673)),
-                  child: const Text('Login'),
-                ),
-              ],
-            )
-        )
-    );
+                        {debugPrint("password incorrect")}
+                    });
+                //.catchError((error)=>debugPrint("password incorrect"));
+              },
+              // styles login button
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xff043673)),
+              child: const Text('Login'),
+            ),
+          ],
+        )));
   }
 }

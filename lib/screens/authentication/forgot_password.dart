@@ -10,7 +10,7 @@ class ForgotPasswordPage extends StatefulWidget {
   State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage>{
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final emailController = TextEditingController();
 
   @override
@@ -26,84 +26,84 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage>{
         backgroundColor: const Color(0xfffcfbfb),
         // to center the widgets/UI elements on the page
         body: Center(
-          // to structure the UI elements in a single column
+            // to structure the UI elements in a single column
             child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tight(const Size(300, 80)),
+                child: const Text(
+                  'Enter your account email in order to be sent an OTP.',
+                  style: TextStyle(fontSize: 22),
+                ),
+              ),
+            ),
+            // padding for email text box for better UI layout
+            Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                // constrained box to encapsulate user input text box
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  child: TextFormField(
+                      // styles user input text box
+                      decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xff917248), width: 3)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xff917248), width: 3)),
+                        labelText: 'Email',
+                        labelStyle: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      cursorColor: const Color(0xff917248),
+                      controller: emailController),
+                )),
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints.tight(const Size(300, 80)),
-                    child: const Text(
-                      'Enter your account email in order to be sent an OTP.',
-                      style: TextStyle(fontSize: 22),
-                    ),
-                  ),
+                // cancel button
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
+                    );
+                  },
+                  // styles login button
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff043673)),
+                  child: const Text('Cancel'),
                 ),
-                // padding for email text box for better UI layout
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    // constrained box to encapsulate user input text box
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints.tight(const Size(300, 80)),
-                      child: TextFormField(
-                        // styles user input text box
-                          decoration: const InputDecoration(
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Color(0xff917248), width: 3)
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Color(0xff917248), width: 3)
-                            ),
-                            labelText: 'Email',
-                            labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          cursorColor: const Color(0xff917248),
-                          controller: emailController
-                      ),
-                    )
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget> [
-                    // cancel button
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
-                        );
-                      },
-                      // styles login button
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff043673)),
-                      child: const Text('Cancel'),
-                    ),
-                    const SizedBox(width:20),
-                    // send button
-                    ElevatedButton(
-                      onPressed: () {
-                        LoginManager.setUsername(emailController.text);
-                        if (LoginManager.validateEmail() == true){
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                          builder: (context) => const OTPPage())
-                          );
-                        }else{
-                            debugPrint("password incorrect");}
-                      },
-                      // styles login button
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff043673)),
-                      child: const Text('Send'),
-                    ),
-                  ],
+                const SizedBox(width: 20),
+                // send button
+                ElevatedButton(
+                  onPressed: () {
+                    LoginManager.setUsername(emailController.text);
+                    LoginManager.validateEmail().then((value) => {
+                          if (value == true)
+                            {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const OTPPage()))
+                            }
+                          else
+                            {debugPrint("email invalid")}
+                        });
+                  },
+                  // styles login button
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff043673)),
+                  child: const Text('Send'),
                 ),
               ],
-            )
-        )
-    );
+            ),
+          ],
+        )));
   }
 }

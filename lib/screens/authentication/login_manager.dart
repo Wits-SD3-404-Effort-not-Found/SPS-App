@@ -11,7 +11,6 @@ class LoginManager {
   static String _accountId = "";
   static String _otp = "";
 
-
   static void setUsername(String inputUsername) {
     username = inputUsername;
   }
@@ -20,11 +19,11 @@ class LoginManager {
     password = inputPassword;
   }
 
-  static void setAccountID(String givenAccountId){
+  static void setAccountID(String givenAccountId) {
     _accountId = givenAccountId;
   }
 
-  static String getAccountID(){
+  static String getAccountID() {
     return _accountId;
   }
 
@@ -36,59 +35,32 @@ class LoginManager {
     return _hashPassword().toString();
   }
 
-  static void setOTP(String otp){
+  static void setOTP(String otp) {
     _otp = otp;
   }
 
-  static bool changePassword(String newPassword){
-    bool status = true;
+  static Future<bool> changePassword(String newPassword) async {
     password = newPassword;
-    HTTPManager.postNewPassword(_accountId, getUsername(), _otp, getPassword()).then((value)=>{
-      if (value == true){
-        status = true
-      }else{
-        status =  false
-    }
-    });
+    bool status = await HTTPManager.postNewPassword(
+        _accountId, getUsername(), _otp, getPassword());
     return status;
   }
 
-
   // to control access into the app by validating credentials with backend
-  static bool validateLogin(){
-    bool valid = true;
-    HTTPManager.postLoginCredentials(getUsername(), getPassword()).then((value)=>{
-      if (value == true){
-        valid = true
-      }else{
-        valid = false
-    }
-    });
+  static Future<bool> validateLogin() async {
+    bool valid =
+        await HTTPManager.postLoginCredentials(getUsername(), getPassword());
     return valid;
   }
 
   // to validate the email, to control weather OTP will be sent
-  static bool validateEmail(){
-    bool valid = true;
-    HTTPManager.postEmail(getUsername()).then((value)=>{
-      if (value == true){
-        valid = true
-      }else{
-        valid =  false
-      }
-    });
+  static Future<bool> validateEmail() async {
+    bool valid = await HTTPManager.postEmail(getUsername());
     return valid;
   }
 
-  static bool validateOTP(){
-    bool valid = true;
-    HTTPManager.postOTP(getAccountID(), _otp).then((value)=>{
-      if (value == true){
-        valid = true
-      }else{
-        valid = false
-      }
-    });
+  static Future<bool> validateOTP() async {
+    bool valid = await HTTPManager.postOTP(getAccountID(), _otp);
     return valid;
   }
 
