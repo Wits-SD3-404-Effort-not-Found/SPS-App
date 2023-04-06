@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/screens/authentication/login.dart';
+import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/screens/authentication/new_password.dart';
 
 class OTPPage extends StatefulWidget {
@@ -10,6 +11,14 @@ class OTPPage extends StatefulWidget {
 }
 
 class _OTPPageState extends State<OTPPage>{
+  final otpController = TextEditingController();
+
+  @override
+  void dispose(){
+    otpController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build (BuildContext context){
     return Scaffold(
@@ -49,12 +58,14 @@ class _OTPPageState extends State<OTPPage>{
                           labelStyle: TextStyle(fontWeight: FontWeight.w500),
                         ),
                         cursorColor: const Color(0xff917248),
+                        controller: otpController
                       ),
                     )
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
+                    // cancel button
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -69,13 +80,21 @@ class _OTPPageState extends State<OTPPage>{
                       child: const Text('Cancel'),
                     ),
                     const SizedBox(width:20),
+                    // confirm button
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const NewPasswordPage()),
-                        );
+                        LoginManager.setOTP(otpController.text);
+                        LoginManager.validateOTP().then((value)=>{
+                          if (value == true){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const NewPasswordPage()),
+                            )
+                          }else{
+                            {debugPrint("otp incorrect")}
+                          }
+                        });
                       },
                       // styles login button
                       style: ElevatedButton.styleFrom(
