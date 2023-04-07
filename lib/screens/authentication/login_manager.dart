@@ -8,41 +8,61 @@ class LoginManager {
 
   static String username = "";
   static String password = "";
-  static String _accountId = "";
-  static String _otp = "";
+  static int _accountId = 0;
+  static List<Map> trueQAs = [{}];
+  static List<Map> userAnswers = [{}];
 
   static void setUsername(String inputUsername) {
     username = inputUsername;
-  }
-
-  static void setPassword(String inputPassword) {
-    password = inputPassword;
-  }
-
-  static void setAccountID(String givenAccountId) {
-    _accountId = givenAccountId;
-  }
-
-  static String getAccountID() {
-    return _accountId;
   }
 
   static String getUsername() {
     return username;
   }
 
-  static String getPassword() {
-    return _hashPassword().toString();
+  static void setPassword(String inputPassword) {
+    password = inputPassword;
   }
 
-  static void setOTP(String otp) {
-    _otp = otp;
+  static String getPassword() {
+    return _hashData(password).toString();
+  }
+
+  static void setAccountID(int givenAccountId) {
+    _accountId = givenAccountId;
+  }
+
+  static int getAccountID() {
+    return _accountId;
+  }
+
+  static List<String> getQuestions() {
+    List<String> questions = [];
+    questions.add(trueQAs[0]['question']!);
+    questions.add(trueQAs[1]['question']!);
+    return questions;
+  }
+
+  static setAnswers(String answer1, String answer2) {
+    String answer1Hashed = _hashData(answer1).toString();
+    String answer2Hashed = _hashData(answer2).toString();
+    if (answer1Hashed == trueQAs[0]['answer'] &&
+        answer2Hashed == trueQAs[1]['answer']) {
+      userAnswers.add({
+        "question_id": trueQAs[0]['question_id']!,
+        "user_answer": answer1Hashed
+      });
+      userAnswers.add({
+        "question_id": trueQAs[1]['question_id']!,
+        "user_answer": answer2Hashed
+      });
+    }
   }
 
   static Future<bool> changePassword(String newPassword) async {
     password = newPassword;
     bool status = await HTTPManager.postNewPassword(
-        _accountId, getUsername(), _otp, getPassword());
+        _accountId, getPassword(), userAnswers);
     return status;
   }
 
@@ -59,14 +79,9 @@ class LoginManager {
     return valid;
   }
 
-  static Future<bool> validateOTP() async {
-    bool valid = await HTTPManager.postOTP(getAccountID(), _otp);
-    return valid;
-  }
-
   //hash password for secure data transfer over the internet.
-  static Digest _hashPassword() {
-    var bytes = utf8.encode(password);
+  static Digest _hashData(String data) {
+    var bytes = utf8.encode(data);
     return sha256.convert(bytes);
   }
 }
