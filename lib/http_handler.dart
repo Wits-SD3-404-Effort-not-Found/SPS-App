@@ -27,12 +27,29 @@ class HTTPManager {
   static Future<bool> postEmail(String username) async {
     var email = {'email': username};
     final response = await http.post(
-      Uri.parse('http://164.92.183.156:80/authentication/forgot'),
+      Uri.parse('http://164.92.183.156:80/authentication/security_questions'),
       body: jsonEncode(email),
     );
 
     if (response.statusCode == 200) {
       LoginManager.setAccountID(jsonDecode(response.body)['account_id']);
+      var variable = jsonDecode(response.body)['questions'][0];
+      LoginManager.trueQAs.add({
+        'questionId': jsonDecode(variable['question_id']),
+        'question':
+            jsonDecode(jsonDecode(response.body)['questions'][0])['question'],
+        'answer':
+            jsonDecode(jsonDecode(response.body)['questions'][0])['answer']
+      });
+      LoginManager.trueQAs.add({
+        'questionId': jsonDecode(
+            jsonDecode(response.body)['questions'][1])['question_id'],
+        'question':
+            jsonDecode(jsonDecode(response.body)['questions'][1])['question'],
+        'answer':
+            jsonDecode(jsonDecode(response.body)['questions'][1])['answer']
+      });
+      //debugPrint(LoginManager.getTrueQAs());
       return Future.value(true);
     } else {
       //throw Exception('Invalid Email');
@@ -40,31 +57,15 @@ class HTTPManager {
     }
   }
 
-  static Future<bool> postOTP(String accountID, String otp) async {
-    var data = {'account_id': accountID, 'otp': otp};
-    final response = await http.post(
-      Uri.parse('http://164.92.183.156:80/authentication/otp'),
-      body: jsonEncode(data),
-    );
-
-    if (response.statusCode == 200) {
-      return Future.value(true);
-    } else {
-      //throw Exception('OTP incorrect');
-      return Future.value(false);
-    }
-  }
-
   static Future<bool> postNewPassword(
-      String accountID, String email, String otp, String newPassword) async {
+      int accountID, String newPassword, List<Map> answers) async {
     var data = {
       'account_id': accountID,
-      'email': email,
-      'otp': otp,
-      'new_password': newPassword
+      'new_password': newPassword,
+      'questions': jsonEncode(answers)
     };
     final response = await http.post(
-      Uri.parse('http://164.92.183.156:80/account/password'),
+      Uri.parse('http://164.92.183.156:80/account/reset_password'),
       body: jsonEncode(data),
     );
 
