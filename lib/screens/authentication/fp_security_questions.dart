@@ -3,23 +3,25 @@ import 'package:sps_app/screens/authentication/login.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/screens/authentication/new_password.dart';
 
-class OTPPage extends StatefulWidget {
-  const OTPPage({super.key});
+class FPSecurityQuestionsPage extends StatefulWidget {
+  const FPSecurityQuestionsPage({super.key});
 
   @override
-  State<OTPPage> createState() => _OTPPageState();
+  State<FPSecurityQuestionsPage> createState() => _FPSecurityQuestionsPageState();
 }
 
-class _OTPPageState extends State<OTPPage> {
+class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
   final otpController = TextEditingController();
   String _invalidMessage = "";
+  String _question1 = "";
+  String _question2 = "";
 
   void _isValidMessage(bool value) {
     setState(() {
       if (value == true) {
         _invalidMessage = "";
       } else {
-        _invalidMessage = "Incorrect OTP";
+        _invalidMessage = "Incorrect answers";
       }
     });
   }
@@ -45,12 +47,21 @@ class _OTPPageState extends State<OTPPage> {
               child: ConstrainedBox(
                 constraints: BoxConstraints.tight(const Size(300, 80)),
                 child: const Text(
-                  'Enter the OTP that was sent to your email.',
+                  'Answer the following security questions.',
                   style: TextStyle(fontSize: 22),
                 ),
               ),
             ),
-            // padding for email text box for better UI layout
+            // padding for questions text box for better UI layout
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tight(const Size(300, 80)),
+                child: Text(_question1,
+                  style: const TextStyle(color: Colors.black, fontSize: 16),
+                  )
+              ),
+            ),
             Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
@@ -66,7 +77,37 @@ class _OTPPageState extends State<OTPPage> {
                         enabledBorder: UnderlineInputBorder(
                             borderSide:
                                 BorderSide(color: Color(0xff917248), width: 3)),
-                        labelText: 'OTP',
+                        labelText: 'Answer',
+                        labelStyle: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      cursorColor: const Color(0xff917248),
+                      controller: otpController),
+                )),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tight(const Size(300, 80)),
+                  child: Text(_question2,
+                      style: const TextStyle(color: Colors.black, fontSize: 16),
+                      )
+              ),
+            ),
+            Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                // constrained box to encapsulate user input text box
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  child: TextFormField(
+                    // styles user input text box
+                      decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Color(0xff917248), width: 3)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Color(0xff917248), width: 3)),
+                        labelText: 'Answer',
                         labelStyle: TextStyle(fontWeight: FontWeight.w500),
                       ),
                       cursorColor: const Color(0xff917248),
