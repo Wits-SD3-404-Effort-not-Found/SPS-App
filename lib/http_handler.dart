@@ -7,12 +7,15 @@ import 'package:sps_app/screens/authentication/login_manager.dart';
 class HTTPManager {
   HTTPManager();
 
+  static const String serverAddress = '164.92.183.156';
+  static const String serverPort = '80';
+
   // posts user credentials to validate them
   static Future<bool> postLoginCredentials(
       String username, String password) async {
     var data = {'email': username, 'hashed_password': password};
     final response = await http.post(
-      Uri.parse('http://164.92.183.156:80/authentication/credentials'),
+      Uri.parse('http://$serverAddress:$serverPort/authentication/credentials'),
       body: jsonEncode(data),
     );
 
@@ -27,7 +30,8 @@ class HTTPManager {
   static Future<bool> postEmail(String username) async {
     var email = {'email': username};
     final response = await http.post(
-      Uri.parse('http://164.92.183.156:80/authentication/security_questions'),
+      Uri.parse(
+          'http://$serverAddress:$serverPort/authentication/security_questions'),
       body: jsonEncode(email),
     );
 
@@ -65,7 +69,7 @@ class HTTPManager {
       'questions': jsonEncode(answers)
     };
     final response = await http.post(
-      Uri.parse('http://164.92.183.156:80/account/reset_password'),
+      Uri.parse('http://$serverAddress:$serverPort/account/reset_password'),
       body: jsonEncode(data),
     );
 
