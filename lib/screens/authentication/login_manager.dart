@@ -9,8 +9,8 @@ class LoginManager {
   static String username = "";
   static String password = "";
   static int _accountId = 0;
-  static List<Map> trueQAs = [{}];
-  static List<Map> userAnswers = [{}];
+  static List<Map> trueQAs = [];
+  static List<Map> userAnswers = [];
 
   static void setUsername(String inputUsername) {
     username = inputUsername;
@@ -34,6 +34,10 @@ class LoginManager {
 
   static int getAccountID() {
     return _accountId;
+  }
+
+  static void addQuestion(Map<String, dynamic> question) {
+    trueQAs.add(question);
   }
 
   static List<String> getQuestions() {

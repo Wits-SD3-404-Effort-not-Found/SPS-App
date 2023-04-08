@@ -36,24 +36,11 @@ class HTTPManager {
     );
 
     if (response.statusCode == 200) {
-      LoginManager.setAccountID(jsonDecode(response.body)['account_id']);
-      var variable = jsonDecode(response.body)['questions'][0];
-      LoginManager.trueQAs.add({
-        'questionId': jsonDecode(variable['question_id']),
-        'question':
-            jsonDecode(jsonDecode(response.body)['questions'][0])['question'],
-        'answer':
-            jsonDecode(jsonDecode(response.body)['questions'][0])['answer']
-      });
-      LoginManager.trueQAs.add({
-        'questionId': jsonDecode(
-            jsonDecode(response.body)['questions'][1])['question_id'],
-        'question':
-            jsonDecode(jsonDecode(response.body)['questions'][1])['question'],
-        'answer':
-            jsonDecode(jsonDecode(response.body)['questions'][1])['answer']
-      });
-      //debugPrint(LoginManager.getTrueQAs());
+      var responseMap = jsonDecode(response.body);
+      LoginManager.setAccountID(responseMap['account_id']);
+      for (var questionMap in responseMap['questions']) {
+        LoginManager.addQuestion(questionMap);
+      }
       return Future.value(true);
     } else {
       //throw Exception('Invalid Email');

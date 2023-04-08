@@ -7,7 +7,8 @@ class FPSecurityQuestionsPage extends StatefulWidget {
   const FPSecurityQuestionsPage({super.key});
 
   @override
-  State<FPSecurityQuestionsPage> createState() => _FPSecurityQuestionsPageState();
+  State<FPSecurityQuestionsPage> createState() =>
+      _FPSecurityQuestionsPageState();
 }
 
 class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
@@ -56,11 +57,11 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: ConstrainedBox(
-                constraints: BoxConstraints.tight(const Size(300, 80)),
-                child: Text(_question1,
-                  style: const TextStyle(color: Colors.black, fontSize: 16),
-                  )
-              ),
+                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  child: Text(
+                    _question1,
+                    style: const TextStyle(color: Colors.black, fontSize: 16),
+                  )),
             ),
             Padding(
                 padding:
@@ -86,27 +87,27 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: ConstrainedBox(
-                constraints: BoxConstraints.tight(const Size(300, 80)),
-                  child: Text(_question2,
-                      style: const TextStyle(color: Colors.black, fontSize: 16),
-                      )
-              ),
+                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  child: Text(
+                    _question2,
+                    style: const TextStyle(color: Colors.black, fontSize: 16),
+                  )),
             ),
             Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 // constrained box to encapsulate user input text box
                 child: ConstrainedBox(
                   constraints: BoxConstraints.tight(const Size(300, 80)),
                   child: TextFormField(
-                    // styles user input text box
+                      // styles user input text box
                       decoration: const InputDecoration(
                         focusedBorder: UnderlineInputBorder(
                             borderSide:
-                            BorderSide(color: Color(0xff917248), width: 3)),
+                                BorderSide(color: Color(0xff917248), width: 3)),
                         enabledBorder: UnderlineInputBorder(
                             borderSide:
-                            BorderSide(color: Color(0xff917248), width: 3)),
+                                BorderSide(color: Color(0xff917248), width: 3)),
                         labelText: 'Answer',
                         labelStyle: TextStyle(fontWeight: FontWeight.w500),
                       ),
@@ -141,21 +142,21 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                 // confirm button
                 ElevatedButton(
                   onPressed: () {
-                    LoginManager.setOTP(otpController.text);
-                    LoginManager.validateOTP().then((value) => {
-                          if (value == true)
-                            {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const NewPasswordPage()),
-                              ),
-                              _isValidMessage(value)
-                            }
-                          else
-                            {_isValidMessage(value)}
-                        });
+                    //LoginManager.setOTP(otpController.text);
+                    //LoginManager.validateOTP().then((value) => {
+                    //      if (value == true)
+                    //        {
+                    //          Navigator.push(
+                    //            context,
+                    //            MaterialPageRoute(
+                    //                builder: (context) =>
+                    //                    const NewPasswordPage()),
+                    //          ),
+                    //          _isValidMessage(value)
+                    //        }
+                    //      else
+                    //        {_isValidMessage(value)}
+                    //    });
                   },
                   // styles login button
                   style: ElevatedButton.styleFrom(
