@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/screens/authentication/login.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
-import 'package:sps_app/screens/authentication/otp.dart';
+import 'package:sps_app/screens/authentication/fp_security_questions.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -46,7 +46,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               child: ConstrainedBox(
                 constraints: BoxConstraints.tight(const Size(300, 80)),
                 child: const Text(
-                  'Enter your account email in order to be sent an OTP.',
+                  'Enter your account email.',
                   style: TextStyle(fontSize: 22),
                 ),
               ),
@@ -108,7 +108,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const OTPPage())),
+                                      builder: (context) => const FPSecurityQuestionsPage())),
                               _isValidMessage(value)
                             }
                           else
