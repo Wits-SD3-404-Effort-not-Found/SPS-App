@@ -52,8 +52,8 @@ class LoginManager {
   }
 
   static setAnswers(String answer1, String answer2) {
-    String answer1Hashed = _hashData(answer1).toString();
-    String answer2Hashed = _hashData(answer2).toString();
+    String answer1Hashed = _hashData(answer1.toLowerCase()).toString();
+    String answer2Hashed = _hashData(answer2.toLowerCase()).toString();
     userAnswers.add({
       "question_id": _trueQAs[0]['question_id'],
       "user_answer": answer1Hashed

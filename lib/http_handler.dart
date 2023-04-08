@@ -53,7 +53,7 @@ class HTTPManager {
     var data = {
       'account_id': accountID,
       'new_password': newPassword,
-      'questions': jsonEncode(answers)
+      'questions': answers
     };
     final response = await http.post(
       Uri.parse('http://$serverAddress:$serverPort/account/reset_password'),
