@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/screens/authentication/login.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+
 import 'package:sps_app/screens/authentication/new_password.dart';
 
 class FPSecurityQuestionsPage extends StatefulWidget {
@@ -12,10 +15,11 @@ class FPSecurityQuestionsPage extends StatefulWidget {
 }
 
 class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
-  final otpController = TextEditingController();
+  final q1Controller = TextEditingController();
+  final q2Controller = TextEditingController();
+  final Map<String, dynamic> _question1 = LoginManager.getQuestion(0);
+  final Map<String, dynamic> _question2 = LoginManager.getQuestion(1);
   String _invalidMessage = "";
-  String _question1 = "";
-  String _question2 = "";
 
   void _isValidMessage(bool value) {
     setState(() {
@@ -29,7 +33,8 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
 
   @override
   void dispose() {
-    otpController.dispose();
+    q1Controller.dispose();
+    q2Controller.dispose();
     super.dispose();
   }
 
@@ -46,7 +51,7 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: ConstrainedBox(
-                constraints: BoxConstraints.tight(const Size(300, 80)),
+                constraints: BoxConstraints.tight(const Size(300, 60)),
                 child: const Text(
                   'Answer the following security questions.',
                   style: TextStyle(fontSize: 22),
@@ -57,9 +62,9 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  constraints: BoxConstraints.tight(const Size(300, 20)),
                   child: Text(
-                    _question1,
+                    _question1['question'],
                     style: const TextStyle(color: Colors.black, fontSize: 16),
                   )),
             ),
@@ -82,14 +87,14 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                         labelStyle: TextStyle(fontWeight: FontWeight.w500),
                       ),
                       cursorColor: const Color(0xff917248),
-                      controller: otpController),
+                      controller: q1Controller),
                 )),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  constraints: BoxConstraints.tight(const Size(300, 20)),
                   child: Text(
-                    _question2,
+                    _question2['question'],
                     style: const TextStyle(color: Colors.black, fontSize: 16),
                   )),
             ),
@@ -112,7 +117,7 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                         labelStyle: TextStyle(fontWeight: FontWeight.w500),
                       ),
                       cursorColor: const Color(0xff917248),
-                      controller: otpController),
+                      controller: q2Controller),
                 )),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
@@ -127,6 +132,7 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                 // cancel button
                 ElevatedButton(
                   onPressed: () {
+                    LoginManager.clearQuestions();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -142,21 +148,22 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                 // confirm button
                 ElevatedButton(
                   onPressed: () {
-                    //LoginManager.setOTP(otpController.text);
-                    //LoginManager.validateOTP().then((value) => {
-                    //      if (value == true)
-                    //        {
-                    //          Navigator.push(
-                    //            context,
-                    //            MaterialPageRoute(
-                    //                builder: (context) =>
-                    //                    const NewPasswordPage()),
-                    //          ),
-                    //          _isValidMessage(value)
-                    //        }
-                    //      else
-                    //        {_isValidMessage(value)}
-                    //    });
+                    //authenticate answers
+                    var areCorrectAnswers =
+                        _question1['answer'].toString().toLowerCase() !=
+                                _hashData(q1Controller.text).toString() ||
+                            _question2['answer'].toString().toLowerCase() !=
+                                _hashData(q2Controller.text).toString();
+                    _isValidMessage(areCorrectAnswers);
+
+                    if (areCorrectAnswers) {
+                      LoginManager.setAnswers(
+                          q1Controller.text, q2Controller.text);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const NewPasswordPage()));
+                    }
                   },
                   // styles login button
                   style: ElevatedButton.styleFrom(
@@ -167,5 +174,10 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
             ),
           ],
         )));
+  }
+
+  static Digest _hashData(String data) {
+    var bytes = utf8.encode(data);
+    return sha256.convert(bytes);
   }
 }

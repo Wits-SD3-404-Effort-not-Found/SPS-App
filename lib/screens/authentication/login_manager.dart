@@ -9,8 +9,8 @@ class LoginManager {
   static String username = "";
   static String password = "";
   static int _accountId = 0;
-  static List<Map> trueQAs = [];
-  static List<Map> userAnswers = [];
+  static final List<Map> _trueQAs = [];
+  static final List<Map> userAnswers = [];
 
   static void setUsername(String inputUsername) {
     username = inputUsername;
@@ -36,31 +36,36 @@ class LoginManager {
     return _accountId;
   }
 
+  static void clearQuestions() {
+    _trueQAs.clear();
+  }
+
   static void addQuestion(Map<String, dynamic> question) {
-    trueQAs.add(question);
+    _trueQAs.add(question);
   }
 
   static List<String> getQuestions() {
     List<String> questions = [];
-    questions.add(trueQAs[0]['question']!);
-    questions.add(trueQAs[1]['question']!);
+    questions.add(_trueQAs[0]['question']!);
+    questions.add(_trueQAs[1]['question']!);
     return questions;
   }
 
   static setAnswers(String answer1, String answer2) {
     String answer1Hashed = _hashData(answer1).toString();
     String answer2Hashed = _hashData(answer2).toString();
-    if (answer1Hashed == trueQAs[0]['answer'] &&
-        answer2Hashed == trueQAs[1]['answer']) {
-      userAnswers.add({
-        "question_id": trueQAs[0]['question_id']!,
-        "user_answer": answer1Hashed
-      });
-      userAnswers.add({
-        "question_id": trueQAs[1]['question_id']!,
-        "user_answer": answer2Hashed
-      });
-    }
+    userAnswers.add({
+      "question_id": _trueQAs[0]['question_id'],
+      "user_answer": answer1Hashed
+    });
+    userAnswers.add({
+      "question_id": _trueQAs[1]['question_id'],
+      "user_answer": answer2Hashed
+    });
+  }
+
+  static getQuestion(int questionIndex) {
+    return _trueQAs[questionIndex];
   }
 
   static Future<bool> changePassword(String newPassword) async {
