@@ -20,7 +20,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
 class ScrollableCalendar extends StatelessWidget {
   final calendarController = CleanCalendarController(
-    minDate: DateTime.now(),
+    minDate: DateTime.now().subtract(Duration(days: 365)),
     maxDate: DateTime.now().add(const Duration(days: 365)),
     onRangeSelected: (firstDate, secondDate) {},
     onDayTapped: (date) {},
@@ -34,10 +34,18 @@ class ScrollableCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFFFFF),
       body: ScrollableCleanCalendar(
         calendarController: calendarController,
-        layout: Layout.BEAUTY,
+        layout: Layout.DEFAULT,
         calendarCrossAxisSpacing: 0,
+        spaceBetweenMonthAndCalendar: 20,
+        monthTextStyle: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        monthTextAlign: TextAlign.left,
+        daySelectedBackgroundColor: Color(0xFF917248),
+        dayBackgroundColor: Color(0xFFFFFFFF),
+        dayRadius: 30,
+        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
       ),
     );
   }
