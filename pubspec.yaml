@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^2.1.0
   http: ^0.13.5
   crypto: ^3.0.2
+  syncfusion_flutter_calendar: ^21.1.38
   persistent_bottom_nav_bar : any
 
 dev_dependencies:
