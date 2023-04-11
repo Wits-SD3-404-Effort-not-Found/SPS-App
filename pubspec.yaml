@@ -43,6 +43,7 @@ dependencies:
   crypto: ^3.0.2
   syncfusion_flutter_calendar: ^21.1.38
   persistent_bottom_nav_bar : any
+  connectivity: ^3.0.3
 
 dev_dependencies:
   flutter_test:

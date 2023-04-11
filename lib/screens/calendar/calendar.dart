@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
+import 'package:connectivity/connectivity.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -17,112 +22,176 @@ class CalendarApp extends StatelessWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
+  List<Color> _colorCollection = <Color>[];
+  String? _networkStatusMsg;
+  final Connectivity _internetConnectivity = new Connectivity();
+
+  @override
+  void initState() {
+    _initializeEventColor();
+    _checkNetworkStatus();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SfCalendar(
-      view: CalendarView.month,
-      cellBorderColor: Color(0xFFFFFFFF),
-      backgroundColor: Color(0xFFFFFFFF),
-      headerHeight: 60,
-      headerStyle: CalendarHeaderStyle(
-          textStyle: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
-          backgroundColor: Color(0xFFFFFFFF)),
-      todayHighlightColor: Color(0xFF043673),
-      monthViewSettings: const MonthViewSettings(
-        navigationDirection: MonthNavigationDirection.vertical,
-        monthCellStyle: MonthCellStyle(
-          textStyle: TextStyle(
-              fontStyle: FontStyle.normal, fontSize: 15, color: Colors.black),
+      body: Container(
+        child: FutureBuilder(
+          future: getDataFromWeb(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.data != null) {
+              return SafeArea(
+                child: Container(
+                  child: SfCalendar(
+                    view: CalendarView.month,
+                    cellBorderColor: Color(0xFFFFFFFF),
+                    backgroundColor: Color(0xFFFFFFFF),
+                    headerHeight: 60,
+                    headerStyle: CalendarHeaderStyle(
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            color: Colors.black),
+                        backgroundColor: Color(0xFFFFFFFF)),
+                    todayHighlightColor: Color(0xFF043673),
+                    monthViewSettings: const MonthViewSettings(
+                      navigationDirection: MonthNavigationDirection.vertical,
+                      monthCellStyle: MonthCellStyle(
+                        textStyle: TextStyle(
+                            fontStyle: FontStyle.normal,
+                            fontSize: 15,
+                            color: Colors.black),
+                      ),
+                      showTrailingAndLeadingDates: false,
+                      appointmentDisplayMode:
+                          MonthAppointmentDisplayMode.indicator,
+                      showAgenda: true,
+                      agendaItemHeight: 60,
+                      agendaStyle: const AgendaStyle(
+                          appointmentTextStyle:
+                              TextStyle(fontSize: 15, color: Color(0xFFFFFFFF)),
+                          backgroundColor: Color(0xFFFFFFFF)),
+                    ),
+                    dataSource: MeetingDataSource(snapshot.data),
+                    // by default the month appointment display mode set as Indicator, we can
+                    // change the display mode as appointment using the appointment display
+                    // mode property
+                  ),
+                ),
+              );
+            } else {
+              return Container(
+                child: Center(
+                  child: Text('$_networkStatusMsg'),
+                ),
+              );
+            }
+          },
         ),
-        showTrailingAndLeadingDates: false,
-        appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
-        showAgenda: true,
-        agendaItemHeight: 60,
-        agendaStyle: const AgendaStyle(
-            appointmentTextStyle:
-                TextStyle(fontSize: 15, color: Color(0xFFFFFFFF)),
-            backgroundColor: Color(0xFFFFFFFF)),
       ),
-      dataSource: MeetingDataSource(_getDataSource()),
-      // by default the month appointment display mode set as Indicator, we can
-      // change the display mode as appointment using the appointment display
-      // mode property
-    ));
+    );
+  }
+
+  Future<List<Meeting>> getDataFromWeb() async {
+    var data = await http.get(Uri.parse(
+        "https://js.syncfusion.com/demos/ejservices/api/Schedule/LoadData"));
+    var jsonData = json.decode(data.body);
+
+    final List<Meeting> appointmentData = [];
+    final Random random = new Random();
+    for (var data in jsonData) {
+      Meeting meetingData = Meeting(
+          eventName: data['Subject'],
+          from: _convertDateFromString(
+            data['StartTime'],
+          ),
+          to: _convertDateFromString(data['EndTime']),
+          background: _colorCollection[random.nextInt(9)],
+          allDay: data['AllDay']);
+      appointmentData.add(meetingData);
+    }
+    return appointmentData;
+  }
+
+  DateTime _convertDateFromString(String date) {
+    return DateTime.parse(date);
+  }
+
+  void _initializeEventColor() {
+    _colorCollection.add(const Color(0xFF0F8644));
+    _colorCollection.add(const Color(0xFF8B1FA9));
+    _colorCollection.add(const Color(0xFFD20100));
+    _colorCollection.add(const Color(0xFFFC571D));
+    _colorCollection.add(const Color(0xFF36B37B));
+    _colorCollection.add(const Color(0xFF01A1EF));
+    _colorCollection.add(const Color(0xFF3D4FB5));
+    _colorCollection.add(const Color(0xFFE47C73));
+    _colorCollection.add(const Color(0xFF636363));
+    _colorCollection.add(const Color(0xFF0A8043));
+  }
+
+  void _checkNetworkStatus() {
+    _internetConnectivity.onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      setState(() {
+        _networkStatusMsg = result.toString();
+        if (_networkStatusMsg == "ConnectivityResult.mobile") {
+          _networkStatusMsg =
+              "You are connected to mobile network, loading calendar data ....";
+        } else if (_networkStatusMsg == "ConnectivityResult.wifi") {
+          _networkStatusMsg =
+              "You are connected to wifi network, loading calendar data ....";
+        } else {
+          _networkStatusMsg =
+              "Internet connection may not be available. Connect to another network";
+        }
+      });
+    });
   }
 }
 
-List<Meeting> _getDataSource() {
-  final List<Meeting> meetings = <Meeting>[];
-  final DateTime today = DateTime.now();
-  final DateTime startTime = DateTime(today.year, today.month, today.day, 9);
-  final DateTime endTime = startTime.add(const Duration(hours: 4));
-  meetings.add(
-      Meeting('Hello', startTime, endTime, Color.fromARGB(255, 211, 25, 214)));
-  meetings.add(Meeting(
-      'Rotation', startTime, endTime, Color.fromARGB(255, 19, 223, 169)));
-  return meetings;
-}
-
-// An object to set the appointment collection data source to calendar, which
-/// used to map the custom appointment data to the calendar appointment, and
-/// allows to add, remove or reset the appointment collection.
 class MeetingDataSource extends CalendarDataSource {
-  /// Creates a meeting data source, which used to set the appointment
-  /// collection to the calendar
   MeetingDataSource(List<Meeting> source) {
     appointments = source;
   }
 
   @override
   DateTime getStartTime(int index) {
-    return _getMeetingData(index).from;
+    return appointments![index].from;
   }
 
   @override
   DateTime getEndTime(int index) {
-    return _getMeetingData(index).to;
+    return appointments![index].to;
   }
 
   @override
   String getSubject(int index) {
-    return _getMeetingData(index).eventName;
+    return appointments![index].eventName;
   }
 
   @override
   Color getColor(int index) {
-    return _getMeetingData(index).background;
+    return appointments![index].background;
   }
 
-  Meeting _getMeetingData(int index) {
-    final dynamic meeting = appointments![index];
-    late final Meeting meetingData;
-    if (meeting is Meeting) {
-      meetingData = meeting;
-    }
-
-    return meetingData;
+  @override
+  bool isAllDay(int index) {
+    return appointments![index].allDay;
   }
 }
 
 class Meeting {
-  /// Creates a meeting class with required details.
   Meeting(
-    this.eventName,
-    this.from,
-    this.to,
-    this.background,
-  );
+      {this.eventName,
+      this.from,
+      this.to,
+      this.background,
+      this.allDay = false});
 
-  /// Event name which is equivalent to subject property of [Appointment].
-  String eventName;
-
-  /// From which is equivalent to start time property of [Appointment].
-  DateTime from;
-
-  /// To which is equivalent to end time property of [Appointment].
-  DateTime to;
-
-  /// Background which is equivalent to color property of [Appointment].
-  Color background;
+  String? eventName;
+  DateTime? from;
+  DateTime? to;
+  Color? background;
+  bool? allDay;
 }
