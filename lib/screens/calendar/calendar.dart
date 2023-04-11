@@ -16,21 +16,33 @@ class CalendarApp extends StatelessWidget {
   }
 }
 
-//initialises the calendar page and is used in the nav bar as one of the pages
 class _CalendarPageState extends State<CalendarPage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SfCalendar(
       view: CalendarView.month,
+      cellBorderColor: Color(0xFFFFFFFF),
+      backgroundColor: Color(0xFFFFFFFF),
+      headerHeight: 60,
+      headerStyle: CalendarHeaderStyle(
+          textStyle: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
+          backgroundColor: Color(0xFFFFFFFF)),
+      todayHighlightColor: Color(0xFF043673),
       monthViewSettings: const MonthViewSettings(
         navigationDirection: MonthNavigationDirection.vertical,
-        monthCellStyle: MonthCellStyle(),
+        monthCellStyle: MonthCellStyle(
+          textStyle: TextStyle(
+              fontStyle: FontStyle.normal, fontSize: 15, color: Colors.black),
+        ),
         showTrailingAndLeadingDates: false,
         appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
         showAgenda: true,
-        agendaStyle:
-            const AgendaStyle(appointmentTextStyle: TextStyle(fontSize: 15)),
+        agendaItemHeight: 60,
+        agendaStyle: const AgendaStyle(
+            appointmentTextStyle:
+                TextStyle(fontSize: 15, color: Color(0xFFFFFFFF)),
+            backgroundColor: Color(0xFFFFFFFF)),
       ),
       dataSource: MeetingDataSource(_getDataSource()),
       // by default the month appointment display mode set as Indicator, we can
@@ -38,18 +50,18 @@ class _CalendarPageState extends State<CalendarPage> {
       // mode property
     ));
   }
+}
 
-  List<Meeting> _getDataSource() {
-    final List<Meeting> meetings = <Meeting>[];
-    final DateTime today = DateTime.now();
-    final DateTime startTime = DateTime(today.year, today.month, today.day, 9);
-    final DateTime endTime = startTime.add(const Duration(hours: 2));
-    meetings.add(
-        Meeting('Hello', startTime, endTime, Color.fromARGB(255, 12, 227, 80)));
-    meetings.add(Meeting(
-        'Rotation', startTime, endTime, Color.fromARGB(255, 134, 15, 78)));
-    return meetings;
-  }
+List<Meeting> _getDataSource() {
+  final List<Meeting> meetings = <Meeting>[];
+  final DateTime today = DateTime.now();
+  final DateTime startTime = DateTime(today.year, today.month, today.day, 9);
+  final DateTime endTime = startTime.add(const Duration(hours: 4));
+  meetings.add(
+      Meeting('Hello', startTime, endTime, Color.fromARGB(255, 211, 25, 214)));
+  meetings.add(Meeting(
+      'Rotation', startTime, endTime, Color.fromARGB(255, 19, 223, 169)));
+  return meetings;
 }
 
 // An object to set the appointment collection data source to calendar, which
