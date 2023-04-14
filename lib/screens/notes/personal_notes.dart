@@ -21,6 +21,7 @@ class PersonalNotesPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           final item = items[index];
           return ListTile(
+            horizontalTitleGap: 0,
             title: item.buildItem(context),
           );
         },

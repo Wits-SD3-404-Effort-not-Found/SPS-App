@@ -20,7 +20,7 @@ class _NotesPageState extends State<NotesPage> {
           const Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: Text(
                 'Notes',
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
@@ -30,62 +30,80 @@ class _NotesPageState extends State<NotesPage> {
           Center(
             child: Column(children: [
               ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(250, 50)),
-                  child: OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Color(0xff043673))),
-                      child: Row(children: const [
-                        Text(
-                          'Protocols',
-                          style: TextStyle(color: Colors.black, fontSize: 24),
-                        ),
-                        Icon(
-                          Icons.arrow_right,
-                          size: 45,
-                          color: Colors.black,
-                        ),
-                      ]))),
+                  constraints: BoxConstraints.tight(const Size(300, 60)),
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 6),
+                      child: TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                              side: const BorderSide(color: Color(0xff043673))),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text(
+                                  'Protocols',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 22),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
+                              ])))),
               ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(250, 50)),
-                  child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PersonalNotesPage()),
-                        );
-                      },
-                      style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Color(0xff043673))),
-                      child: Row(children: const [
-                        Text(
-                          'Notes',
-                          style: TextStyle(color: Colors.black, fontSize: 24),
-                        ),
-                        Icon(
-                          Icons.arrow_right,
-                          size: 45,
-                          color: Colors.black,
-                        ),
-                      ]))),
+                  constraints: BoxConstraints.tight(const Size(300, 60)),
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 6),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PersonalNotesPage()),
+                            );
+                          },
+                          style: TextButton.styleFrom(
+                              side: const BorderSide(color: Color(0xff043673))),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text(
+                                  'Personal Notes',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 22),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
+                              ])))),
               ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(250, 50)),
-                  child: OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Color(0xff043673))),
-                      child: Row(children: const [
-                        Text(
-                          'Logbook',
-                          style: TextStyle(color: Colors.black, fontSize: 24),
-                        ),
-                        Icon(
-                          Icons.arrow_right,
-                          size: 45,
-                          color: Colors.black,
-                        ),
-                      ]))),
+                  constraints: BoxConstraints.tight(const Size(300, 60)),
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 6),
+                      child: TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                              side: const BorderSide(color: Color(0xff043673))),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text(
+                                  'Logbook',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 22),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
+                              ])))),
             ]),
           )
         ]));

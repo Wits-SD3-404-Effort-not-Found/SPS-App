@@ -7,7 +7,16 @@ abstract class ListItem {
 
   //Widget buildSubtitle(BuildContext context);
   Widget buildItem(BuildContext context) {
-    return GestureDetector(onTap: () {}, child: buildTitle(context));
+    return Stack(
+      children: [
+        GestureDetector(onTap: () {}, child: buildTitle(context)),
+        Container(
+          decoration: const BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(color: Color(0xff917248), width: 3.0))),
+        ),
+      ],
+    );
   }
 }
 
@@ -19,21 +28,33 @@ class ProtocolItem implements ListItem {
 
   @override
   Widget buildTitle(BuildContext context) {
-    return Text(protocolTitle);
+    return Text(protocolTitle,
+        style: const TextStyle(color: Colors.black, fontSize: 18));
   }
 
   @override
   Widget buildItem(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SingleProtocolPage(protocolContent: body)),
-          );
-        },
-        child: buildTitle(context));
+    return SizedBox(
+        width: 300,
+        height: 30,
+        child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        SingleProtocolPage(protocolContent: body)),
+              );
+            },
+            child: Stack(children: [
+              buildTitle(context),
+              Container(
+                decoration: const BoxDecoration(
+                    border: Border(
+                        bottom:
+                            BorderSide(color: Color(0xff917248), width: 2))),
+              ),
+            ])));
   }
 }
 
@@ -44,18 +65,30 @@ class NotesItem implements ListItem {
   NotesItem(this.noteTitle, this.body);
 
   @override
-  Widget buildTitle(BuildContext context) => Text(noteTitle);
+  Widget buildTitle(BuildContext context) => Text(noteTitle,
+      style: const TextStyle(color: Colors.black, fontSize: 18));
 
   @override
   Widget buildItem(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SingleNotePage(noteContent: body)),
-          );
-        },
-        child: buildTitle(context));
+    return SizedBox(
+        width: 300,
+        height: 30,
+        child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SingleNotePage(noteContent: body)),
+              );
+            },
+            child: Stack(children: [
+              buildTitle(context),
+              Container(
+                decoration: const BoxDecoration(
+                    border: Border(
+                        bottom:
+                            BorderSide(color: Color(0xff917248), width: 2))),
+              ),
+            ])));
   }
 }
