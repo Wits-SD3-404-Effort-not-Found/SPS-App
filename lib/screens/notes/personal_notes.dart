@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sps_app/screens/notes/note_item.dart';
+import 'package:sps_app/widgets/primitive/list_item.dart';
 
 class PersonalNotesPage extends StatelessWidget {
   PersonalNotesPage({super.key});
