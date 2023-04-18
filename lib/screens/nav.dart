@@ -19,7 +19,7 @@ class App extends StatelessWidget {
         initialRoute: "/",
         routes: {
           "/calendar": (final context) => const CalendarPage(),
-          "/notes": (final context) => NotesPage(),
+          //"/notes": (final context) => NotesPage(),
           "/messaging": (final context) => MessagingPage(),
           "/settings": (final context) => SettingsPage()
         },
@@ -39,8 +39,12 @@ class _NavBar extends State<NavBar> {
   late PersistentTabController _controller;
 
   // list of all the screens that the navbar accesses
-  List<Widget> _buildScreens() =>
-      [CalendarPage(), NotesPage(), MessagingPage(), SettingsPage()];
+  List<Widget> _buildScreens() => [
+        CalendarPage(),
+        NotesPage(),
+        MessagingPage(),
+        SettingsPage(),
+      ];
 
   List<PersistentBottomNavBarItem> _navBarsItems() => [
         PersistentBottomNavBarItem(
@@ -50,13 +54,14 @@ class _NavBar extends State<NavBar> {
           inactiveColorPrimary: Color(0xFFFFFFFF),
         ),
         PersistentBottomNavBarItem(
-            icon: Icon(UniconsLine.file_edit_alt, size: 35),
-            title: "Notes",
-            activeColorPrimary: Color(0xFF917248),
-            inactiveColorPrimary: Color(0xFFFFFFFF),
-            routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          icon: Icon(UniconsLine.file_edit_alt, size: 35),
+          title: "Notes",
+          activeColorPrimary: Color(0xFF917248),
+          inactiveColorPrimary: Color(0xFFFFFFFF),
+          /*routeAndNavigatorSettings: RouteAndNavigatorSettings(
                 initialRoute: "/notes",
-                routes: {"/notes": (context) => NotesPage()})),
+                routes: {"/notes": (context) => NotesPage()})*/
+        ),
         PersistentBottomNavBarItem(
             icon: Icon(UniconsLine.comments, size: 35),
             title: "Messages",
@@ -138,51 +143,3 @@ class _NavBar extends State<NavBar> {
     );
   }
 }
-
-/*// This is the UI for the bottom navigator which contains the icons that represent each page
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-
-        // this changes the pages depending on the selected index
-        onTap: (value) {
-          setState(() {
-            _selectedIndex = value;
-          });
-        },
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.calendar_month_rounded,
-              size: 35,
-            ),
-            label: 'Calendar',
-            backgroundColor: Color(0xFF043673),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              UniconsLine.file_edit_alt,
-              size: 35,
-            ),
-            label: 'Notes',
-            backgroundColor: Color(0xFF043673),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              UniconsLine.comments,
-              size: 35,
-            ),
-            label: 'Messages',
-            backgroundColor: Color(0xFF043673),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              UniconsLine.setting,
-              size: 35,
-            ),
-            label: 'Settings',
-            backgroundColor: Color(0xFF043673),
-          ),
-        ],
-        selectedItemColor: const Color(0xFF917248),
-      ),
-*/
