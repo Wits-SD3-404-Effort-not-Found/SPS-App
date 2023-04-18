@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:sps_app/screens/calendar/calendar.dart';
 import 'package:sps_app/screens/messaging/messaging.dart';
-import 'package:sps_app/screens/notes/individual.dart';
 import 'package:sps_app/screens/notes/notes.dart';
 import 'package:sps_app/screens/settings/settings.dart';
 import 'package:unicons/unicons.dart';
@@ -20,8 +19,8 @@ class App extends StatelessWidget {
         routes: {
           "/calendar": (final context) => const CalendarPage(),
           //"/notes": (final context) => NotesPage(),
-          "/messaging": (final context) => MessagingPage(),
-          "/settings": (final context) => SettingsPage()
+          "/messaging": (final context) => const MessagingPage(),
+          "/settings": (final context) => const SettingsPage()
         },
       );
 }
@@ -35,51 +34,42 @@ class NavBar extends StatefulWidget {
 
 class _NavBar extends State<NavBar> {
   //gonna use style 6
-  int _selectedIndex = 0;
+
   late PersistentTabController _controller;
 
   // list of all the screens that the navbar accesses
   List<Widget> _buildScreens() => [
-        CalendarPage(),
-        NotesPage(),
-        MessagingPage(),
-        SettingsPage(),
+        const CalendarPage(),
+        const NotesPage(),
+        const MessagingPage(),
+        const SettingsPage(),
       ];
 
   List<PersistentBottomNavBarItem> _navBarsItems() => [
         PersistentBottomNavBarItem(
-          icon: Icon(Icons.calendar_month_rounded, size: 35),
+          icon: const Icon(Icons.calendar_month_rounded, size: 35),
           title: ("Calendar"),
-          activeColorPrimary: Color(0xFF917248),
-          inactiveColorPrimary: Color(0xFFFFFFFF),
+          activeColorPrimary: const Color(0xFF917248),
+          inactiveColorPrimary: const Color(0xFFFFFFFF),
         ),
         PersistentBottomNavBarItem(
-          icon: Icon(UniconsLine.file_edit_alt, size: 35),
+          icon: const Icon(UniconsLine.file_edit_alt, size: 35),
           title: "Notes",
-          activeColorPrimary: Color(0xFF917248),
-          inactiveColorPrimary: Color(0xFFFFFFFF),
-          /*routeAndNavigatorSettings: RouteAndNavigatorSettings(
-                initialRoute: "/notes",
-                routes: {"/notes": (context) => NotesPage()})*/
+          activeColorPrimary: const Color(0xFF917248),
+          inactiveColorPrimary: const Color(0xFFFFFFFF),
         ),
         PersistentBottomNavBarItem(
-            icon: Icon(UniconsLine.comments, size: 35),
-            title: "Messages",
-            activeColorPrimary: Color(0xFF917248),
-            inactiveColorPrimary: Color(0xFFFFFFFF),
-            routeAndNavigatorSettings: RouteAndNavigatorSettings(
-                initialRoute: "/",
-                routes: {
-                  "/Messaging": (final context) => const MessagingPage()
-                })),
+          icon: const Icon(UniconsLine.comments, size: 35),
+          title: "Messages",
+          activeColorPrimary: const Color(0xFF917248),
+          inactiveColorPrimary: const Color(0xFFFFFFFF),
+        ),
         PersistentBottomNavBarItem(
-            icon: Icon(UniconsLine.setting, size: 35),
-            title: "Settings",
-            activeColorPrimary: Color(0xFF917248),
-            inactiveColorPrimary: Color(0xFFFFFFFF),
-            routeAndNavigatorSettings: RouteAndNavigatorSettings(
-                initialRoute: "/",
-                routes: {"/settings": (final context) => const SettingsPage()}))
+          icon: const Icon(UniconsLine.setting, size: 35),
+          title: "Settings",
+          activeColorPrimary: const Color(0xFF917248),
+          inactiveColorPrimary: const Color(0xFFFFFFFF),
+        )
       ];
   @override
   void initState() {
@@ -126,7 +116,7 @@ class _NavBar extends State<NavBar> {
         //     : kBottomNavigationBarHeight,
         // bottomScreenMargin: 0,
         //selectedTabScreenContext: (final context) => {testContext = context!},
-        backgroundColor: Color(0xFF043673),
+        backgroundColor: const Color(0xFF043673),
         decoration: const NavBarDecoration(
           colorBehindNavBar: Color(0xFF043673),
         )

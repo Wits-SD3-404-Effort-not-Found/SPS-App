@@ -22,7 +22,7 @@ class _NotesPageState extends State<NotesPage> {
             child: ElevatedButton(
               child: const Text("individual page"),
               onPressed: () => PersistentNavBarNavigator.pushNewScreen(context,
-                  screen: individualScreen()),
+                  screen: const IndividualScreen()),
             ),
           )
         ],

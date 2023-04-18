@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProtocolScreen extends StatefulWidget {
   const ProtocolScreen({Key? key}) : super(key: key);
 
   @override
-  _ProtocolScreenState createState() => _ProtocolScreenState();
+  ProtocolScreenState createState() => ProtocolScreenState();
 }
 
-class _ProtocolScreenState extends State<ProtocolScreen> {
+class ProtocolScreenState extends State<ProtocolScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
