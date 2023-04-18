@@ -39,6 +39,7 @@ dependencies:
   shared_preferences: ^2.1.0
   http: ^0.13.5
   crypto: ^3.0.2
+  persistent_bottom_nav_bar : any
 
 dev_dependencies:
   flutter_test:
