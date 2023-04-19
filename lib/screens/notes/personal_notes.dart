@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:sps_app/screens/notes/note_content.dart';
 import 'package:sps_app/widgets/primitive/list_item.dart';
+import 'package:sps_app/screens/notes/notes.dart';
 
 class PersonalNotesPage extends StatelessWidget {
   PersonalNotesPage({super.key});
+  static var myNoteItem = NotesItem("my note title", "my note content");
+  static var myNotesItem_2 = NotesItem("my note title 1", "my note content 1");
 
-  final List<ListItem> items = [
-    NotesItem(NoteContent(
-        title: "Example List Item", body: "do rotation summary write up")),
-    ProtocolItem("Example Protocol", "Run burn wound under cold water"),
-    NotesItem(
-        NoteContent(title: "My Notes", body: "do homework, do that, do this")),
-    ProtocolItem("Gun", "call the MF-ing Police"),
-  ];
+  final items = [];
 
   @override
   Widget build(BuildContext context) {
+    items.add(myNoteItem);
+    items.add(myNotesItem_2);
     return Scaffold(
       body: ListView.builder(
         // Let the ListView know how many items it needs to build.
@@ -28,6 +25,13 @@ class PersonalNotesPage extends StatelessWidget {
             horizontalTitleGap: 0,
             title: item.buildItem(context),
           );
+        },
+      ),
+      floatingActionButton: ElevatedButton(
+        child: const Text("Go Back"),
+        onPressed: () => {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const NotesPage()))
         },
       ),
     );

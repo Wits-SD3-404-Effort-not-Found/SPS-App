@@ -61,9 +61,12 @@ class ProtocolItem implements ListItem {
 }
 
 class NotesItem implements ListItem {
-  var noteContent = NoteContent(title: "", body: "");
+  var noteContent = NoteContent();
 
-  NotesItem(this.noteContent);
+  NotesItem(String title, String body) {
+    noteContent.setTitle(title);
+    noteContent.setBody(body);
+  }
 
   @override
   Widget buildTitle(BuildContext context) => Text(noteContent.getTitle(),

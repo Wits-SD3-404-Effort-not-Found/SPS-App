@@ -11,14 +11,20 @@ class SingleNotePage extends StatefulWidget {
 }
 
 class _SingleNotePageState extends State<SingleNotePage> {
-  var _noteController = TextEditingController();
+  var _bodyController = TextEditingController();
+  var _titleController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _noteController = TextEditingController.fromValue(
+    _bodyController = TextEditingController.fromValue(
       TextEditingValue(
         text: widget.noteContent.getBody(),
+      ),
+    );
+    _titleController = TextEditingController.fromValue(
+      TextEditingValue(
+        text: widget.noteContent.getTitle(),
       ),
     );
   }
@@ -43,7 +49,8 @@ class _SingleNotePageState extends State<SingleNotePage> {
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: GestureDetector(
                         onTap: () {
-                          widget.noteContent.setBody(_noteController.text);
+                          widget.noteContent.setBody(_bodyController.text);
+                          widget.noteContent.setTitle(_titleController.text);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -54,11 +61,15 @@ class _SingleNotePageState extends State<SingleNotePage> {
                           size: 25,
                           color: Colors.black,
                         ))),
-                Text(
-                  widget.noteContent.getTitle(),
-                  style: const TextStyle(fontSize: 30),
-                  textAlign: TextAlign.left,
-                )
+                ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(300, 50)),
+                    child: TextField(
+                      decoration:
+                          const InputDecoration(border: InputBorder.none),
+                      controller: _titleController,
+                      style: const TextStyle(fontSize: 30),
+                      textAlign: TextAlign.left,
+                    ))
               ])),
           Center(
               child: Padding(
@@ -68,7 +79,7 @@ class _SingleNotePageState extends State<SingleNotePage> {
                 autofocus: true,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
-                controller: _noteController),
+                controller: _bodyController),
           )),
         ]));
   }

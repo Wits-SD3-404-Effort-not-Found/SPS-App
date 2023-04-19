@@ -4,7 +4,7 @@ class NoteContent {
   //String createdAt= "g";
   //String modifiedAt="";
 
-  NoteContent({required this.title, required this.body});
+  NoteContent();
 
   void setTitle(String title) {
     this.title = title;
