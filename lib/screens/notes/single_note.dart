@@ -101,3 +101,20 @@ class _SingleNotePageState extends State<SingleNotePage> {
                         size: 20,
                         color: Colors.black,
                       )),*/
+
+/* Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),*/
+
+/*                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PersonalNotesPage()));
+                      },
+                      child: const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 20,
+                        color: Colors.black,
+                      )),*/

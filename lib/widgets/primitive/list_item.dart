@@ -4,6 +4,8 @@ import 'package:sps_app/screens/notes/single_protocol.dart';
 
 import '../../screens/notes/note_content.dart';
 
+import '../../screens/notes/note_content.dart';
+
 abstract class ListItem {
   Widget buildTitle(BuildContext context);
 
@@ -69,7 +71,7 @@ class NotesItem implements ListItem {
   }
 
   @override
-  Widget buildTitle(BuildContext context) => Text(noteContent.getTitle(),
+  Widget buildTitle(BuildContext context) => Text(noteContent.getContent.getTitle()(),
       style: const TextStyle(color: Colors.black, fontSize: 18));
 
   @override
@@ -82,6 +84,9 @@ class NotesItem implements ListItem {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                  builder: (context) =>
+                      SingleNotePage(noteContent: noteContent),
+                ),
                   builder: (context) =>
                       SingleNotePage(noteContent: noteContent),
                 ),
