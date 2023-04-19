@@ -18,7 +18,7 @@ class App extends StatelessWidget {
         initialRoute: "/",
         routes: {
           "/calendar": (final context) => const CalendarPage(),
-          //"/notes": (final context) => NotesPage(),
+          "/notes": (final context) => NotesPage(),
           "/messaging": (final context) => const MessagingPage(),
           "/settings": (final context) => const SettingsPage()
         },
@@ -103,7 +103,6 @@ class _NavBar extends State<NavBar> {
                   16, 12, 25, 12), //padding of the notification icon
             )
           ]),
-      // Center: the page will change dependent on the selected index of the nav bar
       body: PersistentTabView(
         context,
         controller: _controller,
@@ -111,20 +110,10 @@ class _NavBar extends State<NavBar> {
         items: _navBarsItems(),
         resizeToAvoidBottomInset: true,
         navBarHeight: 65,
-        // MediaQuery.of(context).viewInsets.bottom > 0
-        //     ? 0.0
-        //     : kBottomNavigationBarHeight,
-        // bottomScreenMargin: 0,
-        //selectedTabScreenContext: (final context) => {testContext = context!},
         backgroundColor: const Color(0xFF043673),
         decoration: const NavBarDecoration(
           colorBehindNavBar: Color(0xFF043673),
-        )
-        /*itemAnimationProperties: const ItemAnimationProperties(
-          duration: Duration(milliseconds: 400),
-          curve: Curves.ease,
-        )*/
-        ,
+        ),
         screenTransitionAnimation: const ScreenTransitionAnimation(
           animateTabTransition: true,
         ),
