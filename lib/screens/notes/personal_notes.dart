@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sps_app/screens/notes/note_content.dart';
 import 'package:sps_app/widgets/primitive/list_item.dart';
 import 'package:sps_app/screens/notes/notes.dart';
 
