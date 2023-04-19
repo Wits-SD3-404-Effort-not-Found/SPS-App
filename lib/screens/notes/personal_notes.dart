@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/screens/notes/note_content.dart';
 import 'package:sps_app/widgets/primitive/list_item.dart';
 
 class PersonalNotesPage extends StatelessWidget {
   PersonalNotesPage({super.key});
+
   final List<ListItem> items = [
-    NotesItem("Example List Item", "do rotation summary write up"),
+    NotesItem(NoteContent(
+        title: "Example List Item", body: "do rotation summary write up")),
     ProtocolItem("Example Protocol", "Run burn wound under cold water"),
-    NotesItem("My Notes", "do homework, do that, do this"),
+    NotesItem(
+        NoteContent(title: "My Notes", body: "do homework, do that, do this")),
     ProtocolItem("Gun", "call the MF-ing Police"),
   ];
 

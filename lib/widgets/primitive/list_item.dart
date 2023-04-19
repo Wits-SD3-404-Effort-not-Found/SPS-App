@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sps_app/screens/notes/single_note.dart';
 import 'package:sps_app/screens/notes/single_protocol.dart';
 
+import '../../screens/notes/note_content.dart';
+
 abstract class ListItem {
   Widget buildTitle(BuildContext context);
 
@@ -59,13 +61,12 @@ class ProtocolItem implements ListItem {
 }
 
 class NotesItem implements ListItem {
-  final String noteTitle;
-  final String body;
+  var noteContent = NoteContent(title: "", body: "");
 
-  NotesItem(this.noteTitle, this.body);
+  NotesItem(this.noteContent);
 
   @override
-  Widget buildTitle(BuildContext context) => Text(noteTitle,
+  Widget buildTitle(BuildContext context) => Text(noteContent.getTitle(),
       style: const TextStyle(color: Colors.black, fontSize: 18));
 
   @override
@@ -78,7 +79,9 @@ class NotesItem implements ListItem {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => SingleNotePage(noteContent: body)),
+                  builder: (context) =>
+                      SingleNotePage(noteContent: noteContent),
+                ),
               );
             },
             child: Stack(children: [
