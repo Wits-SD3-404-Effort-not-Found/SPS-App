@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:sps_app/screens/notes/protocol.dart';
 
-import 'individual.dart';
-
-class NotesPage extends StatefulWidget {
-  const NotesPage({Key? key}) : super(key: key);
+class IndividualScreen extends StatefulWidget {
+  const IndividualScreen({Key? key}) : super(key: key);
 
   @override
-  State<NotesPage> createState() => _NotesPageState();
+  IndividualScreenState createState() => IndividualScreenState();
 }
 
-class _NotesPageState extends State<NotesPage> {
-  @override
+class IndividualScreenState extends State<IndividualScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,9 +18,9 @@ class _NotesPageState extends State<NotesPage> {
         children: <Widget>[
           Center(
             child: ElevatedButton(
-              child: const Text("individual page"),
+              child: const Text("protocol page"),
               onPressed: () => PersistentNavBarNavigator.pushNewScreen(context,
-                  screen: const IndividualScreen()),
+                  screen: const ProtocolScreen()),
             ),
           )
         ],
