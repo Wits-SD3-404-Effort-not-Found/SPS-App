@@ -18,7 +18,7 @@ class App extends StatelessWidget {
         initialRoute: "/",
         routes: {
           "/calendar": (final context) => const CalendarPage(),
-          "/notes": (final context) => NotesPage(),
+          "/notes": (final context) => const NotesPage(),
           "/messaging": (final context) => const MessagingPage(),
           "/settings": (final context) => const SettingsPage()
         },
