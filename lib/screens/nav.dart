@@ -82,10 +82,9 @@ class _NavBar extends State<NavBar> {
     return Scaffold(
       appBar: AppBar(
           //this is the top bar of the App and contains a notification button which will open up a new page in the future
-          /*leading: Image.asset(
-            'lib/assets/wits_logo_blue.png',
-            fit: BoxFit.fitHeight,
-          ),*/
+          automaticallyImplyLeading: false,
+          leading: Image.asset('lib/assets/images/wits_logo_blue.png',
+              fit: BoxFit.fitHeight),
           title: const Text(
             'Wits University',
             style: TextStyle(fontSize: 25),
