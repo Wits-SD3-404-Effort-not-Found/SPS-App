@@ -24,13 +24,10 @@ class CalendarApp extends StatelessWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   List<Color> _colorCollection = <Color>[];
-  String? _networkStatusMsg;
-  final Connectivity _internetConnectivity = new Connectivity();
 
   @override
   void initState() {
     _initializeEventColor();
-    _checkNetworkStatus();
     super.initState();
   }
 
@@ -83,7 +80,7 @@ class _CalendarPageState extends State<CalendarPage> {
             } else {
               return Container(
                 child: Center(
-                  child: Text('$_networkStatusMsg'),
+                  child: Text(''),
                 ),
               );
             }
@@ -129,25 +126,6 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorCollection.add(const Color(0xFFE47C73));
     _colorCollection.add(const Color(0xFF636363));
     _colorCollection.add(const Color(0xFF0A8043));
-  }
-
-  void _checkNetworkStatus() {
-    _internetConnectivity.onConnectivityChanged
-        .listen((ConnectivityResult result) {
-      setState(() {
-        _networkStatusMsg = result.toString();
-        if (_networkStatusMsg == "ConnectivityResult.mobile") {
-          _networkStatusMsg =
-              "You are connected to mobile network, loading calendar data ....";
-        } else if (_networkStatusMsg == "ConnectivityResult.wifi") {
-          _networkStatusMsg =
-              "You are connected to wifi network, loading calendar data ....";
-        } else {
-          _networkStatusMsg =
-              "Internet connection may not be available. Connect to another network";
-        }
-      });
-    });
   }
 }
 
