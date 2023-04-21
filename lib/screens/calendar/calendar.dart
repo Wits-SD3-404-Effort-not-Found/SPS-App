@@ -23,7 +23,7 @@ class CalendarApp extends StatelessWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  List<Color> _colorCollection = <Color>[];
+  final List<Color> _colorCollection = <Color>[];
 
   @override
   void initState() {
@@ -39,7 +39,9 @@ class _CalendarPageState extends State<CalendarPage> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
               return SafeArea(
-                child: Container(
+                  child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
                   child: SfCalendar(
                     view: CalendarView.month,
                     cellBorderColor: Color(0xFFFFFFFF),
@@ -48,7 +50,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     headerStyle: CalendarHeaderStyle(
                         textStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 25,
+                            fontSize: 30,
                             color: Colors.black),
                         backgroundColor: Color(0xFFFFFFFF)),
                     todayHighlightColor: Color(0xFF043673),
@@ -57,7 +59,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       monthCellStyle: MonthCellStyle(
                         textStyle: TextStyle(
                             fontStyle: FontStyle.normal,
-                            fontSize: 15,
+                            fontSize: 18,
                             color: Colors.black),
                       ),
                       showTrailingAndLeadingDates: false,
@@ -76,7 +78,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     // mode property
                   ),
                 ),
-              );
+              ));
             } else {
               return Container(
                 child: Center(
@@ -128,49 +130,3 @@ class _CalendarPageState extends State<CalendarPage> {
     _colorCollection.add(const Color(0xFF0A8043));
   }
 }
-
-// class MeetingDataSource extends CalendarDataSource {
-//   MeetingDataSource(List<Meeting> source) {
-//     appointments = source;
-//   }
-
-//   @override
-//   DateTime getStartTime(int index) {
-//     return appointments![index].from;
-//   }
-
-//   @override
-//   DateTime getEndTime(int index) {
-//     return appointments![index].to;
-//   }
-
-//   @override
-//   String getSubject(int index) {
-//     return appointments![index].eventName;
-//   }
-
-//   @override
-//   Color getColor(int index) {
-//     return appointments![index].background;
-//   }
-
-//   @override
-//   bool isAllDay(int index) {
-//     return appointments![index].allDay;
-//   }
-// }
-
-// class Meeting {
-//   Meeting(
-//       {this.eventName,
-//       this.from,
-//       this.to,
-//       this.background,
-//       this.allDay = false});
-
-//   String? eventName;
-//   DateTime? from;
-//   DateTime? to;
-//   Color? background;
-//   bool? allDay;
-// }
