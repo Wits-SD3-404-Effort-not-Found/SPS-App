@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sps_app/screens/notes/protocols.dart';
 
 class NotesPage extends StatefulWidget {
   const NotesPage({Key? key}) : super(key: key);
@@ -30,11 +29,7 @@ class _NotesPageState extends State<NotesPage> {
                   constraints: BoxConstraints.tight(const Size(250, 50)),
                   child: OutlinedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProtocolsPage()),
-                        );
+
                       },
                       style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: Color(0xff043673))),
