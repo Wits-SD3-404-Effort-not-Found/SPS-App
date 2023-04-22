@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
+import 'package:sps_app/screens/calendar/modal.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-import 'package:connectivity/connectivity.dart';
+
+import 'package:unicons/unicons.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -27,13 +31,13 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   void initState() {
-    _initializeEventColor();
+    //_initializeEventColor();
     super.initState();
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: Center(
         child: FutureBuilder(
           future: getEventsData(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -42,16 +46,19 @@ class _CalendarPageState extends State<CalendarPage> {
                 child: Container(
                   child: SfCalendar(
                     view: CalendarView.month,
-                    cellBorderColor: Color(0xFFFFFFFF),
-                    backgroundColor: Color(0xFFFFFFFF),
+                    onSelectionChanged: modal,
+                    selectionDecoration: BoxDecoration(
+                        border: Border.all(color: Color(0xFF043673), width: 2)),
+                    cellBorderColor: const Color(0xFFFFFFFF),
+                    backgroundColor: const Color(0xFFFFFFFF),
                     headerHeight: 60,
-                    headerStyle: CalendarHeaderStyle(
+                    headerStyle: const CalendarHeaderStyle(
                         textStyle: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 25,
                             color: Colors.black),
                         backgroundColor: Color(0xFFFFFFFF)),
-                    todayHighlightColor: Color(0xFF043673),
+                    todayHighlightColor: const Color(0xFF043673),
                     monthViewSettings: const MonthViewSettings(
                       navigationDirection: MonthNavigationDirection.vertical,
                       monthCellStyle: MonthCellStyle(
@@ -63,24 +70,21 @@ class _CalendarPageState extends State<CalendarPage> {
                       showTrailingAndLeadingDates: false,
                       appointmentDisplayMode:
                           MonthAppointmentDisplayMode.indicator,
-                      showAgenda: true,
+                      showAgenda: false,
                       agendaItemHeight: 60,
-                      agendaStyle: const AgendaStyle(
+                      agendaStyle: AgendaStyle(
                           appointmentTextStyle:
                               TextStyle(fontSize: 15, color: Color(0xFFFFFFFF)),
                           backgroundColor: Color(0xFFFFFFFF)),
                     ),
                     dataSource: EventsDataSource(snapshot.data),
-                    // by default the month appointment display mode set as Indicator, we can
-                    // change the display mode as appointment using the appointment display
-                    // mode property
                   ),
                 ),
               );
             } else {
               return Container(
-                child: Center(
-                  child: Text(''),
+                child: const Center(
+                  child: Text('The Calendar is not fucking working'),
                 ),
               );
             }
@@ -88,6 +92,11 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
       ),
     );
+  }
+
+  void modal(CalendarSelectionDetails selectionDetails) {
+    PersistentNavBarNavigator.pushNewScreen(context,
+        screen: const ModalScreen());
   }
 
   // Future<List<Meeting>> getDataFromWeb() async {
@@ -102,9 +111,8 @@ class _CalendarPageState extends State<CalendarPage> {
   //         eventName: data['Subject'],
   //         from: _convertDateFromString(
   //           data['StartTime'],
-  //         ),
   //         to: _convertDateFromString(data['EndTime']),
-  //         background: _colorCollection[random.nextInt(9)],
+  //         background: _colorCollection[random.nextInt(2)],
   //         allDay: data['AllDay']);
   //     appointmentData.add(meetingData);
   //   }
@@ -118,17 +126,10 @@ class _CalendarPageState extends State<CalendarPage> {
   void _initializeEventColor() {
     _colorCollection.add(const Color(0xFF0F8644));
     _colorCollection.add(const Color(0xFF8B1FA9));
-    _colorCollection.add(const Color(0xFFD20100));
-    _colorCollection.add(const Color(0xFFFC571D));
-    _colorCollection.add(const Color(0xFF36B37B));
-    _colorCollection.add(const Color(0xFF01A1EF));
-    _colorCollection.add(const Color(0xFF3D4FB5));
-    _colorCollection.add(const Color(0xFFE47C73));
-    _colorCollection.add(const Color(0xFF636363));
-    _colorCollection.add(const Color(0xFF0A8043));
   }
 }
 
+    
 // class MeetingDataSource extends CalendarDataSource {
 //   MeetingDataSource(List<Meeting> source) {
 //     appointments = source;
@@ -174,3 +175,7 @@ class _CalendarPageState extends State<CalendarPage> {
 //   Color? background;
 //   bool? allDay;
 // }
+
+
+
+
