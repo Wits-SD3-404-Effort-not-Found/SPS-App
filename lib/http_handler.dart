@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sps_app/screens/authentication/login_manager.dart';
@@ -129,6 +128,25 @@ class HTTPManager {
       return protocolsList;
     } else {
       throw Exception("Can't access data");
+    }
+  }
+
+  static Future<bool> postNewNote(NoteContent note) async {
+    int accountID = LoginManager.getAccountID();
+    var noteData = {
+      "account_id": accountID,
+      "note_title": note.getTitle(),
+      "note_content": note.getBody()
+    };
+    final response = await http.post(
+        Uri.parse("http://$serverAddress:$serverPort/notes/"),
+        body: jsonEncode(noteData));
+
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to post new note");
+      //return Future.value(false);
     }
   }
 }
