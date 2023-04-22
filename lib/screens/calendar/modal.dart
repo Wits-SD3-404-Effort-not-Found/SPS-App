@@ -13,51 +13,77 @@ class ModalScreen extends StatefulWidget {
 }
 
 class ModalScreenState extends State<ModalScreen> {
-  DateTime? _selectedDay;
-  DateTime _focusedDay = DateTime.now();
+  DateTime _selectedCalendarDate = DateTime.now();
+  DateTime _focusedCalendarDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: TableCalendar(
-          focusedDay: _focusedDay,
-          firstDay: DateTime.utc(2015, 1, 1),
-          lastDay: DateTime.utc(2030, 12, 31),
-          calendarFormat: CalendarFormat.week,
-          selectedDayPredicate: (day) {
-            return isSameDay(_selectedDay, day);
-          },
-          onDaySelected: (selectedDay, focusedDay) {
-            if (!isSameDay(_selectedDay, selectedDay)) {
-              // Call `setState()` when updating the selected day
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-              });
-            }
-          },
-          rowHeight: 60,
-          headerStyle: const HeaderStyle(
-              formatButtonVisible: false,
-              titleTextStyle: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF917248),
-                  height: 1)),
-          daysOfWeekStyle: const DaysOfWeekStyle(
-              weekdayStyle: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold),
-              weekendStyle: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold)),
-          daysOfWeekHeight: 20,
-          calendarStyle: const CalendarStyle(
-            tablePadding: EdgeInsets.all(8.0),
+      body: Column(
+        children: [
+          Card(
+            margin: const EdgeInsets.all(8.0),
+            elevation: 5.0,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+              side: BorderSide(color: Color(0xFF043673), width: 2.0),
+            ),
+            child: TableCalendar(
+              focusedDay: DateTime.now(),
+              firstDay: DateTime.utc(2015, 1, 1),
+              lastDay: DateTime.utc(2030, 12, 31),
+              calendarFormat: CalendarFormat.week,
+              rowHeight: 60,
+              headerStyle: const HeaderStyle(
+                  formatButtonVisible: false,
+                  titleTextStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                  decoration: BoxDecoration(
+                      color: Color(0xFFFFFFFF),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10))),
+                  leftChevronIcon: Icon(
+                    Icons.chevron_left,
+                    color: Color(0xFF917248),
+                    size: 28,
+                  ),
+                  rightChevronIcon: Icon(
+                    Icons.chevron_right,
+                    color: Color(0xFF917248),
+                    size: 28,
+                  )),
+              daysOfWeekStyle: const DaysOfWeekStyle(
+                  weekdayStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                  weekendStyle: TextStyle(
+                      color: Color(0xFF917248),
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold)),
+              calendarStyle: const CalendarStyle(
+                  todayDecoration: BoxDecoration(
+                      color: Color(0xFF043673), shape: BoxShape.circle),
+                  selectedDecoration: BoxDecoration(
+                      color: Color(0xFF917248), shape: BoxShape.circle)),
+              selectedDayPredicate: (currentSelectedDate) {
+                return (isSameDay(_selectedCalendarDate!, currentSelectedDate));
+              },
+              onDaySelected: (selectedDay, focusedDay) {
+                if (!isSameDay(_selectedCalendarDate, selectedDay)) {
+                  setState(() {
+                    _selectedCalendarDate = selectedDay;
+                    _focusedCalendarDate = focusedDay;
+                  });
+                }
+              },
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
