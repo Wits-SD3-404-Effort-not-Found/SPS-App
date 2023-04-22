@@ -52,9 +52,15 @@ class _SingleNotePageState extends State<SingleNotePage> {
     debugPrint("in auto save");
     widget.noteContent.setBody(_bodyController.text);
     widget.noteContent.setTitle(_titleController.text);
-    Navigator.pop(context);
+    HTTPManager.putUpdatedNote(widget.noteContent);
     return true;
-  }*/
+  }
+
+  @override
+  void dispose() {
+    _autoSave();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
