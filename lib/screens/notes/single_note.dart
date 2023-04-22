@@ -34,7 +34,11 @@ class _SingleNotePageState extends State<SingleNotePage> {
   Future<bool> _autoSave() async {
     widget.noteContent.setBody(_bodyController.text);
     widget.noteContent.setTitle(_titleController.text);
-    HTTPManager.putUpdatedNote(widget.noteContent);
+    if (widget.noteContent.getIsNewNote() == true) {
+      HTTPManager.postNewNote(widget.noteContent);
+    } else {
+      HTTPManager.putUpdatedNote(widget.noteContent);
+    }
     return true;
   }
 
