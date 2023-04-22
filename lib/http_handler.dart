@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sps_app/screens/authentication/login_manager.dart';
@@ -76,8 +77,10 @@ class HTTPManager {
     final response = await http
         .get(Uri.parse("http://$serverAddress:$serverPort/notes/$accountID"));
     var notesList = [{}];
+    debugPrint(response.reasonPhrase);
     if (response.statusCode == 200) {
       var responseVec = jsonDecode(response.body);
+      debugPrint(responseVec.toString());
       for (var note in responseVec) {
         notesList.add({
           "noteID": note["note_id"],
