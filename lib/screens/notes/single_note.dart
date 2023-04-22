@@ -44,6 +44,14 @@ class _SingleNotePageState extends State<SingleNotePage> {
     super.dispose();
   }
 
+  /*Future<bool> _autoSave() async {
+    debugPrint("in auto save");
+    widget.noteContent.setBody(_bodyController.text);
+    widget.noteContent.setTitle(_titleController.text);
+    Navigator.pop(context);
+    return true;
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,20 +106,3 @@ class _SingleNotePageState extends State<SingleNotePage> {
         ]));
   }
 }
-
-/* Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),*/
-
-/*                  GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PersonalNotesPage()));
-                      },
-                      child: const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 20,
-                        color: Colors.black,
-                      )),*/
