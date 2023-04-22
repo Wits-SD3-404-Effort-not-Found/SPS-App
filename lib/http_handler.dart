@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sps_app/screens/authentication/login_manager.dart';
@@ -67,16 +68,37 @@ class HTTPManager {
       return Future.value(false);
     }
   }
+//   pub struct NoteFile {
+//     pub note_id: i32,
+//     pub note_url: String
+// }
 
-  static Future<List<Map>> getProtocols() async{
+  static Future<bool> getNotes() async {
+    int accountID = LoginManager.getAccountID();
+    final response = await http
+        .get(Uri.parse("http://$serverAddress:$serverPort/notes", accountID));
+
+    debugPrint(response.reasonPhrase);
+    if (response.statusCode == 200) {
+      var responseVec = jsonDecode(response.body);
+      debugPrint(responseVec);
+      //for (var NoteFile in responseVec){
+      //}
+      return Future.value(true);
+    } else {
+      throw Exception("Can't retrieve notes");
+    }
+  }
+
+  static Future<List<Map>> getProtocols() async {
     final response = await http.get(
       Uri.parse('http://$serverAddress:$serverPort/notes/protocols'),
     );
-    var protocolsList =[{}];
+    var protocolsList = [{}];
     if (response.statusCode == 200) {
       var responseVec = jsonDecode(response.body);
       debugPrint(response.body);
-      for(var protocol in responseVec){
+      for (var protocol in responseVec) {
         protocolsList.add({
           "protocolID": protocol["protocol_id"],
           "protocolTitle": protocol["title"],
