@@ -65,9 +65,17 @@ class ProtocolItem implements ListItem {
 class NotesItem implements ListItem {
   var noteContent = NoteContent();
 
-  NotesItem(String title, String body) {
+  NotesItem(int noteID, String title, String body) {
     noteContent.setTitle(title);
     noteContent.setBody(body);
+    noteContent.setNoteID(noteID);
+  }
+  getItemTitle() {
+    noteContent.getTitle();
+  }
+
+  getItemBody() {
+    noteContent.getBody();
   }
 
   @override

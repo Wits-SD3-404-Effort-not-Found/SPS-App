@@ -67,7 +67,8 @@ class _NotesPageState extends State<NotesPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => PersonalNotesPage()),
+                                  builder: (context) =>
+                                      const PersonalNotesPage()),
                             );
                           },
                           style: TextButton.styleFrom(

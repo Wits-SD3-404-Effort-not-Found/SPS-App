@@ -1,10 +1,17 @@
 class NoteContent {
+  int noteID = 0;
   String title = "";
   String body = "";
-  //String createdAt= "g";
-  //String modifiedAt="";
 
   NoteContent();
+
+  void setNoteID(int noteID) {
+    this.noteID = noteID;
+  }
+
+  int getNoteID() {
+    return noteID;
+  }
 
   void setTitle(String title) {
     this.title = title;
@@ -21,20 +28,4 @@ class NoteContent {
   String getBody() {
     return body;
   }
-
-  /*TaskOpj.fromJson(Map<String, dynamic> json) {
-    guid = json['guid'];
-    note = json['note'];
-    createdAt = json['createdAt'];
-    modfiledAt = json['modfiledAt'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['guid'] = this.guid;
-    data['note'] = this.note;
-    data['createdAt'] = this.createdAt;
-    data['modfiledAt'] = this.modfiledAt;
-    return data;
-  }*/
 }
