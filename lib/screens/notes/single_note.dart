@@ -44,14 +44,6 @@ class _SingleNotePageState extends State<SingleNotePage> {
     super.dispose();
   }
 
-  /*Future<bool> _autoSave() async {
-    debugPrint("in auto save");
-    widget.noteContent.setBody(_bodyController.text);
-    widget.noteContent.setTitle(_titleController.text);
-    Navigator.pop(context);
-    return true;
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
