@@ -6,11 +6,17 @@ import '../../http_handler.dart';
 class PersonalNotesPage extends StatefulWidget {
   const PersonalNotesPage({super.key});
   @override
-  State<PersonalNotesPage> createState() => _PersonalNotesPageState();
+  State<PersonalNotesPage> createState() => PersonalNotesPageState();
 }
 
-class _PersonalNotesPageState extends State<PersonalNotesPage> {
+class PersonalNotesPageState extends State<PersonalNotesPage> {
   var items = [];
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -67,7 +73,24 @@ class _PersonalNotesPageState extends State<PersonalNotesPage> {
                           "Personal Notes",
                           style: TextStyle(fontSize: 30),
                           textAlign: TextAlign.left,
-                        ))
+                        )),
+                    Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: GestureDetector(
+                                onTap: () {
+                                  debugPrint("refreshed Personal notes page");
+                                  setState(() {
+                                    build(context);
+                                  });
+                                },
+                                child: const Icon(
+                                  Icons.refresh,
+                                  size: 30,
+                                  color: Colors.black,
+                                )))),
                   ])),
               Expanded(
                 child: ListView.builder(
