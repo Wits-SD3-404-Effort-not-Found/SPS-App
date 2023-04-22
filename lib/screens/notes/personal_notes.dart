@@ -16,6 +16,8 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
     super.setState(fn);
   }
 
+class _PersonalNotesPageState extends State<PersonalNotesPage> {
+  var items = [];
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
