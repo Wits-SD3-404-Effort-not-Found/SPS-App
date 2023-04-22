@@ -44,6 +44,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 child: Center(
                   child: SfCalendar(
                     view: CalendarView.month,
+                    allowViewNavigation: true,
                     cellBorderColor: Color(0xFFFFFFFF),
                     backgroundColor: Color(0xFFFFFFFF),
                     headerHeight: 60,
