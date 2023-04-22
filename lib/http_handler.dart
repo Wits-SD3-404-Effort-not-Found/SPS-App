@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sps_app/screens/authentication/login_manager.dart';
+import 'package:sps_app/screens/notes/note_content.dart';
 
 // handles all the http requests for the data transfer with the backend
 class HTTPManager {
@@ -94,6 +95,24 @@ class HTTPManager {
       return notesList;
     } else {
       throw Exception("Can't retrieve notes");
+    }
+  }
+
+  static Future<bool> putUpdatedNote(NoteContent note) async {
+    var noteData = {
+      "note_id": note.getNoteID(),
+      "note_title": note.getTitle(),
+      "note_content": note.getBody()
+    };
+    final response = await http.put(
+        Uri.parse("http://$serverAddress:$serverPort/notes/"),
+        body: jsonEncode(noteData));
+
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to update note");
+      //return Future.value(false);
     }
   }
 

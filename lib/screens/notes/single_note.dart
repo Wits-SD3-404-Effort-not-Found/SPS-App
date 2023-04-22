@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/http_handler.dart';
 import 'package:sps_app/screens/notes/note_content.dart';
 
 class SingleNotePage extends StatefulWidget {
@@ -30,75 +31,71 @@ class _SingleNotePageState extends State<SingleNotePage> {
     widget.noteContent.setTitle(_titleController.text);
   }
 
-  /*Future<bool> _autoSave() async {
-    debugPrint("in auto save");
+  Future<bool> _autoSave() async {
     widget.noteContent.setBody(_bodyController.text);
     widget.noteContent.setTitle(_titleController.text);
-    Navigator.pop(context);
+    HTTPManager.putUpdatedNote(widget.noteContent);
     return true;
-  }*/
+  }
+
+  @override
+  void dispose() {
+    _autoSave();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return // WillPopScope(
-        //onWillPop: _autoSave,
-        //child:
-        Scaffold(
-            backgroundColor: Colors.white,
-            body: Column(children: <Widget>[
-              Container(
-                  height: 60,
-                  width: double.infinity,
-                  alignment: Alignment.bottomLeft,
-                  decoration: const BoxDecoration(
-                      border: Border(
-                          bottom:
-                              BorderSide(color: Color(0xff917248), width: 2))),
-                  child: Row(children: [
-                    Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: GestureDetector(
-                                onTap: () {
-                                  widget.noteContent
-                                      .setBody(_bodyController.text);
-                                  widget.noteContent
-                                      .setTitle(_titleController.text);
-                                  Navigator.pop(
-                                    context,
-                                  );
-                                },
-                                child: const Icon(
-                                  Icons.arrow_back_ios_rounded,
-                                  size: 30,
-                                  color: Colors.black,
-                                )))),
-                    Container(
-                        height: 60,
-                        width: 300,
-                        alignment: Alignment.bottomLeft,
-                        child: TextField(
-                          decoration:
-                              const InputDecoration(border: InputBorder.none),
-                          controller: _titleController,
-                          style: const TextStyle(fontSize: 30),
-                          textAlign: TextAlign.left,
-                        ))
-                  ])),
-              Center(
-                  child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                child: TextField(
-                    decoration: const InputDecoration(border: InputBorder.none),
-                    autofocus: true,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    controller: _bodyController),
-              )),
-            ]));
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: Column(children: <Widget>[
+          Container(
+              height: 60,
+              width: double.infinity,
+              alignment: Alignment.bottomLeft,
+              decoration: const BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(color: Color(0xff917248), width: 2))),
+              child: Row(children: [
+                Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(
+                                context,
+                              );
+                            },
+                            child: const Icon(
+                              Icons.arrow_back_ios_rounded,
+                              size: 30,
+                              color: Colors.black,
+                            )))),
+                Container(
+                    height: 60,
+                    width: 300,
+                    alignment: Alignment.bottomLeft,
+                    child: TextField(
+                      decoration:
+                          const InputDecoration(border: InputBorder.none),
+                      controller: _titleController,
+                      style: const TextStyle(fontSize: 30),
+                      textAlign: TextAlign.left,
+                    ))
+              ])),
+          Center(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: TextField(
+                decoration: const InputDecoration(border: InputBorder.none),
+                autofocus: true,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                controller: _bodyController),
+          )),
+        ]));
   }
 }
 
