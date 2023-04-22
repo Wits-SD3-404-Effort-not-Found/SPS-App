@@ -16,32 +16,34 @@ class ModalScreen extends StatefulWidget {
 
 class ModalScreenState extends State<ModalScreen> {
   late final ValueNotifier<List<Events>> _selectedEvents;
+
+  CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
-  DateTime _selectedDay = DateTime.now();
+  DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  List<Events> getEventsForDay(DateTime date) {
+  List<Events> _getEventsForDay(DateTime date) {
     return allEvents[date] ?? [];
   }
 
-  List<Events> getEventsForRange(DateTime start, DateTime end) {
+  List<Events> _getEventsForRange(DateTime start, DateTime end) {
     final days = daysInRange(start, end);
 
     return [
-      for (final d in days) ...getEventsForDay(d),
+      for (final d in days) ..._getEventsForDay(d),
     ];
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, _focusedDay)) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
         _rangeStart = null;
         _rangeEnd = null;
       });
-      _selectedEvents.value = getEventsForDay(selectedDay); //not populating
+      _selectedEvents.value = _getEventsForDay(selectedDay); //not populating
     }
   }
 
@@ -50,9 +52,14 @@ class ModalScreenState extends State<ModalScreen> {
   @override
   void initState() {
     _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(getEventsForDay(_selectedDay));
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
     allTheEvents(eventsList);
     super.initState();
+  }
+
+  void dispose() {
+    _selectedEvents.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,58 +67,104 @@ class ModalScreenState extends State<ModalScreen> {
     return Scaffold(
       body: Column(
         children: [
-          Card(
-            margin: const EdgeInsets.all(8.0),
-            elevation: 5.0,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-              side: BorderSide(color: Color(0xFF043673), width: 2.0),
-            ),
-            child: TableCalendar(
-              focusedDay: DateTime.now(),
-              firstDay: DateTime.utc(2015, 1, 1),
-              lastDay: DateTime.utc(2030, 12, 31),
-              calendarFormat: CalendarFormat.week,
-              rowHeight: 60,
-              headerStyle: const HeaderStyle(
-                  formatButtonVisible: false,
-                  titleTextStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
-                  decoration: BoxDecoration(
-                      color: Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10))),
-                  leftChevronIcon: Icon(
-                    Icons.chevron_left,
+          TableCalendar(
+            eventLoader: _getEventsForDay,
+            focusedDay: _focusedDay,
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            rangeStartDay: _rangeStart,
+            rangeEndDay: _rangeEnd,
+            onDaySelected: _onDaySelected,
+            onFormatChanged: (format) {
+              if (_calendarFormat != format) {
+                setState(() {
+                  _calendarFormat = format;
+                });
+              }
+            },
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
+            firstDay: DateTime.utc(2015, 1, 1),
+            lastDay: DateTime.utc(2030, 12, 31),
+            calendarFormat: CalendarFormat.week,
+            rowHeight: 60,
+            headerStyle: const HeaderStyle(
+                formatButtonVisible: false,
+                titleTextStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold),
+                decoration: BoxDecoration(
+                    color: Color(0xFFFFFFFF),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10))),
+                leftChevronIcon: Icon(
+                  Icons.chevron_left,
+                  color: Color(0xFF917248),
+                  size: 28,
+                ),
+                rightChevronIcon: Icon(
+                  Icons.chevron_right,
+                  color: Color(0xFF917248),
+                  size: 28,
+                )),
+            daysOfWeekStyle: const DaysOfWeekStyle(
+                weekdayStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+                weekendStyle: TextStyle(
                     color: Color(0xFF917248),
-                    size: 28,
-                  ),
-                  rightChevronIcon: Icon(
-                    Icons.chevron_right,
-                    color: Color(0xFF917248),
-                    size: 28,
-                  )),
-              daysOfWeekStyle: const DaysOfWeekStyle(
-                  weekdayStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                  weekendStyle: TextStyle(
-                      color: Color(0xFF917248),
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold)),
-              calendarStyle: const CalendarStyle(
-                  todayDecoration: BoxDecoration(
-                      color: Color(0xFF043673), shape: BoxShape.circle),
-                  selectedDecoration: BoxDecoration(
-                      color: Color(0xFF917248), shape: BoxShape.circle)),
-            ),
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold)),
+            calendarStyle: const CalendarStyle(
+                todayDecoration: BoxDecoration(
+                    color: Color(0xFF043673), shape: BoxShape.circle),
+                selectedDecoration: BoxDecoration(
+                    color: Color(0xFF917248), shape: BoxShape.circle)),
           ),
+          SizedBox(height: 8.0),
+          Expanded(
+              child: ValueListenableBuilder<List<Events>>(
+                  valueListenable: _selectedEvents,
+                  builder: (context, value, _) {
+                    return ListView.builder(
+                        itemCount: value.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 4.0,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: ListTile(
+                              onTap: () => '${value[index]}',
+                              minVerticalPadding: 18.0,
+                              dense: true,
+                              title: Text(
+                                '${value[index].eventName}',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                '${value[index].description}\n${value[index].startDate} to ${value[index].endDate}',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              isThreeLine: true,
+                              tileColor: Colors.lightBlue,
+                            ),
+                          );
+                        });
+                  })),
         ],
       ),
     );
