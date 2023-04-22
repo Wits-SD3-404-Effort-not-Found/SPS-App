@@ -21,8 +21,8 @@ class _PersonalNotesPageState extends State<PersonalNotesPage> {
   late NotesItem newNote;
 
   @override
-  void dispose() {
-    super.dispose();
+  void setState(VoidCallback fn) {
+    super.setState(fn);
   }
 
   var items = [];
@@ -76,7 +76,7 @@ class _PersonalNotesPageState extends State<PersonalNotesPage> {
                                 )))),
                     Container(
                         height: 50,
-                        width: 300,
+                        width: 250,
                         alignment: Alignment.centerLeft,
                         child: const Text(
                           "Personal Notes",
@@ -112,6 +112,23 @@ class _PersonalNotesPageState extends State<PersonalNotesPage> {
                                 horizontal: 10, vertical: 5),
                             child: GestureDetector(
                                 onTap: () {
+                                  setState(() {
+                                    build(context);
+                                  });
+                                },
+                                child: const Icon(
+                                  Icons.refresh,
+                                  size: 30,
+                                  color: Colors.black,
+                                )))),
+                    Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: GestureDetector(
+                                onTap: () {
+                                  debugPrint("refreshed Personal notes page");
                                   setState(() {
                                     build(context);
                                   });
