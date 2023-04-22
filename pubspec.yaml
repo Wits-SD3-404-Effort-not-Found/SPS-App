@@ -43,7 +43,8 @@ dependencies:
   crypto: ^3.0.2
   syncfusion_flutter_calendar: ^21.1.38
   persistent_bottom_nav_bar : any
-  flutter_event_calendar: ^1.0.0
+  table_calendar: ^3.0.8
+ 
 
 
 dev_dependencies:

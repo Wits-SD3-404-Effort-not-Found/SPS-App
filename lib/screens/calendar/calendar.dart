@@ -29,6 +29,8 @@ class CalendarApp extends StatelessWidget {
 class _CalendarPageState extends State<CalendarPage> {
   List<Color> _colorCollection = <Color>[];
 
+  DateTime _selectedDate = DateTime.now();
+
   @override
   void initState() {
     //_initializeEventColor();
@@ -46,7 +48,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 child: Container(
                   child: SfCalendar(
                     view: CalendarView.month,
-                    onSelectionChanged: modal,
+                    onSelectionChanged: selectionChanged,
                     selectionDecoration: BoxDecoration(
                         border: Border.all(color: Color(0xFF043673), width: 2)),
                     cellBorderColor: const Color(0xFFFFFFFF),
@@ -94,9 +96,8 @@ class _CalendarPageState extends State<CalendarPage> {
     );
   }
 
-  void modal(CalendarSelectionDetails selectionDetails) {
-    PersistentNavBarNavigator.pushNewScreen(context,
-        screen: const ModalScreen());
+  void selectionChanged(CalendarSelectionDetails details) {
+    PersistentNavBarNavigator.pushNewScreen(context, screen: ModalScreen());
   }
 
   // Future<List<Meeting>> getDataFromWeb() async {
@@ -119,9 +120,9 @@ class _CalendarPageState extends State<CalendarPage> {
   //   return appointmentData;
   // }
 
-  // DateTime _convertDateFromString(String date) {
-  //   return DateTime.parse(date);
-  // }
+  DateTime _convertDateFromString(String date) {
+    return DateTime.parse(date);
+  }
 
   void _initializeEventColor() {
     _colorCollection.add(const Color(0xFF0F8644));
