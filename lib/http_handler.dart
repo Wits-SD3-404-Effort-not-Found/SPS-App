@@ -21,6 +21,8 @@ class HTTPManager {
     );
 
     if (response.statusCode == 200) {
+      var responseMap = jsonDecode(response.body);
+      LoginManager.setAccountID(responseMap['account_id']);
       return Future.value(true);
     } else {
       //throw Exception('Login Credentials incorrect');
@@ -68,23 +70,28 @@ class HTTPManager {
       return Future.value(false);
     }
   }
-//   pub struct NoteFile {
-//     pub note_id: i32,
-//     pub note_url: String
-// }
 
-  static Future<bool> getNotes() async {
+  static Future<List<Map>> getNotes() async {
     int accountID = LoginManager.getAccountID();
     final response = await http
-        .get(Uri.parse("http://$serverAddress:$serverPort/notes", accountID));
-
+        .get(Uri.parse("http://$serverAddress:$serverPort/notes/$accountID"));
+    var notesList = [{}];
     debugPrint(response.reasonPhrase);
     if (response.statusCode == 200) {
       var responseVec = jsonDecode(response.body);
-      debugPrint(responseVec);
-      //for (var NoteFile in responseVec){
-      //}
-      return Future.value(true);
+      debugPrint(responseVec.toString());
+      for (var note in responseVec) {
+        final contentURL = note["note_url"];
+        final content = await http
+            .get(Uri.parse("http://$serverAddress:$serverPort/$contentURL"));
+        debugPrint(content.body);
+        notesList.add({
+          "noteID": note["note_id"],
+          "noteTitle": note["note_title"],
+          "noteContent": content.body,
+        });
+      }
+      return notesList;
     } else {
       throw Exception("Can't retrieve notes");
     }
