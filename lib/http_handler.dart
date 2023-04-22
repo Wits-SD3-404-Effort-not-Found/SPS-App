@@ -82,14 +82,11 @@ class HTTPManager {
       var responseVec = jsonDecode(response.body);
       debugPrint(responseVec.toString());
       for (var note in responseVec) {
-        final contentURL = note["note_url"];
-        final content = await http
-            .get(Uri.parse("http://$serverAddress:$serverPort/$contentURL"));
-        debugPrint(content.body);
+        debugPrint(note["note_content"]);
         notesList.add({
           "noteID": note["note_id"],
           "noteTitle": note["note_title"],
-          "noteContent": content.body,
+          "noteContent": note["note_content"],
         });
       }
       return notesList;
