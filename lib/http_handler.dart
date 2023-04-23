@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:sps_app/screens/authentication/login_manager.dart';
 
 // handles all the http requests for the data transfer with the backend
@@ -65,6 +65,27 @@ class HTTPManager {
     } else {
       //throw Exception('Password unable to be reset');
       return Future.value(false);
+    }
+  }
+
+  static Future<List<Map>> getProtocols() async{
+    final response = await http.get(
+      Uri.parse('http://$serverAddress:$serverPort/notes/protocols'),
+    );
+    var protocolsList =[{}];
+    if (response.statusCode == 200) {
+      var responseVec = jsonDecode(response.body);
+      debugPrint(response.body);
+      for(var protocol in responseVec){
+        protocolsList.add({
+          "protocolID": protocol["protocol_id"],
+          "protocolTitle": protocol["title"],
+          "protocolContent": protocol["content"]
+        });
+      }
+      return protocolsList;
+    } else {
+      throw Exception("Can't access data");
     }
   }
 }
