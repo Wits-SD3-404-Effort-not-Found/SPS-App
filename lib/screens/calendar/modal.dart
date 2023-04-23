@@ -8,21 +8,26 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'manager.dart';
 
 class ModalScreen extends StatefulWidget {
-  const ModalScreen(DateTime selectedDate, {Key? key}) : super(key: key);
+  final DateTime focusDay;
+  const ModalScreen({Key? key, required this.focusDay}) : super(key: key);
 
   @override
-  ModalScreenState createState() => ModalScreenState();
+  ModalScreenState createState() => ModalScreenState(focusDay: this.focusDay);
 }
 
 class ModalScreenState extends State<ModalScreen> {
+  DateTime focusDay;
+  ModalScreenState({required this.focusDay});
+
   late final ValueNotifier<List<Events>> _selectedEvents;
 
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
-  DateTime _selectedDay = DateTime.now();
+  DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+
   List<Events> _getEventsForDay(DateTime date) {
     return allEvents[date] ?? [];
   }
@@ -42,8 +47,9 @@ class ModalScreenState extends State<ModalScreen> {
         _focusedDay = focusedDay;
         _rangeStart = null;
         _rangeEnd = null;
+        _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
-      _selectedEvents.value = _getEventsForDay(selectedDay); //not populating
+      _selectedEvents.value = _getEventsForDay(selectedDay);
     }
   }
 
@@ -88,9 +94,9 @@ class ModalScreenState extends State<ModalScreen> {
     return Scaffold(
       body: Column(
         children: [
-          TableCalendar(
+          TableCalendar<Events>(
             eventLoader: _getEventsForDay,
-            focusedDay: _focusedDay,
+            focusedDay: focusDay,
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
             rangeStartDay: _rangeStart,
             rangeEndDay: _rangeEnd,

@@ -97,7 +97,10 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   void selectionChanged(CalendarSelectionDetails details) {
-    PersistentNavBarNavigator.pushNewScreen(context, screen: ModalScreen());
+    PersistentNavBarNavigator.pushNewScreen(context,
+        screen: ModalScreen(
+          focusDay: _selectedDate,
+        ));
   }
 
   // Future<List<Meeting>> getDataFromWeb() async {
