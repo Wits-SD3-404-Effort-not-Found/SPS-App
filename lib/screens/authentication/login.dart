@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/http_handler.dart';
 import 'package:sps_app/screens/authentication/forgot_password.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
+import 'package:sps_app/account_manager.dart';
 import 'package:sps_app/screens/nav.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,6 +25,21 @@ class _LoginPageState extends State<LoginPage> {
         _invalidMessage = "Incorrect email or password";
       }
     });
+  }
+
+  void moveToApp(context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const NavBar()));
+  }
+
+  @override
+  void initState() {
+    HTTPManager.authSessionToken(
+            AccountManager.getSessionToken(), AccountManager.getID())
+        .then((_) => moveToApp(context))
+        .catchError((_) =>
+            {}); // This does nothing becasue nothing in this page should change if as ses token auth fails
+    super.initState();
   }
 
   @override
@@ -119,19 +136,18 @@ class _LoginPageState extends State<LoginPage> {
                 LoginManager.setPassword(myPasswordController.text);
                 // to check if users credentials are correct
                 // to control access into the app
-                LoginManager.validateLogin().then((value) => {
-                      if (value == true)
-                        {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const NavBar()),
-                          ),
-                          _isValidMessage(value)
-                        }
-                      else
-                        {_isValidMessage(value)}
-                    });
+                LoginManager.validateLogin()
+                    .then((value) => {
+                          if (!value)
+                            {AccountManager.saveAccount(), moveToApp(context)}
+                          else
+                            {
+                              // This is for a new account
+                            }
+                        })
+                    .catchError((_) {
+                  _isValidMessage(false);
+                });
               },
               // styles login button
               style: ElevatedButton.styleFrom(
