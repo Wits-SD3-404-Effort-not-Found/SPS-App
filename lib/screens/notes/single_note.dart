@@ -101,7 +101,45 @@ class _SingleNotePageState extends State<SingleNotePage> {
                       controller: _titleController,
                       style: const TextStyle(fontSize: 30),
                       textAlign: TextAlign.left,
-                    ))
+                    )),
+                Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      title: const Text("Delete Note"),
+                                      content: const Text(
+                                          "Are you sure you want to delete this note?"),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text("Cancel"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text("Delete"),
+                                          onPressed: () {
+                                            HTTPManager.deleteNote(
+                                                widget.noteContent);
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ]);
+                                },
+                              );
+                            },
+                            child: const Icon(
+                              Icons.delete_outline,
+                              size: 30,
+                              color: Colors.black,
+                            )))),
               ])),
           Center(
               child: Padding(
