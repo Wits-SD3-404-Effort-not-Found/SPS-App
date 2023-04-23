@@ -113,6 +113,18 @@ class HTTPManager {
     }
   }
 
+  static Future<bool> deleteNote(NoteContent note) async {
+    var noteID = note.getNoteID();
+    final response = await http
+        .delete(Uri.parse("http://$serverAddress:$serverPort/notes/$noteID"));
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to delete note");
+      //return Future.value(false);
+    }
+  }
+
   static Future<List<Map>> getProtocols() async {
     final response = await http.get(
       Uri.parse('http://$serverAddress:$serverPort/notes/protocols'),
