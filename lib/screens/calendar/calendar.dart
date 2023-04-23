@@ -35,7 +35,7 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       body: Container(
         child: FutureBuilder(
-          future: getEventsData(),
+          future: getAllEventsData(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
               return SafeArea(
@@ -48,13 +48,13 @@ class _CalendarPageState extends State<CalendarPage> {
                     cellBorderColor: Color(0xFFFFFFFF),
                     backgroundColor: Color(0xFFFFFFFF),
                     headerHeight: 60,
-                    headerStyle: CalendarHeaderStyle(
+                    headerStyle: const CalendarHeaderStyle(
                         textStyle: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
                             color: Colors.black),
                         backgroundColor: Color(0xFFFFFFFF)),
-                    todayHighlightColor: Color(0xFF043673),
+                    todayHighlightColor: const Color(0xFF043673),
                     monthViewSettings: const MonthViewSettings(
                       navigationDirection: MonthNavigationDirection.vertical,
                       monthCellStyle: MonthCellStyle(
@@ -66,9 +66,9 @@ class _CalendarPageState extends State<CalendarPage> {
                       showTrailingAndLeadingDates: false,
                       appointmentDisplayMode:
                           MonthAppointmentDisplayMode.indicator,
-                      showAgenda: true,
+                      showAgenda: false,
                       agendaItemHeight: 60,
-                      agendaStyle: const AgendaStyle(
+                      agendaStyle: AgendaStyle(
                           appointmentTextStyle:
                               TextStyle(fontSize: 15, color: Color(0xFFFFFFFF)),
                           backgroundColor: Color(0xFFFFFFFF)),
@@ -81,10 +81,8 @@ class _CalendarPageState extends State<CalendarPage> {
                 ),
               ));
             } else {
-              return Container(
-                child: Center(
-                  child: Text(''),
-                ),
+              return const Center(
+                child: Text(''),
               );
             }
           },
@@ -92,31 +90,6 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
     );
   }
-
-  // Future<List<Meeting>> getDataFromWeb() async {
-  //   var data = await http.get(Uri.parse(
-  //       "https://js.syncfusion.com/demos/ejservices/api/Schedule/LoadData"));
-  //   var jsonData = json.decode(data.body);
-
-  //   final List<Meeting> appointmentData = [];
-  //   final Random random = new Random();
-  //   for (var data in jsonData) {
-  //     Meeting meetingData = Meeting(
-  //         eventName: data['Subject'],
-  //         from: _convertDateFromString(
-  //           data['StartTime'],
-  //         ),
-  //         to: _convertDateFromString(data['EndTime']),
-  //         background: _colorCollection[random.nextInt(9)],
-  //         allDay: data['AllDay']);
-  //     appointmentData.add(meetingData);
-  //   }
-  //   return appointmentData;
-  // }
-
-  // DateTime _convertDateFromString(String date) {
-  //   return DateTime.parse(date);
-  // }
 
   void _initializeEventColor() {
     _colorCollection.add(const Color(0xFF0F8644));

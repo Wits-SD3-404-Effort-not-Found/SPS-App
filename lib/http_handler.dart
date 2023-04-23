@@ -20,6 +20,8 @@ class HTTPManager {
     );
 
     if (response.statusCode == 200) {
+      var responseMap = jsonDecode(response.body);
+      LoginManager.setAccountID(responseMap['account_id']);
       return Future.value(true);
     } else {
       //throw Exception('Login Credentials incorrect');
