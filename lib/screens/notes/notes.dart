@@ -11,7 +11,6 @@ class NotesPage extends StatefulWidget {
 
 class _NotesPageState extends State<NotesPage> {
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
@@ -67,7 +66,8 @@ class _NotesPageState extends State<NotesPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => PersonalNotesPage()),
+                                  builder: (context) =>
+                                      const PersonalNotesPage()),
                             );
                           },
                           style: TextButton.styleFrom(

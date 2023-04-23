@@ -6,17 +6,9 @@ import 'package:sps_app/screens/notes/note_content.dart';
 abstract class ListItem {
   Widget buildTitle(BuildContext context);
 
+  //Widget buildSubtitle(BuildContext context);
   Widget buildItem(BuildContext context) {
-    return Stack(
-      children: [
-        GestureDetector(onTap: () {}, child: buildTitle(context)),
-        Container(
-          decoration: const BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(color: Color(0xff917248), width: 3.0))),
-        ),
-      ],
-    );
+    return GestureDetector(onTap: () {}, child: buildTitle(context));
   }
 }
 
@@ -28,33 +20,21 @@ class ProtocolItem implements ListItem {
 
   @override
   Widget buildTitle(BuildContext context) {
-    return Text(protocolTitle,
-        style: const TextStyle(color: Colors.black, fontSize: 18));
+    return Text(protocolTitle);
   }
 
   @override
   Widget buildItem(BuildContext context) {
-    return SizedBox(
-        width: 300,
-        height: 30,
-        child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SingleProtocolPage(
-                        protocolHeading: protocolTitle, protocolContent: body)),
-              );
-            },
-            child: Stack(children: [
-              buildTitle(context),
-              Container(
-                decoration: const BoxDecoration(
-                    border: Border(
-                        bottom:
-                            BorderSide(color: Color(0xff917248), width: 2))),
-              ),
-            ])));
+    return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SingleProtocolPage(
+                    protocolHeading: protocolTitle, protocolContent: body)),
+          );
+        },
+        child: buildTitle(context));
   }
 }
 

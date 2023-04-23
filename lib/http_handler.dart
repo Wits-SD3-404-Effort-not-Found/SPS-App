@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sps_app/screens/authentication/login_manager.dart';
+import 'package:sps_app/screens/notes/note_content.dart';
 
 // handles all the http requests for the data transfer with the backend
 class HTTPManager {
@@ -20,6 +21,8 @@ class HTTPManager {
     );
 
     if (response.statusCode == 200) {
+      var responseMap = jsonDecode(response.body);
+      LoginManager.setAccountID(responseMap['account_id']);
       return Future.value(true);
     } else {
       //throw Exception('Login Credentials incorrect');
@@ -68,15 +71,55 @@ class HTTPManager {
     }
   }
 
-  static Future<List<Map>> getProtocols() async{
+  // http get function to get the list of notes from database
+  static Future<List<Map>> getNotes() async {
+    int accountID = LoginManager.getAccountID();
+    final response = await http
+        .get(Uri.parse("http://$serverAddress:$serverPort/notes/$accountID"));
+    var notesList = [{}];
+    if (response.statusCode == 200) {
+      var responseVec = jsonDecode(response.body);
+      for (var note in responseVec) {
+        notesList.add({
+          "noteID": note["note_id"],
+          "noteTitle": note["note_title"],
+          "noteContent": note["note_content"],
+        });
+      }
+      return notesList;
+    } else {
+      throw Exception("Can't retrieve notes");
+    }
+  }
+
+  // http put function to put edited note in the database
+  static Future<bool> putUpdatedNote(NoteContent note) async {
+    var noteData = {
+      "note_id": note.getNoteID(),
+      "note_title": note.getTitle(),
+      "note_content": note.getBody()
+    };
+    final response = await http.put(
+        Uri.parse("http://$serverAddress:$serverPort/notes/"),
+        body: jsonEncode(noteData));
+
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to update note");
+      //return Future.value(false);
+    }
+  }
+
+  static Future<List<Map>> getProtocols() async {
     final response = await http.get(
       Uri.parse('http://$serverAddress:$serverPort/notes/protocols'),
     );
-    var protocolsList =[{}];
+    var protocolsList = [{}];
     if (response.statusCode == 200) {
       var responseVec = jsonDecode(response.body);
       debugPrint(response.body);
-      for(var protocol in responseVec){
+      for (var protocol in responseVec) {
         protocolsList.add({
           "protocolID": protocol["protocol_id"],
           "protocolTitle": protocol["title"],
