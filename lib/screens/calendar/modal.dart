@@ -8,7 +8,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'manager.dart';
 
 class ModalScreen extends StatefulWidget {
-  const ModalScreen({Key? key}) : super(key: key);
+  const ModalScreen(DateTime selectedDate, {Key? key}) : super(key: key);
 
   @override
   ModalScreenState createState() => ModalScreenState();
@@ -19,10 +19,10 @@ class ModalScreenState extends State<ModalScreen> {
 
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  DateTime _selectedDay = DateTime.now();
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
-
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
   List<Events> _getEventsForDay(DateTime date) {
     return allEvents[date] ?? [];
   }
@@ -47,6 +47,25 @@ class ModalScreenState extends State<ModalScreen> {
     }
   }
 
+  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
+    setState(() {
+      _selectedDay = null;
+      _focusedDay = focusedDay;
+      _rangeStart = start;
+      _rangeEnd = end;
+      _rangeSelectionMode = RangeSelectionMode.toggledOn;
+    });
+
+    // `start` or `end` could be null
+    if (start != null && end != null) {
+      _selectedEvents.value = _getEventsForRange(start, end);
+    } else if (start != null) {
+      _selectedEvents.value = _getEventsForDay(start);
+    } else if (end != null) {
+      _selectedEvents.value = _getEventsForDay(end);
+    }
+  }
+
   final eventsList = getEventsModalData();
 
   @override
@@ -57,8 +76,10 @@ class ModalScreenState extends State<ModalScreen> {
     super.initState();
   }
 
+  @override
   void dispose() {
     _selectedEvents.dispose();
+    _selectedEvents.value.clear();
     super.dispose();
   }
 
@@ -73,6 +94,8 @@ class ModalScreenState extends State<ModalScreen> {
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
             rangeStartDay: _rangeStart,
             rangeEndDay: _rangeEnd,
+            rangeSelectionMode: _rangeSelectionMode,
+            onRangeSelected: _onRangeSelected,
             onDaySelected: _onDaySelected,
             onFormatChanged: (format) {
               if (_calendarFormat != format) {

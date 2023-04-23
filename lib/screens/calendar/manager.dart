@@ -18,8 +18,15 @@ List<Events> getEventsModalData() {
       endDate: DateTime(2023, 4, 26),
       eventName: 'Assignment',
       description: 'physiology');
+  Events event3 = Events(
+      event_id: 2,
+      startDate: DateTime(2023, 4, 24, 10),
+      endDate: DateTime(2023, 4, 24, 12),
+      eventName: 'Tutorial',
+      description: 'physiology');
   eventsList.add(event1);
   eventsList.add(event2);
+  eventsList.add(event3);
   return eventsList;
 }
 
