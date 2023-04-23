@@ -47,6 +47,8 @@ class _CalendarPageState extends State<CalendarPage> {
                   child: SfCalendar(
                     view: CalendarView.month,
                     onSelectionChanged: selectionChanged,
+                    //initialSelectedDate: Problem Child -> causes things to break because the update moves
+                    // the modal into view instead of staying on the calendar. This breaks things for some reason.
                     selectionDecoration: BoxDecoration(
                         border: Border.all(color: Color(0xFF043673), width: 2)),
                     cellBorderColor: const Color(0xFFFFFFFF),
@@ -97,7 +99,7 @@ class _CalendarPageState extends State<CalendarPage> {
   void selectionChanged(CalendarSelectionDetails details) {
     PersistentNavBarNavigator.pushNewScreen(context,
         screen: ModalScreen(
-          focusDay: _selectedDate,
+          focusDay: details.date!,
         ));
   }
 

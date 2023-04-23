@@ -76,6 +76,7 @@ class ModalScreenState extends State<ModalScreen> {
 
   @override
   void initState() {
+    _focusedDay = focusDay;
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
     allTheEvents(eventsList);
