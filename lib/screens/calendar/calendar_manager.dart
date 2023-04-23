@@ -54,51 +54,6 @@ class Rotations extends Events {
   String? discipline;
 }
 
-Future<List<Events>> getAllEventsData() async {
-  final List<Events> eventsList = [];
-  //might need to fix up
-  var events = await http
-      .get(Uri.parse('http://$serverAddress:$serverPort/events/$accountID'));
-  var rotations = await http
-      .get(Uri.parse('http://$serverAddress:$serverPort/rotations/$accountID'));
-  if (events.statusCode == 200) {
-    var jsonData = json.decode(events.body);
-
-    for (var data in jsonData) {
-      Events eventData = Events(
-          event_id: data['event_id'], // check this actually gets the ID
-          startDate: _convertDateFromString(data['start_date']),
-          endDate: _convertDateFromString(data['end_date']),
-          eventName: data['name'],
-          description: data['description'],
-          background: const Color(0xFF8B1FA9));
-      eventsList.add(eventData);
-    }
-    return eventsList;
-  }
-
-  if (rotations.statusCode == 200) {
-    var jsonRotationsData = json.decode(rotations.body);
-
-    for (var data in jsonRotationsData) {
-      Rotations eventData = Rotations(
-          eventId: data['event_id'],
-          rotation_id: data['rotation_id'],
-          startDate: _convertDateFromString(data['start_date']),
-          endDate: _convertDateFromString(data['end_date']),
-          eventName: data['event_name'],
-          description: data['description'],
-          hospital: data['hospital_name'],
-          discipline: data['discipline_name'],
-          background: const Color(0xFF8B1FA9));
-      eventsList.add(eventData);
-    }
-    return eventsList;
-  } else {
-    throw Exception("Can't retrieve user events");
-  }
-}
-
 // Future<List<Events>> getEventsData() async {
 //   List<Events> eventsList = <Events>[];
 
@@ -156,7 +111,7 @@ List<Rotations> getRotations(List<Events> eventsList) {
   return rotations;
 }
 
-DateTime _convertDateFromString(String date) {
+DateTime convertDateFromString(String date) {
   String newDate = date.substring(0, 19);
   return DateTime.parse(newDate);
 }

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
-import 'dart:math';
-import 'package:connectivity/connectivity.dart';
+
+import '../../http_handler.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -35,7 +32,7 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       body: Container(
         child: FutureBuilder(
-          future: getAllEventsData(),
+          future: HTTPManager.getAllEventsData(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
               return SafeArea(

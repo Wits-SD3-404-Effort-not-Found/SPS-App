@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:sps_app/screens/authentication/login_manager.dart';
+import 'package:sps_app/screens/calendar/calendar_manager.dart';
 
 // handles all the http requests for the data transfer with the backend
 class HTTPManager {
@@ -67,6 +70,51 @@ class HTTPManager {
     } else {
       //throw Exception('Password unable to be reset');
       return Future.value(false);
+    }
+  }
+
+  static Future<List<Events>> getAllEventsData() async {
+    final List<Events> eventsList = [];
+    //might need to fix up
+    var events = await http
+        .get(Uri.parse('http://$serverAddress:$serverPort/events/$accountID'));
+    var rotations = await http.get(
+        Uri.parse('http://$serverAddress:$serverPort/rotations/$accountID'));
+    if (events.statusCode == 200) {
+      var jsonData = json.decode(events.body);
+
+      for (var data in jsonData) {
+        Events eventData = Events(
+            event_id: data['event_id'], // check this actually gets the ID
+            startDate: convertDateFromString(data['start_date']),
+            endDate: convertDateFromString(data['end_date']),
+            eventName: data['name'],
+            description: data['description'],
+            background: const Color(0xFF8B1FA9));
+        eventsList.add(eventData);
+      }
+      return eventsList;
+    }
+
+    if (rotations.statusCode == 200) {
+      var jsonRotationsData = json.decode(rotations.body);
+
+      for (var data in jsonRotationsData) {
+        Rotations eventData = Rotations(
+            eventId: data['event_id'],
+            rotation_id: data['rotation_id'],
+            startDate: convertDateFromString(data['start_date']),
+            endDate: convertDateFromString(data['end_date']),
+            eventName: data['event_name'],
+            description: data['description'],
+            hospital: data['hospital_name'],
+            discipline: data['discipline_name'],
+            background: const Color(0xFF8B1FA9));
+        eventsList.add(eventData);
+      }
+      return eventsList;
+    } else {
+      throw Exception("Can't retrieve user events");
     }
   }
 }
