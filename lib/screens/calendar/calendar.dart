@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
+import 'package:sps_app/screens/calendar/modal.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../http_handler.dart';
@@ -22,15 +25,17 @@ class CalendarApp extends StatelessWidget {
 class _CalendarPageState extends State<CalendarPage> {
   final List<Color> _colorCollection = <Color>[];
 
+  DateTime _selectedDate = DateTime.now();
+
   @override
   void initState() {
-    _initializeEventColor();
+    //_initializeEventColor();
     super.initState();
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: Center(
         child: FutureBuilder(
           future: HTTPManager.getAllEventsData(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -41,9 +46,11 @@ class _CalendarPageState extends State<CalendarPage> {
                 child: Center(
                   child: SfCalendar(
                     view: CalendarView.month,
-                    allowViewNavigation: true,
-                    cellBorderColor: Color(0xFFFFFFFF),
-                    backgroundColor: Color(0xFFFFFFFF),
+                    onSelectionChanged: selectionChanged,
+                    selectionDecoration: BoxDecoration(
+                        border: Border.all(color: Color(0xFF043673), width: 2)),
+                    cellBorderColor: const Color(0xFFFFFFFF),
+                    backgroundColor: const Color(0xFFFFFFFF),
                     headerHeight: 60,
                     headerStyle: const CalendarHeaderStyle(
                         textStyle: TextStyle(
@@ -71,15 +78,14 @@ class _CalendarPageState extends State<CalendarPage> {
                           backgroundColor: Color(0xFFFFFFFF)),
                     ),
                     dataSource: EventsDataSource(snapshot.data),
-                    // by default the month appointment display mode set as Indicator, we can
-                    // change the display mode as appointment using the appointment display
-                    // mode property
                   ),
                 ),
               ));
             } else {
-              return const Center(
-                child: Text(''),
+              return Container(
+                child: const Center(
+                  child: Text('The Calendar is not fucking working'),
+                ),
               );
             }
           },
@@ -88,16 +94,39 @@ class _CalendarPageState extends State<CalendarPage> {
     );
   }
 
+  void selectionChanged(CalendarSelectionDetails details) {
+    PersistentNavBarNavigator.pushNewScreen(context,
+        screen: ModalScreen(
+          focusDay: _selectedDate,
+        ));
+  }
+
+  // Future<List<Meeting>> getDataFromWeb() async {
+  //   var data = await http.get(Uri.parse(
+  //       "https://js.syncfusion.com/demos/ejservices/api/Schedule/LoadData"));
+  //   var jsonData = json.decode(data.body);
+
+  //   final List<Meeting> appointmentData = [];
+  //   final Random random = new Random();
+  //   for (var data in jsonData) {
+  //     Meeting meetingData = Meeting(
+  //         eventName: data['Subject'],
+  //         from: _convertDateFromString(
+  //           data['StartTime'],
+  //         to: _convertDateFromString(data['EndTime']),
+  //         background: _colorCollection[random.nextInt(2)],
+  //         allDay: data['AllDay']);
+  //     appointmentData.add(meetingData);
+  //   }
+  //   return appointmentData;
+  // }
+
+  DateTime _convertDateFromString(String date) {
+    return DateTime.parse(date);
+  }
+
   void _initializeEventColor() {
     _colorCollection.add(const Color(0xFF0F8644));
     _colorCollection.add(const Color(0xFF8B1FA9));
-    _colorCollection.add(const Color(0xFFD20100));
-    _colorCollection.add(const Color(0xFFFC571D));
-    _colorCollection.add(const Color(0xFF36B37B));
-    _colorCollection.add(const Color(0xFF01A1EF));
-    _colorCollection.add(const Color(0xFF3D4FB5));
-    _colorCollection.add(const Color(0xFFE47C73));
-    _colorCollection.add(const Color(0xFF636363));
-    _colorCollection.add(const Color(0xFF0A8043));
   }
 }
