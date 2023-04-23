@@ -34,7 +34,11 @@ class _SingleNotePageState extends State<SingleNotePage> {
   Future<bool> _autoSave() async {
     widget.noteContent.setBody(_bodyController.text);
     widget.noteContent.setTitle(_titleController.text);
-    HTTPManager.putUpdatedNote(widget.noteContent);
+    if (widget.noteContent.getIsNewNote() == true) {
+      HTTPManager.postNewNote(widget.noteContent);
+    } else {
+      HTTPManager.putUpdatedNote(widget.noteContent);
+    }
     return true;
   }
 
@@ -98,20 +102,3 @@ class _SingleNotePageState extends State<SingleNotePage> {
         ]));
   }
 }
-
-/* Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),*/
-
-/*                  GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PersonalNotesPage()));
-                      },
-                      child: const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 20,
-                        color: Colors.black,
-                      )),*/

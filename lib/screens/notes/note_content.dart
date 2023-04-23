@@ -2,8 +2,17 @@ class NoteContent {
   int noteID = 0;
   String title = "";
   String body = "";
+  bool isNewNote = false;
 
   NoteContent();
+
+  void setIsNewNote(bool isNewNote) {
+    this.isNewNote = isNewNote;
+  }
+
+  bool getIsNewNote() {
+    return isNewNote;
+  }
 
   void setNoteID(int noteID) {
     this.noteID = noteID;

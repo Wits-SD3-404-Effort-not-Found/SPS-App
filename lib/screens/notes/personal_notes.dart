@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/screens/notes/single_note.dart';
 import 'package:sps_app/widgets/primitive/list_item.dart';
 import '../../http_handler.dart';
 
@@ -9,13 +10,12 @@ class PersonalNotesPage extends StatefulWidget {
 }
 
 class PersonalNotesPageState extends State<PersonalNotesPage> {
-  var items = [];
-
   @override
   void setState(VoidCallback fn) {
     super.setState(fn);
   }
 
+  var items = [];
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -36,7 +36,7 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                   note["noteTitle"] != null &&
                   note["noteContent"] != null) {
                 items.add(NotesItem(
-                    note["noteID"], note["noteTitle"], note["noteContent"]));
+                    note["noteTitle"], note["noteContent"], note["noteID"]));
               }
             }
             return Scaffold(
@@ -66,13 +66,35 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                                 )))),
                     Container(
                         height: 50,
-                        width: 300,
+                        width: 250,
                         alignment: Alignment.centerLeft,
                         child: const Text(
                           "Personal Notes",
                           style: TextStyle(fontSize: 30),
                           textAlign: TextAlign.left,
                         )),
+                    Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: GestureDetector(
+                                onTap: () {
+                                  var newNote = NotesItem("Note Title", "");
+                                  newNote.getNoteContent().setIsNewNote(true);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SingleNotePage(
+                                            noteContent:
+                                                newNote.getNoteContent()),
+                                      ));
+                                },
+                                child: const Icon(
+                                  Icons.add,
+                                  size: 40,
+                                  color: Colors.black,
+                                )))),
                     Align(
                         alignment: Alignment.center,
                         child: Padding(

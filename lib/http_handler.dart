@@ -77,8 +77,10 @@ class HTTPManager {
     final response = await http
         .get(Uri.parse("http://$serverAddress:$serverPort/notes/$accountID"));
     var notesList = [{}];
+    debugPrint(response.reasonPhrase);
     if (response.statusCode == 200) {
       var responseVec = jsonDecode(response.body);
+      debugPrint(responseVec.toString());
       for (var note in responseVec) {
         notesList.add({
           "noteID": note["note_id"],
@@ -129,6 +131,25 @@ class HTTPManager {
       return protocolsList;
     } else {
       throw Exception("Can't access data");
+    }
+  }
+
+  static Future<bool> postNewNote(NoteContent note) async {
+    int accountID = LoginManager.getAccountID();
+    var noteData = {
+      "account_id": accountID,
+      "note_title": note.getTitle(),
+      "note_content": note.getBody()
+    };
+    final response = await http.post(
+        Uri.parse("http://$serverAddress:$serverPort/notes/"),
+        body: jsonEncode(noteData));
+
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to post new note");
+      //return Future.value(false);
     }
   }
 }
