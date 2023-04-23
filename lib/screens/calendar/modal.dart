@@ -87,15 +87,22 @@ class ModalScreenState extends State<ModalScreen> {
   void dispose() {
     _selectedEvents.dispose();
     _selectedEvents.value.clear();
+    allEvents.clear(); // This is to clear duplication of events in the modal
     super.dispose();
   }
+
+  // Future<List<Event> getEvents() async {
+  //  var events = await HTTPManager.getAllEventsData();
+  //  allTheEvents(events);
+  //  return Future.value(events);
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         child: FutureBuilder(
-            //future:HTTPManager.getAllEventsData() ,
+            //future: getEvents() ,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
           return SafeArea(
             child: Padding(
