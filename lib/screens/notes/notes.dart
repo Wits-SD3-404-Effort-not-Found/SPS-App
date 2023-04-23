@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-
 import 'package:sps_app/screens/notes/personal_notes.dart';
+import 'package:sps_app/screens/notes/protocol.dart';
 
 class NotesPage extends StatefulWidget {
   const NotesPage({Key? key}) : super(key: key);
@@ -30,12 +29,18 @@ class _NotesPageState extends State<NotesPage> {
           Center(
             child: Column(children: [
               ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 60)),
+                  constraints: BoxConstraints.tight(const Size(360, 60)),
                   child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 4, vertical: 6),
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ProtocolScreen()),
+                            );
+                          },
                           style: TextButton.styleFrom(
                               side: const BorderSide(color: Color(0xff043673))),
                           child: Row(
@@ -53,7 +58,7 @@ class _NotesPageState extends State<NotesPage> {
                                 ),
                               ])))),
               ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 60)),
+                  constraints: BoxConstraints.tight(const Size(360, 60)),
                   child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 4, vertical: 6),
@@ -82,7 +87,7 @@ class _NotesPageState extends State<NotesPage> {
                                 ),
                               ])))),
               ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 60)),
+                  constraints: BoxConstraints.tight(const Size(360, 60)),
                   child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 4, vertical: 6),
