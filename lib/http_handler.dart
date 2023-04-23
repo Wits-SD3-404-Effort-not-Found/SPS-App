@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sps_app/screens/authentication/login_manager.dart';
+import 'package:sps_app/account_manager.dart';
 import 'package:sps_app/screens/notes/note_content.dart';
 
 // handles all the http requests for the data transfer with the backend
@@ -12,21 +13,26 @@ class HTTPManager {
   static const String serverPort = '80';
 
   // posts user credentials to validate them
+  // Returns true if its a newly created account
   static Future<bool> postLoginCredentials(
       String username, String password) async {
     var data = {'email': username, 'hashed_password': password};
+    var uri = 'http://$serverAddress:$serverPort/authentication/credentials';
     final response = await http.post(
-      Uri.parse('http://$serverAddress:$serverPort/authentication/credentials'),
+      Uri.parse(uri),
       body: jsonEncode(data),
     );
 
     if (response.statusCode == 200) {
-      var responseMap = jsonDecode(response.body);
-      LoginManager.setAccountID(responseMap['account_id']);
-      return Future.value(true);
+      var mapAuthResponse = jsonDecode(response.body);
+      AccountManager.setID(mapAuthResponse['account_id']);
+      AccountManager.setSessionToken(mapAuthResponse['session_token']);
+      return Future.value(mapAuthResponse['new_account']);
     } else {
-      //throw Exception('Login Credentials incorrect');
-      return Future.value(false);
+      var responseCode = response.statusCode;
+      var responseMessage = response.body;
+      throw Exception(
+          'Failed Authentication with code $responseCode and message $responseMessage');
     }
   }
 
@@ -162,6 +168,37 @@ class HTTPManager {
     } else {
       throw Exception("Failed to post new note");
       //return Future.value(false);
+    }
+  }
+
+  static Future<void> authSessionToken(
+      String sessionToken, int accountID) async {
+    final response = await http.post(
+        Uri.parse('http://$serverAddress:$serverPort/authentication/session'),
+        body: jsonEncode(
+            {'account_id': accountID, 'session_token': sessionToken}));
+
+    if (response.statusCode != 200) {
+      var code = response.statusCode;
+      var message = response.body;
+      throw Exception('Session Token Auth Failure $code : $message');
+    } else {
+      return;
+    }
+  }
+
+  static Future<void> removeSessionToken(int accountID) async {
+    final response = await http.delete(
+      Uri.parse(
+          'http://$serverAddress:$serverPort/authentication/session/$accountID'),
+    );
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      var code = response.statusCode;
+      var message = response.body;
+      throw Exception('Session Token failed to be removed $code : $message');
     }
   }
 }
