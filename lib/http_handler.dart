@@ -9,8 +9,8 @@ import 'package:sps_app/screens/notes/note_content.dart';
 class HTTPManager {
   HTTPManager();
 
-  static const String serverAddress = '10.0.2.2'; //'164.92.183.156';
-  static const String serverPort = '8000'; //'80';
+  static const String serverAddress = '164.92.183.156';
+  static const String serverPort = '80';
 
   // posts user credentials to validate them
   // Returns true if its a newly created account
