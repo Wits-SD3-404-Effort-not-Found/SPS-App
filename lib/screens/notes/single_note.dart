@@ -34,24 +34,6 @@ class _SingleNotePageState extends State<SingleNotePage> {
   Future<bool> _autoSave() async {
     widget.noteContent.setBody(_bodyController.text);
     widget.noteContent.setTitle(_titleController.text);
-    if (widget.noteContent.getIsNewNote() == true) {
-      HTTPManager.postNewNote(widget.noteContent);
-    } else {
-      HTTPManager.putUpdatedNote(widget.noteContent);
-    }
-    return true;
-  }
-
-  @override
-  void dispose() {
-    _autoSave();
-    super.dispose();
-  }
-
-  /*Future<bool> _autoSave() async {
-    debugPrint("in auto save");
-    widget.noteContent.setBody(_bodyController.text);
-    widget.noteContent.setTitle(_titleController.text);
     HTTPManager.putUpdatedNote(widget.noteContent);
     return true;
   }
