@@ -10,16 +10,6 @@ class PersonalNotesPage extends StatefulWidget {
 }
 
 class PersonalNotesPageState extends State<PersonalNotesPage> {
-  var items = [];
-
-  @override
-  void setState(VoidCallback fn) {
-    super.setState(fn);
-  }
-
-class _PersonalNotesPageState extends State<PersonalNotesPage> {
-  late NotesItem newNote;
-
   @override
   void setState(VoidCallback fn) {
     super.setState(fn);
@@ -90,7 +80,7 @@ class _PersonalNotesPageState extends State<PersonalNotesPage> {
                                 horizontal: 10, vertical: 5),
                             child: GestureDetector(
                                 onTap: () {
-                                  newNote = NotesItem("Note Title", "");
+                                  var newNote = NotesItem("Note Title", "");
                                   newNote.getNoteContent().setIsNewNote(true);
                                   Navigator.push(
                                       context,
@@ -104,22 +94,6 @@ class _PersonalNotesPageState extends State<PersonalNotesPage> {
                                   Icons.add,
                                   size: 40,
                                   color: Colors.black,
-                                )))),,
-                    Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    build(context);
-                                  });
-                                },
-                                child: const Icon(
-                                  Icons.refresh,
-                                  size: 30,
-                                  color: Colors.black,
                                 )))),
                     Align(
                         alignment: Alignment.center,
@@ -128,7 +102,6 @@ class _PersonalNotesPageState extends State<PersonalNotesPage> {
                                 horizontal: 10, vertical: 5),
                             child: GestureDetector(
                                 onTap: () {
-                                  debugPrint("refreshed Personal notes page");
                                   setState(() {
                                     build(context);
                                   });
