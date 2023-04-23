@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/screens/notes/single_note.dart';
 import 'package:sps_app/screens/notes/single_protocol.dart';
-
 import '../../screens/notes/note_content.dart';
 
 import '../../screens/notes/note_content.dart';
@@ -9,7 +8,6 @@ import '../../screens/notes/note_content.dart';
 abstract class ListItem {
   Widget buildTitle(BuildContext context);
 
-  //Widget buildSubtitle(BuildContext context);
   Widget buildItem(BuildContext context) {
     return Stack(
       children: [

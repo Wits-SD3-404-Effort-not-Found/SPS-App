@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/widgets/primitive/list_item.dart';
-
 import '../../http_handler.dart';
 
 class PersonalNotesPage extends StatefulWidget {
@@ -81,7 +80,6 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                                 horizontal: 10, vertical: 5),
                             child: GestureDetector(
                                 onTap: () {
-                                  debugPrint("refreshed Personal notes page");
                                   setState(() {
                                     build(context);
                                   });
@@ -97,7 +95,7 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                   padding: const EdgeInsets.only(top: 10),
                   // Let the ListView know how many items it needs to build.
                   itemCount: items.length,
-                  // Provide a builder function. This is where the magic happens.
+                  // Provide a builder function.
                   // Convert each item into a widget based on the type of item it is.
                   itemBuilder: (BuildContext context, int index) {
                     final item = items[index];

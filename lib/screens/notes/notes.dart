@@ -11,7 +11,6 @@ class NotesPage extends StatefulWidget {
 
 class _NotesPageState extends State<NotesPage> {
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,

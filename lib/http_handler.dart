@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sps_app/screens/authentication/login_manager.dart';
@@ -72,17 +71,15 @@ class HTTPManager {
     }
   }
 
+  // http get function to get the list of notes from database
   static Future<List<Map>> getNotes() async {
     int accountID = LoginManager.getAccountID();
     final response = await http
         .get(Uri.parse("http://$serverAddress:$serverPort/notes/$accountID"));
     var notesList = [{}];
-    debugPrint(response.reasonPhrase);
     if (response.statusCode == 200) {
       var responseVec = jsonDecode(response.body);
-      debugPrint(responseVec.toString());
       for (var note in responseVec) {
-        debugPrint(note["note_content"]);
         notesList.add({
           "noteID": note["note_id"],
           "noteTitle": note["note_title"],
@@ -95,6 +92,7 @@ class HTTPManager {
     }
   }
 
+  // http put function to put edited note in the database
   static Future<bool> putUpdatedNote(NoteContent note) async {
     var noteData = {
       "note_id": note.getNoteID(),
