@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_return_type_for_catch_error
+
 import 'package:flutter/material.dart';
 import 'package:sps_app/http_handler.dart';
 import 'package:sps_app/screens/authentication/forgot_password.dart';
@@ -145,9 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                               // This is for a new account
                             }
                         })
-                    .catchError((_) {
-                  _isValidMessage(false);
-                });
+                    .catchError((_) => {_isValidMessage(false), null});
               },
               // styles login button
               style: ElevatedButton.styleFrom(
