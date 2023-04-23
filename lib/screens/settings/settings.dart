@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/account_manager.dart';
+import 'package:sps_app/http_handler.dart';
 import 'package:sps_app/screens/authentication/login.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
 
@@ -23,6 +25,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   //we use login manager to set the username and password to an empty string to prevent previous login username and password remaining in memory
                   LoginManager.setUsername('');
                   LoginManager.setPassword('');
+                  HTTPManager.removeSessionToken(AccountManager.getID())
+                      .then((value) => null);
+                  AccountManager.clearAccount();
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(

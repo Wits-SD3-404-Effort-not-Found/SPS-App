@@ -186,4 +186,19 @@ class HTTPManager {
       return;
     }
   }
+
+  static Future<void> removeSessionToken(int accountID) async {
+    final response = await http.delete(
+      Uri.parse(
+          'http://$serverAddress:$serverPort/authentication/session/$accountID'),
+    );
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      var code = response.statusCode;
+      var message = response.body;
+      throw Exception('Session Token failed to be removed $code : $message');
+    }
+  }
 }
