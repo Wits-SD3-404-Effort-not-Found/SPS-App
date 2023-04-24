@@ -46,6 +46,9 @@ class ModalScreenState extends State<ModalScreen> {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
+        _rangeStart = null;
+        _rangeEnd = null;
+        _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
       _selectedEvents.value = _getEventsForDay(selectedDay);
     }
@@ -53,7 +56,7 @@ class ModalScreenState extends State<ModalScreen> {
 
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
     setState(() {
-      _selectedDay = null; //
+      _selectedDay = null;
       _focusedDay = focusedDay;
       _rangeStart = start;
       _rangeEnd = end;
