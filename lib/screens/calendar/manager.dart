@@ -37,15 +37,15 @@ int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }
 
-allTheEvents(List<Events> events) {
-  events.forEach((event) {
+void allTheEvents(List<Events> events) {
+  for (var event in events) {
     DateTime date = DateTime.utc(event.startDate!.year, event.startDate!.month,
         event.startDate!.day, 12);
     if (allEvents[date] == null) {
       allEvents[date] = [];
     }
     allEvents[date]?.add(event);
-  });
+  }
 }
 
 List<DateTime> daysInRange(DateTime start, DateTime last) {
