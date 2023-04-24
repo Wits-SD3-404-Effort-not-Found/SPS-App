@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:sps_app/account_manager.dart';
-import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 int accountID = AccountManager.getID();
