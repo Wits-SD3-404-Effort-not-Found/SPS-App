@@ -78,7 +78,7 @@ class HTTPManager {
     }
   }
 
-  static Future<List<Events>> getAllEventsData() async {
+  static Future<List<Events>> getAllEventsData(int accountID) async {
     final List<Events> eventsList = [];
     //might need to fix up
     var events = await http
@@ -98,7 +98,6 @@ class HTTPManager {
             background: const Color(0xFF8B1FA9));
         eventsList.add(eventData);
       }
-      return eventsList;
     }
 
     if (rotations.statusCode == 200) {
@@ -117,15 +116,16 @@ class HTTPManager {
             background: const Color(0xFF8B1FA9));
         eventsList.add(eventData);
       }
-      return eventsList;
     } else {
       throw Exception("Can't retrieve user events");
     }
+
+    return eventsList;
   }
 
   // http get function to get the list of notes from database
   static Future<List<Map>> getNotes() async {
-    int accountID = LoginManager.getAccountID();
+    int accountID = AccountManager.getID();
     final response = await http
         .get(Uri.parse("http://$serverAddress:$serverPort/notes/$accountID"));
     var notesList = [{}];
