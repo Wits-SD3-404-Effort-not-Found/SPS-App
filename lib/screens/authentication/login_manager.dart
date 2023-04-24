@@ -12,6 +12,10 @@ class LoginManager {
   static final List<Map> _trueQAs = [];
   static final List<Map> userAnswers = [];
 
+  static int getAccountID() {
+    return _accountId;
+  }
+
   static void setUsername(String inputUsername) {
     username = inputUsername;
   }
@@ -30,10 +34,6 @@ class LoginManager {
 
   static void setAccountID(int givenAccountId) {
     _accountId = givenAccountId;
-  }
-
-  static int getAccountID() {
-    return _accountId;
   }
 
   static void clearQuestions() {
