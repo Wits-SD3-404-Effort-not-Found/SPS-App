@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:sps_app/account_manager.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
 import 'package:sps_app/screens/calendar/modal.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -12,16 +13,6 @@ class CalendarPage extends StatefulWidget {
 
   @override
   State<CalendarPage> createState() => _CalendarPageState();
-}
-
-/// The app which hosts the home page which contains the calendar on it.
-class CalendarApp extends StatelessWidget {
-  const CalendarApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(title: 'Calendar Demo', home: CalendarPage());
-  }
 }
 
 class _CalendarPageState extends State<CalendarPage> {
@@ -36,7 +27,7 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       body: Center(
         child: FutureBuilder(
-          future: HTTPManager.getAllEventsData(),
+          future: HTTPManager.getAllEventsData(AccountManager.getID()),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
               return SafeArea(

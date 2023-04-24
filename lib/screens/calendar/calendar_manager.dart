@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-import 'package:sps_app/screens/authentication/login_manager.dart';
+import 'package:sps_app/account_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-int accountID = LoginManager.getAccountID();
+int accountID = AccountManager.getID();
 
 class Events {
   Events(
@@ -37,8 +37,8 @@ class Rotations extends Events {
             eventId: eventId,
             startDate: startDate,
             endDate: endDate,
-            eventName: eventName,
-            description: description,
+            eventName: hospital,
+            description: discipline,
             background: background);
 
   int rotationId;
@@ -97,49 +97,49 @@ class EventsDataSource extends CalendarDataSource {
   }
 }
 
-// Future<List<Events>> getEventsData() async {
-//   List<Events> eventsList = <Events>[];
+Future<List<Events>> getEventsHardcodedData() async {
+  List<Events> eventsList = <Events>[];
 
-//   Events event1 = Events(
-//       event_id: 1,
-//       startDate: DateTime(2023, 4, 22, 8),
-//       endDate: DateTime(2023, 4, 22, 10),
-//       eventName: 'Tutorial',
-//       description: 'Anatomy',
-//       background: const Color(0xFF8B1FA9));
-//   Events event2 = Events(
-//       event_id: 2,
-//       startDate: DateTime(2023, 4, 24),
-//       endDate: DateTime(2023, 4, 26),
-//       eventName: 'Assignment',
-//       description: 'physiology',
-//       background: const Color(0xFF8B1FA9));
-//   eventsList.add(event1);
-//   eventsList.add(event2);
+  Events event1 = Events(
+      eventId: 1,
+      startDate: DateTime(2023, 4, 22, 8),
+      endDate: DateTime(2023, 4, 22, 10),
+      eventName: 'Tutorial',
+      description: 'Anatomy',
+      background: const Color(0xFF8B1FA9));
+  Events event2 = Events(
+      eventId: 2,
+      startDate: DateTime(2023, 4, 24),
+      endDate: DateTime(2023, 4, 26),
+      eventName: 'Assignment',
+      description: 'physiology',
+      background: const Color(0xFF8B1FA9));
+  eventsList.add(event1);
+  eventsList.add(event2);
 
-//   Rotations rotation1 = Rotations(
-//       eventId: 3,
-//       rotation_id: 1,
-//       startDate: DateTime(2023, 4, 25),
-//       endDate: DateTime(2023, 5, 24),
-//       eventName: '',
-//       description: '',
-//       hospital: 'Barrow Hospital',
-//       discipline: 'General Surgery',
-//       background: const Color(0xFFF00000));
+  Rotations rotation1 = Rotations(
+      eventId: 3,
+      rotationId: 1,
+      startDate: DateTime(2023, 4, 25),
+      endDate: DateTime(2023, 5, 24),
+      eventName: '',
+      description: '',
+      hospital: 'Barrow Hospital',
+      discipline: 'General Surgery',
+      background: const Color(0xFFF00000));
 
-//   Rotations rotation2 = Rotations(
-//       eventId: 5,
-//       rotation_id: 2,
-//       startDate: DateTime(2023, 6, 25),
-//       endDate: DateTime(2023, 7, 24),
-//       eventName: '',
-//       description: '',
-//       hospital: 'Morningside Hospital',
-//       discipline: 'Pediatrics',
-//       background: const Color(0xFFF00000));
+  Rotations rotation2 = Rotations(
+      eventId: 5,
+      rotationId: 2,
+      startDate: DateTime(2023, 6, 25),
+      endDate: DateTime(2023, 7, 24),
+      eventName: '',
+      description: '',
+      hospital: 'Morningside Hospital',
+      discipline: 'Pediatrics',
+      background: const Color(0xFFF00000));
 
-//   eventsList.add(rotation1);
-//   eventsList.add(rotation2);
-//   return eventsList;
-// }
+  eventsList.add(rotation1);
+  eventsList.add(rotation2);
+  return eventsList;
+}

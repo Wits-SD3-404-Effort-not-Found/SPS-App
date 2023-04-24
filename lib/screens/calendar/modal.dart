@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/account_manager.dart';
 import 'package:sps_app/http_handler.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
@@ -72,7 +73,8 @@ class ModalScreenState extends State<ModalScreen> {
   }
 
   void getEvents() async {
-    Future<List<Events>> eventsList = HTTPManager.getAllEventsData();
+    Future<List<Events>> eventsList =
+        HTTPManager.getAllEventsData(AccountManager.getID());
     List<Events> events = await eventsList;
     allTheEvents(events);
   }
@@ -99,7 +101,7 @@ class ModalScreenState extends State<ModalScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-          future: HTTPManager.getAllEventsData(),
+          future: HTTPManager.getAllEventsData(AccountManager.getID()),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             return SafeArea(
               child: Padding(
@@ -202,7 +204,7 @@ class ModalScreenState extends State<ModalScreen> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         subtitle: Text(
-                                          '${value[index].description}\n${value[index].startDate} to ${value[index].endDate}',
+                                          '${value[index].description}\n${value[index].startDate.toString()} to ${value[index].endDate.toString()}',
                                           style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
