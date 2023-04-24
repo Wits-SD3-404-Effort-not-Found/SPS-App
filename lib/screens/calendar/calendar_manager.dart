@@ -1,27 +1,20 @@
-import 'dart:convert';
-//import 'dart:html';
 import 'dart:ui';
 
-import 'package:http/http.dart' as http;
-import 'package:sps_app/http_handler.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-final String serverAddress = '164.92.183.156';
-final String serverPort = '80';
 
 int accountID = LoginManager.getAccountID();
 
 class Events {
   Events(
-      {required this.event_id,
+      {required this.eventId,
       this.startDate,
       this.endDate,
       this.eventName,
       this.description,
       this.background});
 
-  int event_id; //need to get account id from the login
+  int eventId; //need to get account id from the login
   DateTime? startDate;
   DateTime? endDate;
   String? eventName;
@@ -37,18 +30,18 @@ class Rotations extends Events {
       eventName,
       description,
       background,
-      required this.rotation_id,
+      required this.rotationId,
       this.hospital,
       this.discipline})
       : super(
-            event_id: eventId,
+            eventId: eventId,
             startDate: startDate,
             endDate: endDate,
             eventName: eventName,
             description: description,
             background: background);
 
-  int rotation_id;
+  int rotationId;
 
   String? hospital;
   String? discipline;

@@ -16,6 +16,8 @@ class CalendarPage extends StatefulWidget {
 
 /// The app which hosts the home page which contains the calendar on it.
 class CalendarApp extends StatelessWidget {
+  const CalendarApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(title: 'Calendar Demo', home: CalendarPage());
@@ -23,16 +25,13 @@ class CalendarApp extends StatelessWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  final List<Color> _colorCollection = <Color>[];
-
-  DateTime _selectedDate = DateTime.now();
-
   @override
   void initState() {
     //_initializeEventColor();
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -50,7 +49,8 @@ class _CalendarPageState extends State<CalendarPage> {
                     //initialSelectedDate: Problem Child -> causes things to break because the update moves
                     // the modal into view instead of staying on the calendar. This breaks things for some reason.
                     selectionDecoration: BoxDecoration(
-                        border: Border.all(color: Color(0xFF043673), width: 2)),
+                        border: Border.all(
+                            color: const Color(0xFF043673), width: 2)),
                     cellBorderColor: const Color(0xFFFFFFFF),
                     backgroundColor: const Color(0xFFFFFFFF),
                     headerHeight: 60,
@@ -84,10 +84,8 @@ class _CalendarPageState extends State<CalendarPage> {
                 ),
               ));
             } else {
-              return Container(
-                child: const Center(
-                  child: Text('The Calendar is not fucking working'),
-                ),
+              return const Center(
+                child: Text('loading...'),
               );
             }
           },
@@ -102,34 +100,5 @@ class _CalendarPageState extends State<CalendarPage> {
         screen: ModalScreen(
           focusDay: details.date!,
         ));
-  }
-
-  // Future<List<Meeting>> getDataFromWeb() async {
-  //   var data = await http.get(Uri.parse(
-  //       "https://js.syncfusion.com/demos/ejservices/api/Schedule/LoadData"));
-  //   var jsonData = json.decode(data.body);
-
-  //   final List<Meeting> appointmentData = [];
-  //   final Random random = new Random();
-  //   for (var data in jsonData) {
-  //     Meeting meetingData = Meeting(
-  //         eventName: data['Subject'],
-  //         from: _convertDateFromString(
-  //           data['StartTime'],
-  //         to: _convertDateFromString(data['EndTime']),
-  //         background: _colorCollection[random.nextInt(2)],
-  //         allDay: data['AllDay']);
-  //     appointmentData.add(meetingData);
-  //   }
-  //   return appointmentData;
-  // }
-
-  DateTime _convertDateFromString(String date) {
-    return DateTime.parse(date);
-  }
-
-  void _initializeEventColor() {
-    _colorCollection.add(const Color(0xFF0F8644));
-    _colorCollection.add(const Color(0xFF8B1FA9));
   }
 }

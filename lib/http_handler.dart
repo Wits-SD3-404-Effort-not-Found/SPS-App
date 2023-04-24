@@ -85,7 +85,7 @@ class HTTPManager {
 
       for (var data in jsonData) {
         Events eventData = Events(
-            event_id: data['event_id'], // check this actually gets the ID
+            eventId: data['event_id'], // check this actually gets the ID
             startDate: convertDateFromString(data['start_date']),
             endDate: convertDateFromString(data['end_date']),
             eventName: data['name'],
@@ -102,7 +102,7 @@ class HTTPManager {
       for (var data in jsonRotationsData) {
         Rotations eventData = Rotations(
             eventId: data['event_id'],
-            rotation_id: data['rotation_id'],
+            rotationId: data['rotation_id'],
             startDate: convertDateFromString(data['start_date']),
             endDate: convertDateFromString(data['end_date']),
             eventName: data['event_name'],
