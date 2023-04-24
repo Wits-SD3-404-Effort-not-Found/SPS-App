@@ -199,7 +199,7 @@ class HTTPManager {
   }
 
   static Future<bool> postNewNote(NoteContent note) async {
-    int accountID = LoginManager.getAccountID();
+    int accountID = AccountManager.getID();
     var noteData = {
       "account_id": accountID,
       "note_title": note.getTitle(),
