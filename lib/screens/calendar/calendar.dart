@@ -96,6 +96,7 @@ class _CalendarPageState extends State<CalendarPage> {
     );
   }
 
+  //allows us to get selected day and pass to table calendar for the focus day
   void selectionChanged(CalendarSelectionDetails details) {
     PersistentNavBarNavigator.pushNewScreen(context,
         screen: ModalScreen(
