@@ -189,8 +189,7 @@ class ModalScreenState extends State<ModalScreen> {
                                       ),
                                       decoration: BoxDecoration(
                                         border: Border.all(),
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
+                                        borderRadius: BorderRadius.zero,
                                       ),
                                       child: ListTile(
                                         onTap: () => '${value[index]}',
