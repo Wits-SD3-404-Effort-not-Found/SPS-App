@@ -104,7 +104,7 @@ class HTTPManager {
       var jsonRotationsData = json.decode(rotations.body);
 
       for (var data in jsonRotationsData) {
-        Rotations eventData = Rotations(
+        Rotations rotationsData = Rotations(
             eventId: data['event_id'],
             rotationId: data['rotation_id'],
             startDate: convertDateFromString(data['start_date']),
@@ -113,8 +113,8 @@ class HTTPManager {
             description: data['description'],
             hospital: data['hospital_name'],
             discipline: data['discipline_name'],
-            background: const Color(0xFF8B1FA9));
-        eventsList.add(eventData);
+            background: const Color.fromARGB(255, 61, 31, 169));
+        eventsList.add(rotationsData);
       }
     } else {
       throw Exception("Can't retrieve user events");
