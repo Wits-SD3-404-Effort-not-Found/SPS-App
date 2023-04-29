@@ -206,7 +206,8 @@ class ModalScreenState extends State<ModalScreen> {
                                     fontWeight: FontWeight.bold),
                               ),
                               isThreeLine: true,
-                              tileColor: Colors.lightBlue,
+                              tileColor:
+                                  allEvents[_selectedDay]![index].background,
                             ),
                           );
                         })
