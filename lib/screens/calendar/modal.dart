@@ -174,48 +174,43 @@ class ModalScreenState extends State<ModalScreen> {
                               color: Color(0xFF917248),
                               shape: BoxShape.circle)),
                     ),
-                    const SizedBox(height: 8.0),
-                    Expanded(
-                        child: ValueListenableBuilder<List<Events>>(
-                            valueListenable: _selectedEvents,
-                            builder: (context, value, _) {
-                              return ListView.builder(
-                                  itemCount: value.length,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                        horizontal: 12.0,
-                                        vertical: 4.0,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(),
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      child: ListTile(
-                                        onTap: () => '${value[index]}',
-                                        minVerticalPadding: 18.0,
-                                        dense: true,
-                                        title: Text(
-                                          '${value[index].eventName}',
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        subtitle: Text(
-                                          '${value[index].description}\n${value[index].startDate.toString()} to ${value[index].endDate.toString()}',
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        isThreeLine: true,
-                                        tileColor: Colors.lightBlue,
-                                      ),
-                                    );
-                                  });
-                            })),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: allEvents[_selectedDay]?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 4.0,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.zero,
+                            ),
+                            child: ListTile(
+                              onTap: () => '${allEvents[_selectedDay]![index]}',
+                              minVerticalPadding: 18.0,
+                              dense: true,
+                              title: Text(
+                                '${allEvents[_selectedDay]![index].eventName}',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                '${allEvents[_selectedDay]![index].description}\n${allEvents[_selectedDay]![index].startDate.toString()} to ${allEvents[_selectedDay]![index].endDate.toString()}',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              isThreeLine: true,
+                              tileColor:
+                                  allEvents[_selectedDay]![index].background,
+                            ),
+                          );
+                        })
                   ],
                 ),
               ),
