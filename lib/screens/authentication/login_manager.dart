@@ -46,8 +46,10 @@ class LoginManager {
 
   static List<String> getQuestions() {
     List<String> questions = [];
-    questions.add(_trueQAs[0]['question']!);
-    questions.add(_trueQAs[1]['question']!);
+    if (_trueQAs.isNotEmpty) {
+      questions.add(_trueQAs[0]['question']!);
+      questions.add(_trueQAs[1]['question']!);
+    }
     return questions;
   }
 
