@@ -4,8 +4,6 @@ import 'package:sps_app/http_handler.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
 
-import 'manager.dart';
-
 class ModalScreen extends StatefulWidget {
   final DateTime focusDay;
   const ModalScreen({Key? key, required this.focusDay}) : super(key: key);
@@ -29,11 +27,11 @@ class ModalScreenState extends State<ModalScreen> {
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
   List<Events> _getEventsForDay(DateTime date) {
-    return allEvents[date] ?? [];
+    return ModalManager.allEvents[date] ?? [];
   }
 
   List<Events> _getEventsForRange(DateTime start, DateTime end) {
-    final days = daysInRange(start, end);
+    final days = ModalManager.daysInRange(start, end);
 
     return [
       for (final d in days) ..._getEventsForDay(d),
@@ -76,7 +74,7 @@ class ModalScreenState extends State<ModalScreen> {
     Future<List<Events>> eventsList =
         HTTPManager.getAllEventsData(AccountManager.getID());
     List<Events> events = await eventsList;
-    allTheEvents(events);
+    ModalManager.allTheEvents(events);
   }
 
   @override
@@ -84,7 +82,7 @@ class ModalScreenState extends State<ModalScreen> {
     _focusedDay = focusDay;
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-    getEvents();
+    getEvents(); //this is required but so is the future for it to work ***
     super.initState();
   }
 
@@ -92,7 +90,7 @@ class ModalScreenState extends State<ModalScreen> {
   void dispose() {
     _selectedEvents.dispose();
     _selectedEvents.value.clear();
-    allEvents.clear();
+    ModalManager.allEvents.clear();
     // This is to clear duplication of events in the modal
     super.dispose();
   }
@@ -176,7 +174,8 @@ class ModalScreenState extends State<ModalScreen> {
                     ),
                     ListView.builder(
                         shrinkWrap: true,
-                        itemCount: allEvents[_selectedDay]?.length ?? 0,
+                        itemCount:
+                            ModalManager.allEvents[_selectedDay]?.length ?? 0,
                         itemBuilder: (context, index) {
                           return Container(
                             margin: const EdgeInsets.symmetric(
@@ -188,26 +187,27 @@ class ModalScreenState extends State<ModalScreen> {
                               borderRadius: BorderRadius.zero,
                             ),
                             child: ListTile(
-                              onTap: () => '${allEvents[_selectedDay]![index]}',
+                              onTap: () =>
+                                  '${ModalManager.allEvents[_selectedDay]![index]}',
                               minVerticalPadding: 18.0,
                               dense: true,
                               title: Text(
-                                '${allEvents[_selectedDay]![index].eventName}',
+                                '${ModalManager.allEvents[_selectedDay]![index].eventName}',
                                 style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold),
                               ),
                               subtitle: Text(
-                                '${allEvents[_selectedDay]![index].description}\n${allEvents[_selectedDay]![index].startDate.toString()} to ${allEvents[_selectedDay]![index].endDate.toString()}',
+                                '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString()} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString()}',
                                 style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
                               isThreeLine: true,
-                              tileColor:
-                                  allEvents[_selectedDay]![index].background,
+                              tileColor: ModalManager
+                                  .allEvents[_selectedDay]![index].background,
                             ),
                           );
                         })
