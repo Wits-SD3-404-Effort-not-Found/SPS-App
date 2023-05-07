@@ -33,13 +33,13 @@ class ModalScreenState extends State<ModalScreen> {
   DateTime? _rangeEnd;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
-  // List<Events> _getEventsForRange(DateTime start, DateTime end) {
-  //   final days = ModalManager.daysInRange(start, end);
+  List<Events> _getEventsForRange(DateTime start, DateTime end) {
+    final days = ModalManager.daysInRange(start, end);
 
-  //   return [
-  //     for (final d in days) ..._getEventsForDay(d),
-  //   ];
-  // }
+    return [
+      for (final d in days) ...ModalManager.getEventsForDay(d),
+    ];
+  }
 
 //when you select a day in the table calendar
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -58,24 +58,24 @@ class ModalScreenState extends State<ModalScreen> {
     }
   }
 
-  // void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
-  //   setState(() {
-  //     _selectedDay = null;
-  //     _focusedDay = focusedDay;
-  //     _rangeStart = start;
-  //     _rangeEnd = end;
-  //     _rangeSelectionMode = RangeSelectionMode.toggledOn;
-  //   });
+  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
+    setState(() {
+      _selectedDay = null;
+      _focusedDay = focusedDay;
+      _rangeStart = start;
+      _rangeEnd = end;
+      _rangeSelectionMode = RangeSelectionMode.toggledOn;
+    });
 
-  //   // `start` or `end` could be null
-  //   if (start != null && end != null) {
-  //     _selectedEvents.value = _getEventsForRange(start, end);
-  //   } else if (start != null) {
-  //     _selectedEvents.value = _getEventsForDay(start);
-  //   } else if (end != null) {
-  //     _selectedEvents.value = _getEventsForDay(end);
-  //   }
-  // }
+    // `start` or `end` could be null
+    if (start != null && end != null) {
+      _selectedEvents.value = _getEventsForRange(start, end);
+    } else if (start != null) {
+      _selectedEvents.value = ModalManager.getEventsForDay(start);
+    } else if (end != null) {
+      _selectedEvents.value = ModalManager.getEventsForDay(end);
+    }
+  }
 
   //converts Future<List<Events>> to List<Events> and populates allEvents
   void getEvents() async {
@@ -107,9 +107,6 @@ class ModalScreenState extends State<ModalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //body: FutureBuilder(
-      //future: data, //HTTPManager.getAllEventsData(AccountManager.getID()),
-      //builder: (BuildContext context, AsyncSnapshot snapshot) {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -127,7 +124,7 @@ class ModalScreenState extends State<ModalScreen> {
                 rangeStartDay: _rangeStart,
                 rangeEndDay: _rangeEnd,
                 rangeSelectionMode: _rangeSelectionMode,
-                //onRangeSelected: _onRangeSelected,
+                onRangeSelected: _onRangeSelected,
                 onDaySelected: _onDaySelected,
                 onFormatChanged: (format) {
                   if (_calendarFormat != format) {
@@ -218,7 +215,6 @@ class ModalScreenState extends State<ModalScreen> {
           ),
         ),
       ),
-      //}),
     );
   }
 }
