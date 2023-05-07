@@ -16,7 +16,7 @@ class Events {
       this.description,
       this.background});
 
-  int eventId; //need to get account id from the login
+  int eventId;
   DateTime? startDate;
   DateTime? endDate;
   String? eventName;
@@ -142,6 +142,7 @@ class ModalManager {
   static LinkedHashMap<DateTime, List<Events>> allEvents =
       LinkedHashMap(equals: isSameDay, hashCode: getHashCode);
 
+  //populates the allEvents
   static void allTheEvents(List<Events> events) {
     for (var event in events) {
       final days = daysInRange(
@@ -164,5 +165,10 @@ class ModalManager {
 
     return List.generate(dayCount,
         (index) => DateTime.utc(start.year, start.month, start.day + index));
+  }
+
+  //gets all events for day thats selected
+  static List<Events> getEventsForDay(DateTime date) {
+    return ModalManager.allEvents[date] ?? [];
   }
 }
