@@ -8,6 +8,9 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../http_handler.dart';
 
+final Future<List<Events>> eventsList =
+    HTTPManager.getAllEventsData(AccountManager.getID());
+
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
 
@@ -27,7 +30,8 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       body: Center(
         child: FutureBuilder(
-          future: HTTPManager.getAllEventsData(AccountManager.getID()),
+          future:
+              eventsList, //HTTPManager.getAllEventsData(AccountManager.getID()),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
               return SafeArea(
@@ -89,7 +93,10 @@ class _CalendarPageState extends State<CalendarPage> {
   void selectionChanged(CalendarSelectionDetails details) {
     PersistentNavBarNavigator.pushNewScreen(context,
         screen: ModalScreen(
+          //pass data in here
           focusDay: details.date!,
+          //pass http data in here.
+          data: eventsList,
         ));
   }
 }

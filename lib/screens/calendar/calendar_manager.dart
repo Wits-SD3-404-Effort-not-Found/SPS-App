@@ -1,7 +1,9 @@
+import 'dart:collection';
 import 'dart:ui';
 
 import 'package:sps_app/account_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 int accountID = AccountManager.getID();
 
@@ -14,7 +16,7 @@ class Events {
       this.description,
       this.background});
 
-  int eventId; //need to get account id from the login
+  int eventId;
   DateTime? startDate;
   DateTime? endDate;
   String? eventName;
@@ -47,16 +49,6 @@ class Rotations extends Events {
   String? discipline;
 }
 
-List<Rotations> getRotations(List<Events> eventsList) {
-  List<Rotations> rotations = [];
-  for (var event in eventsList) {
-    if (event is Rotations) {
-      rotations.add(event);
-    }
-  }
-  return rotations;
-}
-
 DateTime convertDateFromString(String date) {
   String newDate = date.substring(0, 19);
   return DateTime.parse(newDate);
@@ -85,6 +77,17 @@ class EventsDataSource extends CalendarDataSource {
   Color getColor(int index) {
     return appointments![index].background;
   }
+}
+
+//Filtering the Rotations (Maybe make class for filtering?)
+List<Rotations> getRotations(List<Events> eventsList) {
+  List<Rotations> rotations = [];
+  for (var event in eventsList) {
+    if (event is Rotations) {
+      rotations.add(event);
+    }
+  }
+  return rotations;
 }
 
 Future<List<Events>> getEventsHardcodedData() async {
@@ -132,4 +135,40 @@ Future<List<Events>> getEventsHardcodedData() async {
   eventsList.add(rotation1);
   eventsList.add(rotation2);
   return eventsList;
+}
+
+//Class for everything Modal related
+class ModalManager {
+  static LinkedHashMap<DateTime, List<Events>> allEvents =
+      LinkedHashMap(equals: isSameDay, hashCode: getHashCode);
+
+  //populates the allEvents
+  static void allTheEvents(List<Events> events) {
+    for (var event in events) {
+      final days = daysInRange(
+          event.startDate as DateTime, event.endDate as DateTime); //
+      for (final d in days) {
+        if (allEvents[d] == null) {
+          allEvents[d] = [];
+        }
+        allEvents[d]?.add(event);
+      }
+    }
+  }
+
+  static int getHashCode(DateTime key) {
+    return key.day * 1000000 + key.month * 10000 + key.year;
+  }
+
+  static List<DateTime> daysInRange(DateTime start, DateTime last) {
+    final dayCount = last.difference(start).inDays + 1;
+
+    return List.generate(dayCount,
+        (index) => DateTime.utc(start.year, start.month, start.day + index));
+  }
+
+  //gets all events for day thats selected
+  static List<Events> getEventsForDay(DateTime date) {
+    return ModalManager.allEvents[date] ?? [];
+  }
 }
