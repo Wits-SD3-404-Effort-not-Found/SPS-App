@@ -57,9 +57,11 @@ class _SingleNotePageState extends State<SingleNotePage> {
               height: 60,
               width: double.infinity,
               alignment: Alignment.bottomLeft,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   border: Border(
-                      bottom: BorderSide(color: Color(0xff917248), width: 2))),
+                      bottom: BorderSide(
+                          color: Theme.of(context).colorScheme.secondary,
+                          width: 2))),
               child: Row(children: [
                 Align(
                     alignment: Alignment.center,

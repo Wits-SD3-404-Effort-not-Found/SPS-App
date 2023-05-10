@@ -45,7 +45,8 @@ class _CalendarPageState extends State<CalendarPage> {
                     // the modal into view instead of staying on the calendar. This breaks things for some reason.
                     selectionDecoration: BoxDecoration(
                         border: Border.all(
-                            color: const Color(0xFF043673), width: 2)),
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 2)),
                     cellBorderColor: const Color(0xFFFFFFFF),
                     backgroundColor: const Color(0xFFFFFFFF),
                     headerHeight: 60,
@@ -55,7 +56,7 @@ class _CalendarPageState extends State<CalendarPage> {
                             fontSize: 30,
                             color: Colors.black),
                         backgroundColor: Color(0xFFFFFFFF)),
-                    todayHighlightColor: const Color(0xFF043673),
+                    todayHighlightColor: Theme.of(context).colorScheme.primary,
                     monthViewSettings: const MonthViewSettings(
                       navigationDirection: MonthNavigationDirection.vertical,
                       monthCellStyle: MonthCellStyle(

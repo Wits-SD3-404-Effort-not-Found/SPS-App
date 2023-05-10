@@ -137,41 +137,42 @@ class ModalScreenState extends State<ModalScreen> {
                 lastDay: DateTime.utc(2030, 12, 31),
                 calendarFormat: CalendarFormat.week,
                 rowHeight: 60,
-                headerStyle: const HeaderStyle(
+                headerStyle: HeaderStyle(
                     formatButtonVisible: false,
-                    titleTextStyle: TextStyle(
+                    titleTextStyle: const TextStyle(
                         color: Colors.black,
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         color: Color(0xFFFFFFFF),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10))),
                     leftChevronIcon: Icon(
                       Icons.chevron_left,
-                      color: Color(0xFF917248),
+                      color: Theme.of(context).colorScheme.secondary,
                       size: 28,
                     ),
                     rightChevronIcon: Icon(
                       Icons.chevron_right,
-                      color: Color(0xFF917248),
+                      color: Theme.of(context).colorScheme.secondary,
                       size: 28,
                     )),
-                daysOfWeekStyle: const DaysOfWeekStyle(
-                    weekdayStyle: TextStyle(
+                daysOfWeekStyle: DaysOfWeekStyle(
+                    weekdayStyle: const TextStyle(
                         color: Colors.black,
                         fontSize: 15,
                         fontWeight: FontWeight.bold),
                     weekendStyle: TextStyle(
-                        color: Color(0xFF917248),
+                        color: Theme.of(context).colorScheme.secondary,
                         fontSize: 15,
                         fontWeight: FontWeight.bold)),
-                calendarStyle: const CalendarStyle(
-                    todayDecoration: BoxDecoration(
+                calendarStyle: CalendarStyle(
+                    todayDecoration: const BoxDecoration(
                         color: Color(0xFF043673), shape: BoxShape.circle),
                     selectedDecoration: BoxDecoration(
-                        color: Color(0xFF917248), shape: BoxShape.circle)),
+                        color: Theme.of(context).colorScheme.secondary,
+                        shape: BoxShape.circle)),
               ),
               ListView.builder(
                   shrinkWrap: true,

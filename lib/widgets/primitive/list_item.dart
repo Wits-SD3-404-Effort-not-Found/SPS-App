@@ -11,9 +11,11 @@ abstract class ListItem {
       children: [
         GestureDetector(onTap: () {}, child: buildTitle(context)),
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               border: Border(
-                  bottom: BorderSide(color: Color(0xff917248), width: 3.0))),
+                  bottom: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                      width: 3.0))),
         ),
       ],
     );
@@ -49,10 +51,11 @@ class ProtocolItem implements ListItem {
             child: Stack(children: [
               buildTitle(context),
               Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     border: Border(
-                        bottom:
-                            BorderSide(color: Color(0xff917248), width: 2))),
+                        bottom: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                            width: 2))),
               ),
             ])));
   }
@@ -102,10 +105,11 @@ class NotesItem implements ListItem {
             child: Stack(children: [
               buildTitle(context),
               Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     border: Border(
-                        bottom:
-                            BorderSide(color: Color(0xff917248), width: 2))),
+                        bottom: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                            width: 2))),
               ),
             ])));
   }

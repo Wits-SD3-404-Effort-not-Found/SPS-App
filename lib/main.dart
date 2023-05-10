@@ -42,7 +42,7 @@ ColorScheme lightColours() {
   const onTertiaryColor = Color(0xffffffff);
   const errorColor = Color(0xffff0436);
   const onErrorColor = Color(0xffffffff);
-  const backgroundColor = Color(0xffe8e8e8);
+  const backgroundColor = Color(0xfffcfbfb);
   const onBackgroundColor = Color(0xff000000);
   const surfaceColor = Color(0xffffffff);
   const onSurfaceColor = Color(0xff000000);
@@ -73,10 +73,10 @@ ColorScheme darkColours() {
   const onTertiaryColor = Color(0xffffffff);
   const errorColor = Color(0xffff0436);
   const onErrorColor = Color(0xffffffff);
-  const backgroundColor = Color(0xffe8e8e8);
-  const onBackgroundColor = Color(0xff000000);
-  const surfaceColor = Color(0xffffffff);
-  const onSurfaceColor = Color(0xff000000);
+  const backgroundColor = Color(0xff18181c);
+  const onBackgroundColor = Color(0xffffffff);
+  const surfaceColor = Color(0xff606070);
+  const onSurfaceColor = Color(0xffffffff);
 
   return const ColorScheme(
     brightness: Brightness.dark,

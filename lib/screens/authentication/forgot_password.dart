@@ -34,7 +34,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xfffcfbfb),
+        backgroundColor: Theme.of(context).colorScheme.background,
         // to center the widgets/UI elements on the page
         body: Center(
             // to structure the UI elements in a single column
@@ -45,9 +45,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: ConstrainedBox(
                 constraints: BoxConstraints.tight(const Size(300, 80)),
-                child: const Text(
+                child: Text(
                   'Enter your account email.',
-                  style: TextStyle(fontSize: 22),
+                  style: TextStyle(
+                      fontSize: 22,
+                      color: Theme.of(context).colorScheme.onBackground),
                 ),
               ),
             ),
@@ -59,18 +61,24 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 child: ConstrainedBox(
                   constraints: BoxConstraints.tight(const Size(300, 80)),
                   child: TextFormField(
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground),
                       // styles user input text box
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                                width: 3)),
                         enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                                width: 3)),
                         labelText: 'Email',
-                        labelStyle: TextStyle(fontWeight: FontWeight.w500),
+                        labelStyle: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.onBackground),
                       ),
-                      cursorColor: const Color(0xff917248),
+                      cursorColor: Theme.of(context).colorScheme.onBackground,
                       controller: emailController),
                 )),
             Padding(
@@ -78,7 +86,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 child: ConstrainedBox(
                     constraints: BoxConstraints.tight(const Size(300, 25)),
                     child: Text(_invalidMessage,
-                        style: const TextStyle(color: Colors.red, fontSize: 16),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                            fontSize: 16),
                         textAlign: TextAlign.center))),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -94,7 +104,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   },
                   // styles login button
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff043673)),
+                      backgroundColor: Theme.of(context).colorScheme.primary),
                   child: const Text('Cancel'),
                 ),
                 const SizedBox(width: 20),
@@ -108,7 +118,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const FPSecurityQuestionsPage())),
+                                      builder: (context) =>
+                                          const FPSecurityQuestionsPage())),
                               _isValidMessage(value)
                             }
                           else
@@ -117,7 +128,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   },
                   // styles login button
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff043673)),
+                      backgroundColor: Theme.of(context).colorScheme.primary),
                   child: const Text('Send'),
                 ),
               ],
