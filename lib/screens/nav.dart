@@ -8,23 +8,6 @@ import 'package:unicons/unicons.dart';
 
 //BuildContext testContext;
 
-class App extends StatelessWidget {
-  const App({required final Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => MaterialApp(
-        title: "Persistent Nav Bar",
-        home: const NavBar(),
-        initialRoute: "/",
-        routes: {
-          "/calendar": (final context) => const CalendarPage(),
-          "/notes": (final context) => const NotesPage(),
-          "/messaging": (final context) => const MessagingPage(),
-          "/settings": (final context) => const SettingsPage()
-        },
-      );
-}
-
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
 

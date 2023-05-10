@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void moveToApp(context) {
-    Navigator.push(
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const NavBar()));
   }
 
