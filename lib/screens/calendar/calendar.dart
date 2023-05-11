@@ -8,7 +8,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../http_handler.dart';
 
-final Future<List<Events>> eventsList =
+Future<List<Events>> eventsList =
     HTTPManager.getAllEventsData(AccountManager.getID());
 
 class CalendarPage extends StatefulWidget {
@@ -19,6 +19,9 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
+  String dropdownValue = "All";
+  late Future<List<Events>> events;
+  List<Events> filtered = [];
   @override
   void initState() {
     //_initializeEventColor();
@@ -30,54 +33,77 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       body: Center(
         child: FutureBuilder(
-          future:
-              eventsList, //HTTPManager.getAllEventsData(AccountManager.getID()),
+          future: eventsList,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
+              filtered = snapshot.data;
               return SafeArea(
-                  child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Center(
-                  child: SfCalendar(
-                    view: CalendarView.month,
-                    onSelectionChanged: selectionChanged,
-                    //initialSelectedDate: Problem Child -> causes things to break because the update moves
-                    // the modal into view instead of staying on the calendar. This breaks things for some reason.
-                    selectionDecoration: BoxDecoration(
-                        border: Border.all(
-                            color: const Color(0xFF043673), width: 2)),
-                    cellBorderColor: const Color(0xFFFFFFFF),
-                    backgroundColor: const Color(0xFFFFFFFF),
-                    headerHeight: 60,
-                    headerStyle: const CalendarHeaderStyle(
-                        textStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.black),
-                        backgroundColor: Color(0xFFFFFFFF)),
-                    todayHighlightColor: const Color(0xFF043673),
-                    monthViewSettings: const MonthViewSettings(
-                      navigationDirection: MonthNavigationDirection.vertical,
-                      monthCellStyle: MonthCellStyle(
-                        textStyle: TextStyle(
-                            fontStyle: FontStyle.normal,
-                            fontSize: 18,
-                            color: Colors.black),
-                      ),
-                      showTrailingAndLeadingDates: false,
-                      appointmentDisplayMode:
-                          MonthAppointmentDisplayMode.indicator,
-                      showAgenda: false,
-                      agendaItemHeight: 60,
-                      agendaStyle: AgendaStyle(
-                          appointmentTextStyle:
-                              TextStyle(fontSize: 15, color: Color(0xFFFFFFFF)),
+                  child: Column(children: [
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(250, 5, 5, 1),
+                    child: DropdownButton(
+                      value: dropdownValue,
+                      items: <String>["All", "Events", "Rotations"]
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: const TextStyle(fontSize: 15),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue!;
+                          events = getFiltering(dropdownValue, filtered);
+                        });
+                      },
+                    )),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: SfCalendar(
+                      view: CalendarView.month,
+                      onSelectionChanged: selectionChanged,
+                      //initialSelectedDate: Problem Child -> causes things to break because the update moves
+                      // the modal into view instead of staying on the calendar. This breaks things for some reason.
+                      selectionDecoration: BoxDecoration(
+                          border: Border.all(
+                              color: const Color(0xFF043673), width: 2)),
+                      cellBorderColor: const Color(0xFFFFFFFF),
+                      backgroundColor: const Color(0xFFFFFFFF),
+                      headerHeight: 60,
+                      headerStyle: const CalendarHeaderStyle(
+                          textStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              color: Colors.black),
                           backgroundColor: Color(0xFFFFFFFF)),
+                      todayHighlightColor: const Color(0xFF043673),
+                      monthViewSettings: const MonthViewSettings(
+                        navigationDirection: MonthNavigationDirection.vertical,
+                        monthCellStyle: MonthCellStyle(
+                          textStyle: TextStyle(
+                              fontStyle: FontStyle.normal,
+                              fontSize: 18,
+                              color: Colors.black),
+                        ),
+                        showTrailingAndLeadingDates: false,
+                        appointmentDisplayMode:
+                            MonthAppointmentDisplayMode.indicator,
+                        showAgenda: false,
+                        agendaItemHeight: 60,
+                        agendaStyle: AgendaStyle(
+                            appointmentTextStyle: TextStyle(
+                                fontSize: 15, color: Color(0xFFFFFFFF)),
+                            backgroundColor: Color(0xFFFFFFFF)),
+                      ),
+                      dataSource: EventsDataSource(snapshot.data),
                     ),
-                    dataSource: EventsDataSource(snapshot.data),
                   ),
-                ),
-              ));
+                )
+              ]));
             } else {
               return const Center(
                 child: Text('loading...'),
@@ -96,7 +122,7 @@ class _CalendarPageState extends State<CalendarPage> {
           //pass data in here
           focusDay: details.date!,
           //pass http data in here.
-          data: eventsList,
+          data: events, //this wont be a future
         ));
   }
 }
