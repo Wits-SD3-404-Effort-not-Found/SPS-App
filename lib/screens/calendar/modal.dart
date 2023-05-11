@@ -66,7 +66,10 @@ class ModalScreenState extends State<ModalScreen> {
       _rangeEnd = end;
       _rangeSelectionMode = RangeSelectionMode.toggledOn;
     });
-
+    debugPrint("start");
+    debugPrint(start as String?);
+    debugPrint("end");
+    debugPrint(end as String?);
     // `start` or `end` could be null
     if (start != null && end != null) {
       _selectedEvents.value = _getEventsForRange(start, end);
@@ -112,6 +115,16 @@ class ModalScreenState extends State<ModalScreen> {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
+              /////////////////////////////////////////////
+              //Container(
+              //    height: 50,
+              //    width: double.infinity,
+              //     alignment: Alignment.bottomLeft,
+              //    decoration: const BoxDecoration(
+              //        border: Border(
+              //            bottom:
+              //                BorderSide(color: Color(0xff917248), width: 2)))),
+              ////////////////////////////////////////////////////////
               TableCalendar<Events>(
                 eventLoader: ModalManager.getEventsForDay,
                 focusedDay: focusDay,

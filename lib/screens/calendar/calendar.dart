@@ -35,49 +35,99 @@ class _CalendarPageState extends State<CalendarPage> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
               return SafeArea(
-                  child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Center(
-                  child: SfCalendar(
-                    view: CalendarView.month,
-                    onSelectionChanged: selectionChanged,
-                    //initialSelectedDate: Problem Child -> causes things to break because the update moves
-                    // the modal into view instead of staying on the calendar. This breaks things for some reason.
-                    selectionDecoration: BoxDecoration(
-                        border: Border.all(
-                            color: const Color(0xFF043673), width: 2)),
-                    cellBorderColor: const Color(0xFFFFFFFF),
-                    backgroundColor: const Color(0xFFFFFFFF),
-                    headerHeight: 60,
-                    headerStyle: const CalendarHeaderStyle(
-                        textStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.black),
-                        backgroundColor: Color(0xFFFFFFFF)),
-                    todayHighlightColor: const Color(0xFF043673),
-                    monthViewSettings: const MonthViewSettings(
-                      navigationDirection: MonthNavigationDirection.vertical,
-                      monthCellStyle: MonthCellStyle(
-                        textStyle: TextStyle(
-                            fontStyle: FontStyle.normal,
-                            fontSize: 18,
-                            color: Colors.black),
+                child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Center(
+                      //child: Column(children: [
+                      //Container(
+                      // height: 50,
+                      // width: double.infinity,
+                      //  alignment: Alignment.bottomLeft,
+                      //   decoration: const BoxDecoration(
+                      //      border: Border(
+                      //         bottom: BorderSide(
+                      //              color: Color(0xff917248), width: 2)))),
+                      child: SfCalendar(
+                        view: CalendarView.month,
+                        loadMoreWidgetBuilder: (BuildContext context,
+                            LoadMoreCallback loadMoreAppointments) {
+                          return Container(
+                              height: 50,
+                              width: double.infinity,
+                              color: Colors.white38,
+                              alignment: Alignment.bottomRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          title: const Text("Add an Event"),
+                                          content: const Text(
+                                              "Stuff to add event here"),
+                                          actions: [
+                                            TextButton(
+                                              child: const Text("Cancel"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text("Delete"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ]);
+                                    },
+                                  );
+                                },
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Color(0xFF043673),
+                                  size: 34,
+                                ),
+                              ));
+                        },
+                        onSelectionChanged: selectionChanged,
+                        //initialSelectedDate: Problem Child -> causes things to break because the update moves
+                        //the modal into view instead of staying on the calendar. This breaks things for some reason.
+                        selectionDecoration: BoxDecoration(
+                            border: Border.all(
+                                color: const Color(0xFF043673), width: 2)),
+                        cellBorderColor: const Color(0xFFFFFFFF),
+                        backgroundColor: const Color(0xFFFFFFFF),
+                        headerHeight: 60,
+                        headerStyle: const CalendarHeaderStyle(
+                            textStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.black),
+                            backgroundColor: Color(0xFFFFFFFF)),
+                        todayHighlightColor: const Color(0xFF043673),
+                        monthViewSettings: const MonthViewSettings(
+                          navigationDirection:
+                              MonthNavigationDirection.vertical,
+                          monthCellStyle: MonthCellStyle(
+                            textStyle: TextStyle(
+                                fontStyle: FontStyle.normal,
+                                fontSize: 18,
+                                color: Colors.black),
+                          ),
+                          showTrailingAndLeadingDates: false,
+                          appointmentDisplayMode:
+                              MonthAppointmentDisplayMode.indicator,
+                          showAgenda: false,
+                          agendaItemHeight: 60,
+                          agendaStyle: AgendaStyle(
+                              appointmentTextStyle: TextStyle(
+                                  fontSize: 15, color: Color(0xFFFFFFFF)),
+                              backgroundColor: Color(0xFFFFFFFF)),
+                        ),
+                        dataSource: EventsDataSource(snapshot.data),
                       ),
-                      showTrailingAndLeadingDates: false,
-                      appointmentDisplayMode:
-                          MonthAppointmentDisplayMode.indicator,
-                      showAgenda: false,
-                      agendaItemHeight: 60,
-                      agendaStyle: AgendaStyle(
-                          appointmentTextStyle:
-                              TextStyle(fontSize: 15, color: Color(0xFFFFFFFF)),
-                          backgroundColor: Color(0xFFFFFFFF)),
-                    ),
-                    dataSource: EventsDataSource(snapshot.data),
-                  ),
-                ),
-              ));
+                    )),
+              );
             } else {
               return const Center(
                 child: Text('loading...'),
