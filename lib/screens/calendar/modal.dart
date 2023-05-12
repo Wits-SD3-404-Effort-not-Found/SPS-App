@@ -116,14 +116,74 @@ class ModalScreenState extends State<ModalScreen> {
           child: Column(
             children: [
               /////////////////////////////////////////////
-              //Container(
-              //    height: 50,
-              //    width: double.infinity,
-              //     alignment: Alignment.bottomLeft,
-              //    decoration: const BoxDecoration(
-              //        border: Border(
-              //            bottom:
-              //                BorderSide(color: Color(0xff917248), width: 2)))),
+              Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          bottom:
+                              BorderSide(color: Color(0xff917248), width: 2))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        color: Colors.white38,
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(
+                            Icons.arrow_back_ios_rounded,
+                            color: Color(0xFF043673),
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                      const Text("Schedule for the day",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(color: Colors.black, fontSize: 25)),
+                      Container(
+                          height: 50,
+                          width: 50,
+                          color: Colors.white38,
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      title: const Text("Add an Event"),
+                                      content:
+                                          const Text("Stuff to add event here"),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text("Cancel"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text("Confirm"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ]);
+                                },
+                              );
+                            },
+                            child: const Icon(
+                              Icons.add,
+                              color: Color(0xFF043673),
+                              size: 34,
+                            ),
+                          ))
+                    ],
+                  )),
               ////////////////////////////////////////////////////////
               TableCalendar<Events>(
                 eventLoader: ModalManager.getEventsForDay,

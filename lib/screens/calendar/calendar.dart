@@ -49,7 +49,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       //              color: Color(0xff917248), width: 2)))),
                       child: SfCalendar(
                         view: CalendarView.month,
-                        loadMoreWidgetBuilder: (BuildContext context,
+                        /*loadMoreWidgetBuilder: (BuildContext context,
                             LoadMoreCallback loadMoreAppointments) {
                           return Container(
                               height: 50,
@@ -88,7 +88,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                   size: 34,
                                 ),
                               ));
-                        },
+                        },*/
                         onSelectionChanged: selectionChanged,
                         //initialSelectedDate: Problem Child -> causes things to break because the update moves
                         //the modal into view instead of staying on the calendar. This breaks things for some reason.
