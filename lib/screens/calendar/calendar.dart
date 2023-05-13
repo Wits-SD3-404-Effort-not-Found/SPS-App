@@ -5,6 +5,7 @@ import 'package:sps_app/account_manager.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
 import 'package:sps_app/screens/calendar/modal.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:intl/intl.dart';
 
 import '../../http_handler.dart';
 
@@ -22,11 +23,16 @@ class _CalendarPageState extends State<CalendarPage> {
   String dropdownValue = "All";
   Future<List<Events>> events = eventsList;
   static List<Events> filtered = [];
+
+  double? width, cellWidthHeader, cellWidthDrop;
+  String? _headerText;
+  final CalendarController _controller = CalendarController();
   @override
   void initState() {
     //_initializeEventColor();
     _getEventsDataSource(
         events); //makes sure that all data shows in the calendar when app first runs
+    _headerText = 'header';
     super.initState();
   }
 
@@ -44,48 +50,120 @@ class _CalendarPageState extends State<CalendarPage> {
     return EventsDataSource(filtered);
   }
 
+  //creating a hover
+  GlobalKey _dropdownButtonKey = GlobalKey();
+
+  openDropdown() {
+    GestureDetector? detector;
+    searchForGestureDetector(BuildContext element) {
+      element.visitChildElements((element) {
+        if (element.widget != null && element.widget is GestureDetector) {
+          detector = element.widget as GestureDetector;
+        } else {
+          searchForGestureDetector(element);
+        }
+      });
+    }
+
+    searchForGestureDetector(_dropdownButtonKey.currentContext!);
+    detector!.onTap!();
+  }
+
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+    cellWidthHeader = width! / 2;
+    cellWidthDrop = width! / 4;
     return Scaffold(
       body: Center(
         child: FutureBuilder(
           future: eventsList,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
-              //filtered = snapshot.data;
               return SafeArea(
                   child: Column(children: [
+                const SizedBox(width: 40, height: 40),
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(250, 5, 5, 1),
-                    child: DropdownButton(
-                      value: dropdownValue,
-                      items: <String>["All", "Events", "Rotations"]
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: const TextStyle(fontSize: 15),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownValue = newValue!;
-                          events = getFiltering(
-                              dropdownValue,
-                              snapshot
-                                  .data); //filters the data depending on what filter is chosen
-                          _getEventsDataSource(
-                              events); //updates what data is in the calendar after the filter
-                        });
-                      },
-                    )),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        color: const Color(0xFFFFFFFF),
+                        //width: width,
+                        height: 60,
+                        child: Row(
+                          children: <Widget>[
+                            SizedBox(
+                              width: cellWidthHeader,
+                              height: 40,
+                              child: Text(_headerText!,
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30,
+                                      color: Color(0xFF043673))),
+                            ),
+                            Container(
+                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                child: DropdownButton(
+                                  value: dropdownValue,
+                                  focusColor: const Color(0xFF917248),
+                                  underline: Container(
+                                    height: 2,
+                                    color: const Color(0xFF917248),
+                                  ),
+                                  items: <String>["All", "Events", "Rotations"]
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            color: Color(0xFF043673)),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue!;
+                                      events = getFiltering(
+                                          dropdownValue,
+                                          snapshot
+                                              .data); //filters the data depending on what filter is chosen
+                                      _getEventsDataSource(
+                                          events); //updates what data is in the calendar after the filter
+                                    });
+                                  },
+                                ))
+                          ],
+                        ))),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                   child: Center(
                     child: SfCalendar(
+                      headerHeight: 0,
+                      viewHeaderHeight: 30,
+                      viewHeaderStyle: const ViewHeaderStyle(
+                        dayTextStyle: TextStyle(
+                            color: Color(0xFF043673),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+
+                      controller: _controller,
+                      dataSource: _getEventsDataSource(events),
                       view: CalendarView.month,
+                      onViewChanged: ((viewChangedDetails) {
+                        if (_controller.view == CalendarView.month) {
+                          _headerText = DateFormat('MMMM yyyy')
+                              .format(viewChangedDetails.visibleDates[
+                                  viewChangedDetails.visibleDates.length ~/ 2])
+                              .toString();
+                        }
+                      }),
                       onSelectionChanged: selectionChanged,
                       //initialSelectedDate: Problem Child -> causes things to break because the update moves
                       // the modal into view instead of staying on the calendar. This breaks things for some reason.
@@ -94,13 +172,13 @@ class _CalendarPageState extends State<CalendarPage> {
                               color: const Color(0xFF043673), width: 2)),
                       cellBorderColor: const Color(0xFFFFFFFF),
                       backgroundColor: const Color(0xFFFFFFFF),
-                      headerHeight: 60,
-                      headerStyle: const CalendarHeaderStyle(
-                          textStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.black),
-                          backgroundColor: Color(0xFFFFFFFF)),
+
+                      // headerStyle: const CalendarHeaderStyle(
+                      //     textStyle: TextStyle(
+                      //         fontWeight: FontWeight.bold,
+                      //         fontSize: 30,
+                      //         color: Colors.black),
+                      //     backgroundColor: Color(0xFFFFFFFF)),
                       todayHighlightColor: const Color(0xFF043673),
                       monthViewSettings: const MonthViewSettings(
                         navigationDirection: MonthNavigationDirection.vertical,
@@ -120,10 +198,9 @@ class _CalendarPageState extends State<CalendarPage> {
                                 fontSize: 15, color: Color(0xFFFFFFFF)),
                             backgroundColor: Color(0xFFFFFFFF)),
                       ),
-                      dataSource: _getEventsDataSource(events),
                     ),
                   ),
-                )
+                ))
               ]));
             } else {
               return const Center(
