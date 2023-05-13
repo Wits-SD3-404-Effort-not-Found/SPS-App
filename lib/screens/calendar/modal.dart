@@ -232,10 +232,30 @@ class ModalScreenState extends State<ModalScreen> {
                                             TextButton(
                                               child: const Text("Delete"),
                                               onPressed: () {
+                                                //checks if rotation
                                                 if (isRotation(ModalManager
                                                         .allEvents[
                                                     _selectedDay]![index])) {
-                                                  //checks if rotation
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: const Text(
+                                                              "Cannot Delete a Rotation!"),
+                                                          actions: [
+                                                            TextButton(
+                                                              child: const Text(
+                                                                  "OK"),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            )
+                                                          ],
+                                                        );
+                                                      });
                                                   //put alert dialog that cant delete
                                                 } else {
                                                   HTTPManager.deleteEvent(
