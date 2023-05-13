@@ -39,12 +39,17 @@ class SPSApp extends StatelessWidget {
 
 ThemeData lightTheme() {
   return ThemeData(
-      colorScheme: lightColours(), textTheme: GoogleFonts.poppinsTextTheme());
+    colorScheme: lightColours(),
+    textTheme: GoogleFonts.poppinsTextTheme(),
+    scaffoldBackgroundColor: lightColours().background,
+  );
 }
 
 ThemeData darkTheme() {
   return ThemeData(
-      colorScheme: darkColours(), textTheme: GoogleFonts.poppinsTextTheme());
+      colorScheme: darkColours(),
+      textTheme: GoogleFonts.poppinsTextTheme(),
+      scaffoldBackgroundColor: darkColours().background);
 }
 
 ColorScheme lightColours() {
