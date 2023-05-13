@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:sps_app/account_manager.dart';
@@ -25,14 +26,14 @@ class _CalendarPageState extends State<CalendarPage> {
   static List<Events> filtered = [];
 
   double? width, cellWidthHeader, cellWidthDrop;
-  String? _headerText;
+  String _month = DateTime.now().month.toString();
+  String _year = DateTime.now().year.toString();
   final CalendarController _controller = CalendarController();
   @override
   void initState() {
     //_initializeEventColor();
     _getEventsDataSource(
         events); //makes sure that all data shows in the calendar when app first runs
-    _headerText = 'header';
     super.initState();
   }
 
@@ -42,31 +43,25 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   EventsDataSource _getEventsDataSource(Future<List<Events>> events) {
-    // List<Events> filtered = <Events>[];
     convertFutureToList(events);
-    // Listener(
-    //   onPointerSignal: (event) => filtered,
-    // );
     return EventsDataSource(filtered);
   }
 
-  //creating a hover
-  GlobalKey _dropdownButtonKey = GlobalKey();
-
-  openDropdown() {
-    GestureDetector? detector;
-    searchForGestureDetector(BuildContext element) {
-      element.visitChildElements((element) {
-        if (element.widget != null && element.widget is GestureDetector) {
-          detector = element.widget as GestureDetector;
-        } else {
-          searchForGestureDetector(element);
-        }
+  //This method allows for the heading that displays the month and year to change when scrolling
+  // Need to use this as the header is customised
+  void viewChanged(ViewChangedDetails viewChangedDetails) {
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      setState(() {
+        _month = DateFormat('MMMM')
+            .format(viewChangedDetails
+                .visibleDates[viewChangedDetails.visibleDates.length ~/ 2])
+            .toString();
+        _year = DateFormat('yyyy')
+            .format(viewChangedDetails
+                .visibleDates[viewChangedDetails.visibleDates.length ~/ 2])
+            .toString();
       });
-    }
-
-    searchForGestureDetector(_dropdownButtonKey.currentContext!);
-    detector!.onTap!();
+    });
   }
 
   @override
@@ -82,11 +77,10 @@ class _CalendarPageState extends State<CalendarPage> {
             if (snapshot.data != null) {
               return SafeArea(
                   child: Column(children: [
-                const SizedBox(width: 40, height: 40),
                 Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                         color: const Color(0xFFFFFFFF),
                         //width: width,
                         height: 60,
@@ -95,12 +89,12 @@ class _CalendarPageState extends State<CalendarPage> {
                             SizedBox(
                               width: cellWidthHeader,
                               height: 40,
-                              child: Text(_headerText!,
+                              child: Text('$_month $_year',
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 30,
-                                      color: Color(0xFF043673))),
+                                      color: Colors.black)),
                             ),
                             Container(
                                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -156,14 +150,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       controller: _controller,
                       dataSource: _getEventsDataSource(events),
                       view: CalendarView.month,
-                      onViewChanged: ((viewChangedDetails) {
-                        if (_controller.view == CalendarView.month) {
-                          _headerText = DateFormat('MMMM yyyy')
-                              .format(viewChangedDetails.visibleDates[
-                                  viewChangedDetails.visibleDates.length ~/ 2])
-                              .toString();
-                        }
-                      }),
+                      onViewChanged: viewChanged,
                       onSelectionChanged: selectionChanged,
                       //initialSelectedDate: Problem Child -> causes things to break because the update moves
                       // the modal into view instead of staying on the calendar. This breaks things for some reason.
@@ -173,12 +160,6 @@ class _CalendarPageState extends State<CalendarPage> {
                       cellBorderColor: const Color(0xFFFFFFFF),
                       backgroundColor: const Color(0xFFFFFFFF),
 
-                      // headerStyle: const CalendarHeaderStyle(
-                      //     textStyle: TextStyle(
-                      //         fontWeight: FontWeight.bold,
-                      //         fontSize: 30,
-                      //         color: Colors.black),
-                      //     backgroundColor: Color(0xFFFFFFFF)),
                       todayHighlightColor: const Color(0xFF043673),
                       monthViewSettings: const MonthViewSettings(
                         navigationDirection: MonthNavigationDirection.vertical,
