@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //import 'package:sps_app/screens/calendar/calendar.dart'; //this is needed
 import 'package:table_calendar/table_calendar.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
+import 'package:unicons/unicons.dart';
 
 class ModalScreen extends StatefulWidget {
   final DateTime focusDay;
@@ -187,28 +188,40 @@ class ModalScreenState extends State<ModalScreen> {
                         borderRadius: BorderRadius.zero,
                       ),
                       child: ListTile(
-                        onTap: () =>
-                            '${ModalManager.allEvents[_selectedDay]![index]}',
-                        minVerticalPadding: 18.0,
-                        dense: true,
-                        title: Text(
-                          '${ModalManager.allEvents[_selectedDay]![index].eventName}',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString()} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString()}',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        isThreeLine: true,
-                        tileColor: ModalManager
-                            .allEvents[_selectedDay]![index].background,
-                      ),
+                          onTap: () =>
+                              '${ModalManager.allEvents[_selectedDay]![index]}',
+                          minVerticalPadding: 18.0,
+                          dense: true,
+                          title: Text(
+                            '${ModalManager.allEvents[_selectedDay]![index].eventName}',
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString()} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString()}',
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          isThreeLine: true,
+                          tileColor: ModalManager
+                              .allEvents[_selectedDay]![index].background,
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              GestureDetector(
+                                onTap: () {},
+                                child: const Icon(
+                                  Icons.delete_forever,
+                                  size: 30,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          )),
                     );
                   })
             ],
