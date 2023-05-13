@@ -232,13 +232,20 @@ class ModalScreenState extends State<ModalScreen> {
                                             TextButton(
                                               child: const Text("Delete"),
                                               onPressed: () {
-                                                HTTPManager.deleteEvent(
-                                                    ModalManager
+                                                if (isRotation(ModalManager
                                                         .allEvents[
-                                                            _selectedDay]![
-                                                            index]
-                                                        .eventId);
-                                                Navigator.of(context).pop();
+                                                    _selectedDay]![index])) {
+                                                  //checks if rotation
+                                                  //put alert dialog that cant delete
+                                                } else {
+                                                  HTTPManager.deleteEvent(
+                                                      ModalManager
+                                                          .allEvents[
+                                                              _selectedDay]![
+                                                              index]
+                                                          .eventId);
+                                                  Navigator.of(context).pop();
+                                                }
                                               },
                                             ),
                                           ],
@@ -261,4 +268,12 @@ class ModalScreenState extends State<ModalScreen> {
       ),
     );
   }
+}
+
+//create a function that checks if its a rotation
+bool isRotation(Events event) {
+  if (event is Rotations) {
+    return true;
+  }
+  return false;
 }
