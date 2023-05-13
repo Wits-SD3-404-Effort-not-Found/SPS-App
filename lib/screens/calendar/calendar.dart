@@ -20,12 +20,28 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   String dropdownValue = "All";
-  late Future<List<Events>> events;
-  List<Events> filtered = [];
+  Future<List<Events>> events = eventsList;
+  static List<Events> filtered = [];
   @override
   void initState() {
     //_initializeEventColor();
+    _getEventsDataSource(
+        events); //makes sure that all data shows in the calendar when app first runs
     super.initState();
+  }
+
+  void convertFutureToList(Future<List<Events>> events) async {
+    List<Events> futureList = await events;
+    filtered = List<Events>.from(futureList);
+  }
+
+  EventsDataSource _getEventsDataSource(Future<List<Events>> events) {
+    // List<Events> filtered = <Events>[];
+    convertFutureToList(events);
+    // Listener(
+    //   onPointerSignal: (event) => filtered,
+    // );
+    return EventsDataSource(filtered);
   }
 
   @override
@@ -36,7 +52,7 @@ class _CalendarPageState extends State<CalendarPage> {
           future: eventsList,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data != null) {
-              filtered = snapshot.data;
+              //filtered = snapshot.data;
               return SafeArea(
                   child: Column(children: [
                 Padding(
@@ -56,7 +72,12 @@ class _CalendarPageState extends State<CalendarPage> {
                       onChanged: (String? newValue) {
                         setState(() {
                           dropdownValue = newValue!;
-                          events = getFiltering(dropdownValue, filtered);
+                          events = getFiltering(
+                              dropdownValue,
+                              snapshot
+                                  .data); //filters the data depending on what filter is chosen
+                          _getEventsDataSource(
+                              events); //updates what data is in the calendar after the filter
                         });
                       },
                     )),
@@ -99,7 +120,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                 fontSize: 15, color: Color(0xFFFFFFFF)),
                             backgroundColor: Color(0xFFFFFFFF)),
                       ),
-                      dataSource: EventsDataSource(snapshot.data),
+                      dataSource: _getEventsDataSource(events),
                     ),
                   ),
                 )
@@ -121,8 +142,8 @@ class _CalendarPageState extends State<CalendarPage> {
         screen: ModalScreen(
           //pass data in here
           focusDay: details.date!,
-          //pass http data in here.
-          data: events, //this wont be a future
+          //pass filtered data in here.
+          data: events,
         ));
   }
 }
