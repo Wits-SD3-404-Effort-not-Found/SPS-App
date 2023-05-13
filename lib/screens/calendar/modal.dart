@@ -84,6 +84,7 @@ class ModalScreenState extends State<ModalScreen> {
     List<Events> events = await data;
     ModalManager.allTheEvents(
         events); //populates allEvents Method with List<Events> through allTheEvents method
+    _selectedEvents.value = ModalManager.getEventsForDay(focusDay); //
   }
 
   @override
