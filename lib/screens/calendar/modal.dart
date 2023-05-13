@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/http_handler.dart';
 //import 'package:sps_app/account_manager.dart';
 //import 'package:sps_app/http_handler.dart';
 //import 'package:sps_app/screens/calendar/calendar.dart'; //this is needed
 import 'package:table_calendar/table_calendar.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
-import 'package:unicons/unicons.dart';
+//import 'package:unicons/unicons.dart';
 
 class ModalScreen extends StatefulWidget {
   final DateTime focusDay;
@@ -230,7 +231,15 @@ class ModalScreenState extends State<ModalScreen> {
                                             ),
                                             TextButton(
                                               child: const Text("Delete"),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                HTTPManager.deleteEvent(
+                                                    ModalManager
+                                                        .allEvents[
+                                                            _selectedDay]![
+                                                            index]
+                                                        .eventId);
+                                                Navigator.of(context).pop();
+                                              },
                                             ),
                                           ],
                                         );
