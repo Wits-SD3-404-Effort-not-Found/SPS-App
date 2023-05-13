@@ -213,7 +213,29 @@ class ModalScreenState extends State<ModalScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text("Delete Event"),
+                                          content: const Text(
+                                              "Are you sure you want to delete this event?"),
+                                          actions: [
+                                            TextButton(
+                                              child: const Text("Cancel"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text("Delete"),
+                                              onPressed: () {},
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
                                 child: const Icon(
                                   Icons.delete_forever,
                                   size: 30,
