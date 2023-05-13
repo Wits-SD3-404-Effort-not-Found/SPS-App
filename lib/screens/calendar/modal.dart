@@ -216,49 +216,25 @@ class ModalScreenState extends State<ModalScreen> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text("Delete Event"),
-                                          content: const Text(
-                                              "Are you sure you want to delete this event?"),
-                                          actions: [
-                                            TextButton(
-                                              child: const Text("Cancel"),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            TextButton(
-                                              child: const Text("Delete"),
-                                              onPressed: () {
-                                                //checks if rotation
-                                                if (isRotation(ModalManager
-                                                        .allEvents[
-                                                    _selectedDay]![index])) {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return AlertDialog(
-                                                          title: const Text(
-                                                              "Cannot Delete a Rotation!"),
-                                                          actions: [
-                                                            TextButton(
-                                                              child: const Text(
-                                                                  "OK"),
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                            )
-                                                          ],
-                                                        );
-                                                      });
-                                                  //put alert dialog that cant delete
-                                                } else {
+                                  if (!isRotation(ModalManager
+                                      .allEvents[_selectedDay]![index])) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text("Delete Event"),
+                                            content: const Text(
+                                                "Are you sure you want to delete this event?"),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text("Cancel"),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: const Text("Delete"),
+                                                onPressed: () {
                                                   HTTPManager.deleteEvent(
                                                       ModalManager
                                                           .allEvents[
@@ -266,19 +242,36 @@ class ModalScreenState extends State<ModalScreen> {
                                                               index]
                                                           .eventId);
                                                   Navigator.of(context).pop();
-                                                }
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      });
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                                "Cannot Delete a Rotation!"),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text("OK"),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  }
                                 },
                                 child: const Icon(
                                   Icons.delete_forever,
                                   size: 30,
                                   color: Colors.black,
                                 ),
-                              ),
+                              )
                             ],
                           )),
                     );
