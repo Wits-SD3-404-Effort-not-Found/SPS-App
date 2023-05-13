@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/http_handler.dart';
 //import 'package:sps_app/account_manager.dart';
 //import 'package:sps_app/http_handler.dart';
 //import 'package:sps_app/screens/calendar/calendar.dart'; //this is needed
 import 'package:table_calendar/table_calendar.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
+//import 'package:unicons/unicons.dart';
 
 class ModalScreen extends StatefulWidget {
   final DateTime focusDay;
@@ -188,28 +190,97 @@ class ModalScreenState extends State<ModalScreen> {
                         borderRadius: BorderRadius.zero,
                       ),
                       child: ListTile(
-                        onTap: () =>
-                            '${ModalManager.allEvents[_selectedDay]![index]}',
-                        minVerticalPadding: 18.0,
-                        dense: true,
-                        title: Text(
-                          '${ModalManager.allEvents[_selectedDay]![index].eventName}',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString()} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString()}',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        isThreeLine: true,
-                        tileColor: ModalManager
-                            .allEvents[_selectedDay]![index].background,
-                      ),
+                          onTap: () =>
+                              '${ModalManager.allEvents[_selectedDay]![index]}',
+                          minVerticalPadding: 18.0,
+                          dense: true,
+                          title: Text(
+                            '${ModalManager.allEvents[_selectedDay]![index].eventName}',
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString()} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString()}',
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          isThreeLine: true,
+                          tileColor: ModalManager
+                              .allEvents[_selectedDay]![index].background,
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text("Delete Event"),
+                                          content: const Text(
+                                              "Are you sure you want to delete this event?"),
+                                          actions: [
+                                            TextButton(
+                                              child: const Text("Cancel"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text("Delete"),
+                                              onPressed: () {
+                                                //checks if rotation
+                                                if (isRotation(ModalManager
+                                                        .allEvents[
+                                                    _selectedDay]![index])) {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: const Text(
+                                                              "Cannot Delete a Rotation!"),
+                                                          actions: [
+                                                            TextButton(
+                                                              child: const Text(
+                                                                  "OK"),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            )
+                                                          ],
+                                                        );
+                                                      });
+                                                  //put alert dialog that cant delete
+                                                } else {
+                                                  HTTPManager.deleteEvent(
+                                                      ModalManager
+                                                          .allEvents[
+                                                              _selectedDay]![
+                                                              index]
+                                                          .eventId);
+                                                  Navigator.of(context).pop();
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                child: const Icon(
+                                  Icons.delete_forever,
+                                  size: 30,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          )),
                     );
                   })
             ],
@@ -218,4 +289,12 @@ class ModalScreenState extends State<ModalScreen> {
       ),
     );
   }
+}
+
+//create a function that checks if its a rotation
+bool isRotation(Events event) {
+  if (event is Rotations) {
+    return true;
+  }
+  return false;
 }
