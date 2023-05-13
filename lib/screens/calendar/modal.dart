@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/http_handler.dart';
 //import 'package:sps_app/account_manager.dart';
 //import 'package:sps_app/http_handler.dart';
 //import 'package:sps_app/screens/calendar/calendar.dart'; //this is needed
@@ -413,6 +414,8 @@ class ModalScreenState extends State<ModalScreen> {
                                                 // debugPrint(newEvent.eventName);
                                                 // debugPrint(
                                                 //     newEvent.description);
+                                                HTTPManager.postNewEvent(
+                                                    newEvent);
                                                 Navigator.of(context).pop();
                                                 addEventNameController.clear();
                                                 addEventDescriptionController
