@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sps_app/misc/theme_provider.dart';
 import 'package:sps_app/screens/authentication/login.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sps_app/account_manager.dart';
@@ -15,12 +17,24 @@ void main() async {
   AccountManager.setID(accountBox.get('account_id', defaultValue: 0));
 
   runApp(Phoenix(
-      child: MaterialApp(
-    title: 'SPS-App',
-    home: const LoginPage(),
-    theme: lightTheme(),
-    darkTheme: darkTheme(),
-  )));
+      child: ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) => ThemeNotifier(), child: const SPSApp())));
+}
+
+class SPSApp extends StatelessWidget {
+  const SPSApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    return MaterialApp(
+      title: 'SPS-App',
+      home: const LoginPage(),
+      theme: lightTheme(),
+      darkTheme: darkTheme(),
+      themeMode: themeNotifier.themeMode,
+    );
+  }
 }
 
 ThemeData lightTheme() {
