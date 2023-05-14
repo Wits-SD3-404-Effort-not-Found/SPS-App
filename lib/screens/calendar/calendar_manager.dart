@@ -90,6 +90,22 @@ List<Rotations> getRotations(List<Events> eventsList) {
   return rotations;
 }
 
+//Filtering function used in Dropdown in Calendar
+Future<List<Events>> getFiltering(String type, List<Events> eventsList) async {
+  List<Events> filteredEvents = [];
+  for (var event in eventsList) {
+    if (event is Rotations && type == "Rotations") {
+      filteredEvents.add(event);
+    } else if (event is! Rotations && type == "Events") {
+      filteredEvents.add(event);
+    } else if (type == "All") {
+      filteredEvents.add(event);
+    }
+  }
+
+  return filteredEvents;
+}
+
 Future<List<Events>> getEventsHardcodedData() async {
   List<Events> eventsList = <Events>[];
 
