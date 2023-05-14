@@ -123,6 +123,17 @@ class HTTPManager {
     return eventsList;
   }
 
+  //http delete function to delete an event form the database
+  static Future<bool> deleteEvent(int eventID) async {
+    final response = await http
+        .delete(Uri.parse('http://$serverAddress:$serverPort/events/$eventID'));
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to delete event");
+    }
+  }
+
   // http get function to get the list of notes from database
   static Future<List<Map>> getNotes() async {
     int accountID = AccountManager.getID();
@@ -245,6 +256,27 @@ class HTTPManager {
       var code = response.statusCode;
       var message = response.body;
       throw Exception('Session Token failed to be removed $code : $message');
+    }
+  }
+
+  static Future<bool> postNewEvent(Events event) async {
+    int accountID = AccountManager.getID();
+    var eventData = {
+      "account_id": accountID,
+      "start_date": event.startDate.toString(),
+      "end_date": event.endDate.toString(),
+      "event_name": event.eventName.toString(),
+      "description": event.description.toString()
+    };
+    final response = await http.post(
+        Uri.parse("http://$serverAddress:$serverPort/events/"),
+        body: jsonEncode(eventData));
+
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to post new event");
+      //return Future.value(false);
     }
   }
 
