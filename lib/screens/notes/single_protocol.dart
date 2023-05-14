@@ -11,6 +11,7 @@ class SingleProtocolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
         body: Column(children: <Widget>[
       Container(
           height: 50,
@@ -20,7 +21,9 @@ class SingleProtocolPage extends StatelessWidget {
               border: Border(
                   bottom: BorderSide(
                       color: Theme.of(context).colorScheme.secondary,
-                      width: 2))),
+                      width: 2)
+              )
+          ),
           child: Row(children: [
             Align(
                 alignment: Alignment.center,
@@ -31,26 +34,36 @@ class SingleProtocolPage extends StatelessWidget {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const Icon(
+                        child: Icon(
                           Icons.arrow_back_ios_rounded,
                           size: 30,
-                          color: Colors.black,
-                        )))),
+                          color: Theme.of(context).colorScheme.onBackground,
+                        )
+                    )
+                )
+            ),
             Container(
                 height: 50,
                 width: 300,
                 alignment: Alignment.centerLeft,
                 child: Text(
                   protocolHeading,
-                  style: const TextStyle(fontSize: 30),
+                  style: TextStyle(fontSize: 30,
+                  color: Theme.of(context).colorScheme.onBackground),
                   textAlign: TextAlign.left,
-                ))
-          ])),
+                )
+            )
+          ])
+      ),
       SizedBox(
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          child: Text(protocolContent, style: const TextStyle(fontSize: 20)),
+          child: Text(protocolContent,
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  fontSize: 20)
+          ),
         ),
       )
     ]));

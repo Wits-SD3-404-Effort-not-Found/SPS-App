@@ -40,6 +40,7 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
               }
             }
             return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.background,
                 body: Column(children: [
               Container(
                   height: 50,
@@ -66,7 +67,10 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onBackground,
-                                )))),
+                                )
+                            )
+                        )
+                    ),
                     Container(
                         height: 50,
                         width: 250,
@@ -78,7 +82,8 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                               color:
                                   Theme.of(context).colorScheme.onBackground),
                           textAlign: TextAlign.left,
-                        )),
+                        )
+                    ),
                     Align(
                         alignment: Alignment.center,
                         child: Padding(
@@ -94,7 +99,8 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                                         builder: (context) => SingleNotePage(
                                             noteContent:
                                                 newNote.getNoteContent()),
-                                      ));
+                                      )
+                                  );
                                 },
                                 child: Icon(
                                   Icons.add,
@@ -102,7 +108,10 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onBackground,
-                                )))),
+                                )
+                            )
+                        )
+                    ),
                     Align(
                         alignment: Alignment.center,
                         child: Padding(
@@ -120,8 +129,12 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onBackground,
-                                )))),
-                  ])),
+                                )
+                            )
+                        )
+                    ),
+                  ])
+              ),
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.only(top: 10),
@@ -139,7 +152,8 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                   },
                 ),
               )
-            ]));
+            ])
+            );
           }
         });
   }

@@ -17,9 +17,10 @@ class ProtocolScreenState extends State<ProtocolScreen> {
         future: HTTPManager.getProtocols(),
         builder: (BuildContext ctx, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
-            return const Scaffold(
+            return Scaffold(
                 body: Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.secondary),
             ));
           } else {
             items.clear();
@@ -52,21 +53,24 @@ class ProtocolScreenState extends State<ProtocolScreen> {
                                   onTap: () {
                                     Navigator.pop(context);
                                   },
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.arrow_back_ios_rounded,
                                     size: 30,
-                                    color: Colors.black,
+                                    color: Theme.of(context).colorScheme.onBackground,
                                   )))),
                       Container(
                           height: 50,
                           width: 300,
                           alignment: Alignment.centerLeft,
-                          child: const Text(
+                          child: Text(
                             "Protocols",
-                            style: TextStyle(fontSize: 30),
+                            style: TextStyle(fontSize: 30,
+                            color: Theme.of(context).colorScheme.onBackground),
                             textAlign: TextAlign.left,
-                          ))
-                    ])),
+                          )
+                      )
+                    ])
+                ),
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.only(top: 10),
