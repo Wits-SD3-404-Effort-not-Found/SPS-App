@@ -258,4 +258,25 @@ class HTTPManager {
       throw Exception('Session Token failed to be removed $code : $message');
     }
   }
+
+  static Future<bool> postNewEvent(Events event) async {
+    int accountID = AccountManager.getID();
+    var eventData = {
+      "account_id": accountID,
+      "start_date": event.startDate.toString(),
+      "end_date": event.endDate.toString(),
+      "event_name": event.eventName.toString(),
+      "description": event.description.toString()
+    };
+    final response = await http.post(
+        Uri.parse("http://$serverAddress:$serverPort/events/"),
+        body: jsonEncode(eventData));
+
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to post new event");
+      //return Future.value(false);
+    }
+  }
 }

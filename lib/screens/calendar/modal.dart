@@ -5,7 +5,7 @@ import 'package:sps_app/http_handler.dart';
 //import 'package:sps_app/screens/calendar/calendar.dart'; //this is needed
 import 'package:table_calendar/table_calendar.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
-//import 'package:unicons/unicons.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ModalScreen extends StatefulWidget {
   final DateTime focusDay;
@@ -33,7 +33,13 @@ class ModalScreenState extends State<ModalScreen> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+  DateTime _newStartDate = DateTime.now();
+  DateTime _newEndDate = DateTime.now();
+  TimeOfDay _newStartTime = TimeOfDay.now();
+  TimeOfDay _newEndTime = TimeOfDay.now();
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+  final addEventNameController = TextEditingController();
+  final addEventDescriptionController = TextEditingController();
 
   List<Events> _getEventsForRange(DateTime start, DateTime end) {
     final days = ModalManager.daysInRange(start, end);
@@ -50,6 +56,8 @@ class ModalScreenState extends State<ModalScreen> {
     });
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
+        _newStartDate = focusedDay;
+        _newEndDate = focusedDay;
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
         _rangeStart = null;
@@ -66,7 +74,7 @@ class ModalScreenState extends State<ModalScreen> {
       _focusedDay = focusedDay;
       _rangeStart = start;
       _rangeEnd = end;
-      _rangeSelectionMode = RangeSelectionMode.toggledOn;
+      _rangeSelectionMode = RangeSelectionMode.toggledOff;
     });
 
     // `start` or `end` could be null
@@ -92,6 +100,8 @@ class ModalScreenState extends State<ModalScreen> {
     super.initState();
     _focusedDay = focusDay;
     _selectedDay = _focusedDay;
+    _newStartDate = _focusedDay;
+    _newEndDate = _focusedDay;
     getEvents();
     _selectedEvents =
         ValueNotifier(ModalManager.getEventsForDay(_selectedDay!));
@@ -102,9 +112,44 @@ class ModalScreenState extends State<ModalScreen> {
   void dispose() {
     _selectedEvents.dispose();
     _selectedEvents.value.clear();
+    addEventDescriptionController.dispose();
+    addEventNameController.dispose();
     ModalManager.allEvents.clear();
     // This is to clear duplication of events in the modal
     super.dispose();
+  }
+
+  void _selectStartTime() async {
+    final TimeOfDay? newTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.inputOnly,
+    );
+    if (newTime != null) {
+      setState(() {
+        _newStartTime = newTime;
+      });
+    }
+  }
+
+  void _selectEndTime() async {
+    final TimeOfDay? newTime = await showTimePicker(
+      context: context,
+      helpText: "",
+      initialTime: TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.inputOnly,
+    );
+    if (newTime != null) {
+      setState(() {
+        _newEndTime = newTime;
+      });
+    }
+  }
+
+  void selectionChanged(
+      DateRangePickerSelectionChangedArgs selectionChangedArgs) {
+    _newStartDate = selectionChangedArgs.value.startDate;
+    _newEndDate = selectionChangedArgs.value.endDate;
   }
 
   @override
@@ -115,6 +160,284 @@ class ModalScreenState extends State<ModalScreen> {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
+              Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          bottom:
+                              BorderSide(color: Color(0xff917248), width: 2))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        color: Colors.white38,
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(
+                            Icons.arrow_back_ios_rounded,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                      const Text("Daily Schedule",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(color: Colors.black, fontSize: 25)),
+                      Container(
+                          height: 50,
+                          width: 50,
+                          color: Colors.white38,
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SimpleDialog(
+                                    title: const Text("New Event"),
+                                    children: [
+                                      Column(children: [
+                                        Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 8),
+                                            // constrained box to encapsulate user input text box
+                                            child: ConstrainedBox(
+                                                constraints:
+                                                    BoxConstraints.tight(
+                                                        const Size(275, 50)),
+                                                child: TextFormField(
+                                                    // styles user input text box
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      focusedBorder:
+                                                          UnderlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Color(
+                                                                      0xff917248),
+                                                                  width: 1.5)),
+                                                      enabledBorder:
+                                                          UnderlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Color(
+                                                                      0xff917248),
+                                                                  width: 1.5)),
+                                                      hintText: 'Event Name',
+                                                      hintStyle: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                    cursorColor:
+                                                        const Color(0xff917248),
+                                                    // to retrieve the user input text from the TextFormField
+                                                    controller:
+                                                        addEventNameController))),
+                                        Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 8),
+                                            // constrained box to encapsulate user input text box
+                                            child: ConstrainedBox(
+                                                constraints:
+                                                    BoxConstraints.tight(
+                                                        const Size(275, 50)),
+                                                child: TextFormField(
+                                                    // styles user input text box
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      focusedBorder:
+                                                          UnderlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Color(
+                                                                      0xff917248),
+                                                                  width: 1.5)),
+                                                      enabledBorder:
+                                                          UnderlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Color(
+                                                                      0xff917248),
+                                                                  width: 1.5)),
+                                                      hintText:
+                                                          'Event Description',
+                                                      hintStyle: TextStyle(
+                                                          fontSize: 14),
+                                                    ),
+                                                    cursorColor:
+                                                        const Color(0xff917248),
+                                                    // to retrieve the user input text from the TextFormField
+                                                    controller:
+                                                        addEventDescriptionController))),
+                                        const Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 30,
+                                                    top: 30,
+                                                    right: 30,
+                                                    bottom: 8),
+                                                child: Text(
+                                                  "Select start and end dates:",
+                                                  style:
+                                                      TextStyle(fontSize: 18),
+                                                ))),
+                                        Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            child: SizedBox(
+                                              height: 300,
+                                              width: 275,
+                                              child: SfDateRangePicker(
+                                                initialDisplayDate: _focusedDay,
+                                                initialSelectedRange:
+                                                    PickerDateRange(_focusedDay,
+                                                        _focusedDay),
+                                                startRangeSelectionColor:
+                                                    const Color(0xFF043673),
+                                                endRangeSelectionColor:
+                                                    const Color(0xFF043673),
+                                                rangeSelectionColor:
+                                                    const Color.fromRGBO(
+                                                        4, 54, 115, 0.3),
+                                                view: DateRangePickerView.month,
+                                                selectionMode:
+                                                    DateRangePickerSelectionMode
+                                                        .range,
+                                                onSelectionChanged:
+                                                    selectionChanged,
+                                              ),
+                                            )),
+                                        Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 30, vertical: 8),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text('Start time:',
+                                                    style: TextStyle(
+                                                        fontSize: 18)),
+                                                TextButton(
+                                                  style: TextButton.styleFrom(
+                                                      backgroundColor:
+                                                          Colors.grey[400],
+                                                      fixedSize:
+                                                          const Size(100, 3)),
+                                                  onPressed: _selectStartTime,
+                                                  child: Text(
+                                                    _newStartTime
+                                                        .format(context),
+                                                    style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14),
+                                                  ),
+                                                ),
+                                              ],
+                                            )),
+                                        Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 30, vertical: 8),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text('End time:',
+                                                    style: TextStyle(
+                                                        fontSize: 18)),
+                                                TextButton(
+                                                  style: TextButton.styleFrom(
+                                                      backgroundColor:
+                                                          Colors.grey[400],
+                                                      fixedSize:
+                                                          const Size(100, 3)),
+                                                  onPressed: _selectEndTime,
+                                                  child: Text(
+                                                    _newEndTime.format(context),
+                                                    style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14),
+                                                  ),
+                                                ),
+                                              ],
+                                            ))
+                                      ]),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            TextButton(
+                                              child: const Text(
+                                                "Cancel",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                addEventNameController.clear();
+                                                addEventDescriptionController
+                                                    .clear();
+                                                _newStartTime = TimeOfDay.now();
+                                                _newEndTime = TimeOfDay.now();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text("Confirm",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black)),
+                                              onPressed: () {
+                                                final addStartDateTime =
+                                                    DateTime(
+                                                        _newStartDate.year,
+                                                        _newStartDate.month,
+                                                        _newStartDate.day,
+                                                        _newStartTime.hour,
+                                                        _newStartTime.minute);
+                                                final addEndDateTime = DateTime(
+                                                    _newEndDate.year,
+                                                    _newEndDate.month,
+                                                    _newEndDate.day,
+                                                    _newEndTime.hour,
+                                                    _newEndTime.minute);
+                                                final newEvent = Events(
+                                                    eventId: 0,
+                                                    startDate: addStartDateTime,
+                                                    endDate: addEndDateTime,
+                                                    eventName:
+                                                        addEventNameController
+                                                            .text,
+                                                    description:
+                                                        addEventDescriptionController
+                                                            .text);
+                                                HTTPManager.postNewEvent(
+                                                    newEvent);
+                                                Navigator.of(context).pop();
+                                                addEventNameController.clear();
+                                                addEventDescriptionController
+                                                    .clear();
+                                                _newStartTime = TimeOfDay.now();
+                                                _newEndTime = TimeOfDay.now();
+                                              },
+                                            ),
+                                          ])
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.black,
+                              size: 34,
+                            ),
+                          ))
+                    ],
+                  )),
               TableCalendar<Events>(
                 eventLoader: ModalManager.getEventsForDay,
                 focusedDay: focusDay,
