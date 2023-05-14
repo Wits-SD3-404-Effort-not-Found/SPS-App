@@ -32,26 +32,26 @@ class _NavBar extends State<NavBar> {
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.calendar_month_rounded, size: 35),
           title: ("Calendar"),
-          activeColorPrimary: const Color(0xFF917248),
-          inactiveColorPrimary: const Color(0xFFFFFFFF),
+          activeColorPrimary: Theme.of(context).colorScheme.secondary,
+          inactiveColorPrimary: Theme.of(context).colorScheme.onPrimary,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(UniconsLine.file_edit_alt, size: 35),
           title: "Notes",
-          activeColorPrimary: const Color(0xFF917248),
-          inactiveColorPrimary: const Color(0xFFFFFFFF),
+          activeColorPrimary: Theme.of(context).colorScheme.secondary,
+          inactiveColorPrimary: Theme.of(context).colorScheme.onPrimary,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(UniconsLine.comments, size: 35),
           title: "Messages",
-          activeColorPrimary: const Color(0xFF917248),
-          inactiveColorPrimary: const Color(0xFFFFFFFF),
+          activeColorPrimary: Theme.of(context).colorScheme.secondary,
+          inactiveColorPrimary: Theme.of(context).colorScheme.onPrimary,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(UniconsLine.setting, size: 35),
           title: "Settings",
-          activeColorPrimary: const Color(0xFF917248),
-          inactiveColorPrimary: const Color(0xFFFFFFFF),
+          activeColorPrimary: Theme.of(context).colorScheme.secondary,
+          inactiveColorPrimary: Theme.of(context).colorScheme.onPrimary,
         )
       ];
   @override
@@ -68,17 +68,19 @@ class _NavBar extends State<NavBar> {
           automaticallyImplyLeading: false,
           leading: Image.asset('lib/assets/images/wits_logo_blue.png',
               fit: BoxFit.fitHeight),
-          title: const Text(
+          title: Text(
             'Wits University',
-            style: TextStyle(fontSize: 25),
+            style: TextStyle(
+                fontSize: 25, color: Theme.of(context).colorScheme.onPrimary),
           ),
-          backgroundColor: const Color(0xFF043673),
+          backgroundColor: Theme.of(context).colorScheme.primary,
           actions: <Widget>[
             IconButton(
               onPressed: () {},
-              icon: const Icon(
+              icon: Icon(
                 Icons.notifications_none,
                 size: 35,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
               alignment: Alignment.topRight,
               padding: const EdgeInsets.fromLTRB(
@@ -92,10 +94,9 @@ class _NavBar extends State<NavBar> {
         items: _navBarsItems(),
         resizeToAvoidBottomInset: true,
         navBarHeight: 65,
-        backgroundColor: const Color(0xFF043673),
-        decoration: const NavBarDecoration(
-          colorBehindNavBar: Color(0xFF043673),
-        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        decoration: NavBarDecoration(
+            colorBehindNavBar: Theme.of(context).colorScheme.primary),
         screenTransitionAnimation: const ScreenTransitionAnimation(
           animateTabTransition: true,
         ),

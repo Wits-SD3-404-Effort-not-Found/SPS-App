@@ -161,8 +161,7 @@ class ModalManager {
   //populates the allEvents
   static void allTheEvents(List<Events> events) {
     for (var event in events) {
-      final days = daysInRange(
-          event.startDate as DateTime, event.endDate as DateTime); //
+      final days = daysInRange(event.startDate, event.endDate); //
       for (final d in days) {
         if (allEvents[d] == null) {
           allEvents[d] = [];

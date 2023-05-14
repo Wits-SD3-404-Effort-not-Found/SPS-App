@@ -22,11 +22,11 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
         future: HTTPManager.getNotes(),
         builder: (BuildContext ctx, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
-            return const Scaffold(
-                backgroundColor: Colors.white,
+            return Scaffold(
+                backgroundColor: Theme.of(context).colorScheme.background,
                 body: Center(
                   child: CircularProgressIndicator(
-                    color: Color(0xff917248),
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ));
           } else {
@@ -40,15 +40,17 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
               }
             }
             return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.background,
                 body: Column(children: [
               Container(
                   height: 50,
                   width: double.infinity,
                   alignment: Alignment.bottomLeft,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       border: Border(
-                          bottom:
-                              BorderSide(color: Color(0xff917248), width: 2))),
+                          bottom: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 2))),
                   child: Row(children: [
                     Align(
                         alignment: Alignment.center,
@@ -59,20 +61,29 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                                 onTap: () {
                                   Navigator.pop(context);
                                 },
-                                child: const Icon(
+                                child: Icon(
                                   Icons.arrow_back_ios_rounded,
                                   size: 30,
-                                  color: Colors.black,
-                                )))),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                )
+                            )
+                        )
+                    ),
                     Container(
                         height: 50,
                         width: 250,
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           "Personal Notes",
-                          style: TextStyle(fontSize: 30),
+                          style: TextStyle(
+                              fontSize: 30,
+                              color:
+                                  Theme.of(context).colorScheme.onBackground),
                           textAlign: TextAlign.left,
-                        )),
+                        )
+                    ),
                     Align(
                         alignment: Alignment.center,
                         child: Padding(
@@ -88,13 +99,19 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                                         builder: (context) => SingleNotePage(
                                             noteContent:
                                                 newNote.getNoteContent()),
-                                      ));
+                                      )
+                                  );
                                 },
-                                child: const Icon(
+                                child: Icon(
                                   Icons.add,
                                   size: 40,
-                                  color: Colors.black,
-                                )))),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                )
+                            )
+                        )
+                    ),
                     Align(
                         alignment: Alignment.center,
                         child: Padding(
@@ -106,12 +123,18 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                                     build(context);
                                   });
                                 },
-                                child: const Icon(
+                                child: Icon(
                                   Icons.refresh,
                                   size: 30,
-                                  color: Colors.black,
-                                )))),
-                  ])),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                )
+                            )
+                        )
+                    ),
+                  ])
+              ),
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.only(top: 10),
@@ -129,7 +152,8 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                   },
                 ),
               )
-            ]));
+            ])
+            );
           }
         });
   }

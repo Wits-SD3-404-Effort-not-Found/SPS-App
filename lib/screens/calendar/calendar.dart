@@ -81,7 +81,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-                        color: const Color(0xFFFFFFFF),
+                        color: Theme.of(context).colorScheme.background,
                         //width: width,
                         height: 60,
                         child: Row(
@@ -91,33 +91,41 @@ class _CalendarPageState extends State<CalendarPage> {
                               height: 40,
                               child: Text('$_month $_year',
                                   textAlign: TextAlign.left,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 30,
-                                      color: Colors.black)),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface)),
                             ),
                             Container(
                                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                 child: DropdownButton(
                                   value: dropdownValue,
-                                  focusColor: const Color(0xFF917248),
+                                  dropdownColor:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  focusColor:
+                                      Theme.of(context).colorScheme.secondary,
                                   underline: Container(
                                     height: 2,
-                                    color: const Color(0xFF917248),
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
                                   ),
                                   items: <String>["All", "Events", "Rotations"]
                                       .map<DropdownMenuItem<String>>(
                                           (String value) {
                                     return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: const TextStyle(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
-                                            color: Color(0xFF043673)),
-                                      ),
-                                    );
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                        ));
                                   }).toList(),
                                   onChanged: (String? newValue) {
                                     setState(() {
@@ -140,9 +148,11 @@ class _CalendarPageState extends State<CalendarPage> {
                     child: SfCalendar(
                       headerHeight: 0,
                       viewHeaderHeight: 30,
-                      viewHeaderStyle: const ViewHeaderStyle(
+                      viewHeaderStyle: ViewHeaderStyle(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.background,
                         dayTextStyle: TextStyle(
-                            color: Color(0xFF043673),
+                            color: Theme.of(context).colorScheme.primary,
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                       ),
@@ -156,28 +166,32 @@ class _CalendarPageState extends State<CalendarPage> {
                       // the modal into view instead of staying on the calendar. This breaks things for some reason.
                       selectionDecoration: BoxDecoration(
                           border: Border.all(
-                              color: const Color(0xFF043673), width: 2)),
-                      cellBorderColor: const Color(0xFFFFFFFF),
-                      backgroundColor: const Color(0xFFFFFFFF),
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2)),
+                      cellBorderColor: Theme.of(context).colorScheme.background,
+                      backgroundColor: Theme.of(context).colorScheme.background,
 
-                      todayHighlightColor: const Color(0xFF043673),
-                      monthViewSettings: const MonthViewSettings(
+                      todayHighlightColor:
+                          Theme.of(context).colorScheme.primary,
+                      monthViewSettings: MonthViewSettings(
                         navigationDirection: MonthNavigationDirection.vertical,
                         monthCellStyle: MonthCellStyle(
                           textStyle: TextStyle(
                               fontStyle: FontStyle.normal,
                               fontSize: 18,
-                              color: Colors.black),
+                              color: Theme.of(context).colorScheme.onSurface),
                         ),
                         showTrailingAndLeadingDates: false,
                         appointmentDisplayMode:
                             MonthAppointmentDisplayMode.indicator,
                         showAgenda: false,
-                        agendaItemHeight: 60,
-                        agendaStyle: AgendaStyle(
-                            appointmentTextStyle: TextStyle(
-                                fontSize: 15, color: Color(0xFFFFFFFF)),
-                            backgroundColor: Color(0xFFFFFFFF)),
+                        // agendaItemHeight: 60,
+                        // agendaStyle: AgendaStyle(
+                        //     appointmentTextStyle: TextStyle(
+                        //         fontSize: 15,
+                        //         color: Theme.of(context).colorScheme.surface),
+                        //     backgroundColor:
+                        //         Theme.of(context).colorScheme.background),
                       ),
                     ),
                   ),

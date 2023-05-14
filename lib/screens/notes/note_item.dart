@@ -76,10 +76,11 @@ class NotesItem implements ListItem {
             child: Stack(children: [
               buildTitle(context),
               Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     border: Border(
-                        bottom:
-                            BorderSide(color: Color(0xff917248), width: 2))),
+                        bottom: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                            width: 2))),
               ),
             ])));
   }
