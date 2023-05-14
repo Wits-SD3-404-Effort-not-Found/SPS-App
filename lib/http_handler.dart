@@ -282,22 +282,22 @@ class HTTPManager {
 
   static Future<List> getAccountSettings() async {
     int accountID = AccountManager.getID();
-    final response = await http.get(Uri.parse("http://$serverAddress:$serverPort/account/$accountID"));
-    if(response.statusCode == 200){
+    final response = await http
+        .get(Uri.parse("http://$serverAddress:$serverPort/account/$accountID"));
+    if (response.statusCode == 200) {
       var details = [];
       var accountData = jsonDecode(response.body);
       debugPrint(response.body);
-        details.addAll({
-          accountData["username"],
-          accountData["cell_number"],
-          //accountData["profile_photo"],
-        });
+      details.addAll({
+        accountData["username"],
+        accountData["cell_number"],
+        //accountData["profile_photo"],
+      });
       debugPrint(details.toString());
       return details;
     } else {
       throw Exception("Can't access data");
     }
-
   }
 
   static Future<bool> putUpdatedAccountSettings() async {
@@ -318,4 +318,22 @@ class HTTPManager {
     }
   }
 
+  static Future<bool> putEditedEvent(Events event) async {
+    var eventData = {
+      "start_date": event.startDate.toString(),
+      "end_date": event.endDate.toString(),
+      "event_name": event.eventName.toString(),
+      "description": event.description.toString(),
+      "event_id": event.eventId,
+    };
+    final response = await http.put(
+        Uri.parse("http://$serverAddress:$serverPort/events/"),
+        body: jsonEncode(eventData));
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to edit event");
+      //return Future.value(false);
+    }
+  }
 }
