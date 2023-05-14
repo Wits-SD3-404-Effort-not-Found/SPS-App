@@ -10,15 +10,15 @@ int accountID = AccountManager.getID();
 class Events {
   Events(
       {required this.eventId,
-      this.startDate,
-      this.endDate,
+      required this.startDate,
+      required this.endDate,
       this.eventName,
       this.description,
       this.background});
 
   int eventId;
-  DateTime? startDate;
-  DateTime? endDate;
+  DateTime startDate = DateTime(2000);
+  DateTime endDate = DateTime(2000);
   String? eventName;
   String? description;
   Color? background;

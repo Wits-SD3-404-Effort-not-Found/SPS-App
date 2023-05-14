@@ -27,7 +27,6 @@ class ModalScreenState extends State<ModalScreen> {
   ModalScreenState({required this.focusDay, required this.data});
 
   late final ValueNotifier<List<Events>> _selectedEvents;
-
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -35,11 +34,17 @@ class ModalScreenState extends State<ModalScreen> {
   DateTime? _rangeEnd;
   DateTime _newStartDate = DateTime.now();
   DateTime _newEndDate = DateTime.now();
+  DateTime _editStartDate = DateTime.now();
+  DateTime _editEndDate = DateTime.now();
   TimeOfDay _newStartTime = TimeOfDay.now();
   TimeOfDay _newEndTime = TimeOfDay.now();
+  TimeOfDay _editStartTime = TimeOfDay.now();
+  TimeOfDay _editEndTime = TimeOfDay.now();
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
   final addEventNameController = TextEditingController();
   final addEventDescriptionController = TextEditingController();
+  var _editEventNameController = TextEditingController();
+  var _editEventDescriptionController = TextEditingController();
 
   List<Events> _getEventsForRange(DateTime start, DateTime end) {
     final days = ModalManager.daysInRange(start, end);
@@ -114,6 +119,8 @@ class ModalScreenState extends State<ModalScreen> {
     _selectedEvents.value.clear();
     addEventDescriptionController.dispose();
     addEventNameController.dispose();
+    _editEventDescriptionController.dispose();
+    _editEventNameController.dispose();
     ModalManager.allEvents.clear();
     // This is to clear duplication of events in the modal
     super.dispose();
@@ -146,10 +153,43 @@ class ModalScreenState extends State<ModalScreen> {
     }
   }
 
+  void _selectEditStartTime() async {
+    final TimeOfDay? newTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.inputOnly,
+    );
+    if (newTime != null) {
+      setState(() {
+        _editStartTime = newTime;
+      });
+    }
+  }
+
+  void _selectEditEndTime() async {
+    final TimeOfDay? newTime = await showTimePicker(
+      context: context,
+      helpText: "",
+      initialTime: TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.inputOnly,
+    );
+    if (newTime != null) {
+      setState(() {
+        _editEndTime = newTime;
+      });
+    }
+  }
+
   void selectionChanged(
       DateRangePickerSelectionChangedArgs selectionChangedArgs) {
     _newStartDate = selectionChangedArgs.value.startDate;
     _newEndDate = selectionChangedArgs.value.endDate;
+  }
+
+  void editSelectionChanged(
+      DateRangePickerSelectionChangedArgs selectionChangedArgs) {
+    _editStartDate = selectionChangedArgs.value.startDate;
+    _editEndDate = selectionChangedArgs.value.endDate;
   }
 
   @override
@@ -197,6 +237,7 @@ class ModalScreenState extends State<ModalScreen> {
                           width: 50,
                           color: Theme.of(context).colorScheme.background,
                           alignment: Alignment.centerRight,
+                          // popup code for adding an event
                           child: GestureDetector(
                             onTap: () {
                               showDialog(
@@ -546,8 +587,8 @@ class ModalScreenState extends State<ModalScreen> {
                             borderRadius: BorderRadius.zero,
                           ),
                           child: ListTile(
-                              onTap: () =>
-                                  '${ModalManager.allEvents[_selectedDay]![index]}',
+                              //onTap: () =>
+                              //    '${ModalManager.allEvents[_selectedDay]![index]}',
                               minVerticalPadding: 18.0,
                               dense: true,
                               title: Text(
@@ -574,6 +615,388 @@ class ModalScreenState extends State<ModalScreen> {
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
+                                  // popup code for edit an event
+                                  GestureDetector(
+                                    onTap: () {
+                                      if (!isRotation(ModalManager
+                                          .allEvents[_selectedDay]![index])) {
+                                        _editEventNameController =
+                                            TextEditingController.fromValue(
+                                          TextEditingValue(
+                                            text: ModalManager
+                                                .allEvents[_selectedDay]![index]
+                                                .eventName
+                                                .toString(),
+                                          ),
+                                        );
+                                        _editEventDescriptionController =
+                                            TextEditingController.fromValue(
+                                          TextEditingValue(
+                                            text: ModalManager
+                                                .allEvents[_selectedDay]![index]
+                                                .description
+                                                .toString(),
+                                          ),
+                                        );
+                                        _editStartTime = TimeOfDay(
+                                            hour: ModalManager
+                                                .allEvents[_selectedDay]![index]
+                                                .startDate
+                                                .hour,
+                                            minute: ModalManager
+                                                .allEvents[_selectedDay]![index]
+                                                .startDate
+                                                .minute);
+                                        _editEndTime = TimeOfDay(
+                                            hour: ModalManager
+                                                .allEvents[_selectedDay]![index]
+                                                .endDate
+                                                .hour,
+                                            minute: ModalManager
+                                                .allEvents[_selectedDay]![index]
+                                                .endDate
+                                                .minute);
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return SimpleDialog(
+                                                title: const Text("Edit Event"),
+                                                children: [
+                                                  Column(children: [
+                                                    Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 8,
+                                                                vertical: 8),
+                                                        // constrained box to encapsulate user input text box
+                                                        child: ConstrainedBox(
+                                                            constraints:
+                                                                BoxConstraints
+                                                                    .tight(
+                                                                        const Size(
+                                                                            275,
+                                                                            50)),
+                                                            child:
+                                                                TextFormField(
+                                                                    // styles user input text box
+                                                                    decoration:
+                                                                        const InputDecoration(
+                                                                      focusedBorder: UnderlineInputBorder(
+                                                                          borderSide: BorderSide(
+                                                                              color: Color(0xff917248),
+                                                                              width: 1.5)),
+                                                                      enabledBorder: UnderlineInputBorder(
+                                                                          borderSide: BorderSide(
+                                                                              color: Color(0xff917248),
+                                                                              width: 1.5)),
+                                                                      hintText:
+                                                                          'Event Name',
+                                                                      hintStyle:
+                                                                          TextStyle(
+                                                                              fontSize: 14),
+                                                                    ),
+                                                                    cursorColor:
+                                                                        const Color(
+                                                                            0xff917248),
+                                                                    // to retrieve the user input text from the TextFormField
+                                                                    controller:
+                                                                        _editEventNameController))),
+                                                    Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 8,
+                                                                vertical: 8),
+                                                        // constrained box to encapsulate user input text box
+                                                        child: ConstrainedBox(
+                                                            constraints:
+                                                                BoxConstraints
+                                                                    .tight(
+                                                                        const Size(
+                                                                            275,
+                                                                            50)),
+                                                            child:
+                                                                TextFormField(
+                                                                    // styles user input text box
+                                                                    decoration:
+                                                                        const InputDecoration(
+                                                                      focusedBorder: UnderlineInputBorder(
+                                                                          borderSide: BorderSide(
+                                                                              color: Color(0xff917248),
+                                                                              width: 1.5)),
+                                                                      enabledBorder: UnderlineInputBorder(
+                                                                          borderSide: BorderSide(
+                                                                              color: Color(0xff917248),
+                                                                              width: 1.5)),
+                                                                      hintText:
+                                                                          'Event Description',
+                                                                      hintStyle:
+                                                                          TextStyle(
+                                                                              fontSize: 14),
+                                                                    ),
+                                                                    cursorColor:
+                                                                        const Color(
+                                                                            0xff917248),
+                                                                    // to retrieve the user input text from the TextFormField
+                                                                    controller:
+                                                                        _editEventDescriptionController))),
+                                                    const Align(
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 30,
+                                                                    top: 30,
+                                                                    right: 30,
+                                                                    bottom: 8),
+                                                            child: Text(
+                                                              "Select start and end dates:",
+                                                              style: TextStyle(
+                                                                  fontSize: 18),
+                                                            ))),
+                                                    Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 8,
+                                                                vertical: 4),
+                                                        child: SizedBox(
+                                                          height: 300,
+                                                          width: 275,
+                                                          child:
+                                                              SfDateRangePicker(
+                                                            initialDisplayDate:
+                                                                _focusedDay,
+                                                            initialSelectedRange: PickerDateRange(
+                                                                ModalManager
+                                                                    .allEvents[
+                                                                        _selectedDay]![
+                                                                        index]
+                                                                    .startDate,
+                                                                ModalManager
+                                                                    .allEvents[
+                                                                        _selectedDay]![
+                                                                        index]
+                                                                    .endDate),
+                                                            startRangeSelectionColor:
+                                                                const Color(
+                                                                    0xFF043673),
+                                                            endRangeSelectionColor:
+                                                                const Color(
+                                                                    0xFF043673),
+                                                            rangeSelectionColor:
+                                                                const Color
+                                                                        .fromRGBO(
+                                                                    4,
+                                                                    54,
+                                                                    115,
+                                                                    0.3),
+                                                            view:
+                                                                DateRangePickerView
+                                                                    .month,
+                                                            selectionMode:
+                                                                DateRangePickerSelectionMode
+                                                                    .range,
+                                                            onSelectionChanged:
+                                                                editSelectionChanged,
+                                                          ),
+                                                        )),
+                                                    Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 30,
+                                                                vertical: 8),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            const Text(
+                                                                'Start time:',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        18)),
+                                                            TextButton(
+                                                              style: TextButton.styleFrom(
+                                                                  backgroundColor:
+                                                                      Colors.grey[
+                                                                          400],
+                                                                  fixedSize:
+                                                                      const Size(
+                                                                          100,
+                                                                          3)),
+                                                              onPressed:
+                                                                  _selectEditStartTime,
+                                                              child: Text(
+                                                                _editStartTime
+                                                                    .format(
+                                                                        context),
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        14),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )),
+                                                    Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 30,
+                                                                vertical: 8),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            const Text(
+                                                                'End time:',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        18)),
+                                                            TextButton(
+                                                              style: TextButton.styleFrom(
+                                                                  backgroundColor:
+                                                                      Colors.grey[
+                                                                          400],
+                                                                  fixedSize:
+                                                                      const Size(
+                                                                          100,
+                                                                          3)),
+                                                              onPressed:
+                                                                  _selectEditEndTime,
+                                                              child: Text(
+                                                                _editEndTime
+                                                                    .format(
+                                                                        context),
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        14),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ))
+                                                  ]),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        TextButton(
+                                                          child: const Text(
+                                                            "Cancel",
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            _editEventNameController
+                                                                .clear();
+                                                            _editEventDescriptionController
+                                                                .clear();
+                                                          },
+                                                        ),
+                                                        TextButton(
+                                                          child: const Text(
+                                                              "Confirm",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Colors
+                                                                      .black)),
+                                                          onPressed: () {
+                                                            final editStartDateTime = DateTime(
+                                                                _editStartDate
+                                                                    .year,
+                                                                _editStartDate
+                                                                    .month,
+                                                                _editStartDate
+                                                                    .day,
+                                                                _editStartTime
+                                                                    .hour,
+                                                                _editStartTime
+                                                                    .minute);
+                                                            final editEndDateTime =
+                                                                DateTime(
+                                                                    _editEndDate
+                                                                        .year,
+                                                                    _editEndDate
+                                                                        .month,
+                                                                    _editEndDate
+                                                                        .day,
+                                                                    _editEndTime
+                                                                        .hour,
+                                                                    _editEndTime
+                                                                        .minute);
+                                                            final editedEvent = Events(
+                                                                eventId: ModalManager
+                                                                    .allEvents[
+                                                                        _selectedDay]![
+                                                                        index]
+                                                                    .eventId,
+                                                                startDate:
+                                                                    editStartDateTime,
+                                                                endDate:
+                                                                    editEndDateTime,
+                                                                eventName:
+                                                                    _editEventNameController
+                                                                        .text,
+                                                                description:
+                                                                    _editEventDescriptionController
+                                                                        .text);
+                                                            HTTPManager
+                                                                .putEditedEvent(
+                                                                    editedEvent);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            _editEventNameController
+                                                                .clear();
+                                                            _editEventDescriptionController
+                                                                .clear();
+                                                          },
+                                                        ),
+                                                      ])
+                                                ],
+                                              );
+                                            });
+                                      } else {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    "Cannot edit a Rotation!"),
+                                                actions: [
+                                                  TextButton(
+                                                    child: const Text("OK"),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      }
+                                    },
+                                    child: const Icon(
+                                      Icons.edit_outlined,
+                                      size: 30,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  // popup code for delete an event
                                   GestureDetector(
                                     onTap: () {
                                       if (!isRotation(ModalManager
