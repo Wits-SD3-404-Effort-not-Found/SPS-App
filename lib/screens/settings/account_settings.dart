@@ -50,11 +50,11 @@ class _AccountPageState extends State<AccountPage> {
         builder: (BuildContext ctx, AsyncSnapshot snapshot) {
           //debugPrint(snapshot.data['username']);
         if (snapshot.data == null) {
-          return const Scaffold(
-            backgroundColor: Colors.white,
+          return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.background,
             body: Center(
             child: CircularProgressIndicator(
-            color: Color(0xff917248),
+            color: Theme.of(context).colorScheme.secondary,
             ),
           ));
         } else {
@@ -66,6 +66,7 @@ class _AccountPageState extends State<AccountPage> {
         }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: <Widget>[
           Container(
@@ -76,7 +77,9 @@ class _AccountPageState extends State<AccountPage> {
                 border: Border(
                     bottom: BorderSide(
                         color: Theme.of(context).colorScheme.secondary,
-                        width: 2))),
+                        width: 2)
+                )
+            ),
             child: Row(
               children: [
                 Align(
@@ -88,20 +91,25 @@ class _AccountPageState extends State<AccountPage> {
                             onTap: () {
                               Navigator.pop(context);
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.arrow_back_ios_rounded,
                               size: 30,
-                              color: Colors.black,
-                            )))),
+                              color: Theme.of(context).colorScheme.onBackground,
+                            )
+                        )
+                    )
+                ),
                 Container(
                     height: 50,
                     width: 300,
                     alignment: Alignment.centerLeft,
-                    child: const Text(
+                    child: Text(
                       "Account Settings",
-                      style: TextStyle(fontSize: 30),
+                      style: TextStyle(fontSize: 30,
+                      color: Theme.of(context).colorScheme.onBackground),
                       textAlign: TextAlign.left,
-                    ))
+                    )
+                )
               ],
             ),
           ),
@@ -133,9 +141,10 @@ class _AccountPageState extends State<AccountPage> {
               height: 40,
               width: 300,
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 "Username:",
-                style: TextStyle(fontSize: 25),
+                style: TextStyle(fontSize: 25,
+                color: Theme.of(context).colorScheme.onBackground),
                 textAlign: TextAlign.left,
               )
           ),
@@ -146,14 +155,16 @@ class _AccountPageState extends State<AccountPage> {
           Container(
             height: 40,
             width: 300,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(color: Color(0xff917248), width:2)
+                bottom: BorderSide(color: Theme.of(context).colorScheme.secondary,
+                    width:2)
               )
             ),
             child: TextField(
               controller: usernameController,
-              style: const TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20,
+                  color: Theme.of(context).colorScheme.onBackground),
               textAlign: TextAlign.left,
             ),
           ),
@@ -165,9 +176,10 @@ class _AccountPageState extends State<AccountPage> {
               height: 50,
               width: 300,
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 "Cellphone Number:",
-                style: TextStyle(fontSize: 25),
+                style: TextStyle(fontSize: 25,
+                color: Theme.of(context).colorScheme.onBackground),
                 textAlign: TextAlign.left,
               )
           ),
@@ -178,14 +190,15 @@ class _AccountPageState extends State<AccountPage> {
           Container(
             height: 40,
             width: 300,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 border: Border(
-                    bottom: BorderSide(color: Color(0xff917248), width:2)
+                    bottom: BorderSide(color: Theme.of(context).colorScheme.secondary, width:2)
                 )
             ),
             child: TextField(
               controller: cellNumberController,
-              style: const TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20,
+              color: Theme.of(context).colorScheme.onBackground),
               textAlign: TextAlign.left,
             ),
           ),
@@ -197,9 +210,10 @@ class _AccountPageState extends State<AccountPage> {
               height: 40,
               width: 300,
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 "Email:",
-                style: TextStyle(fontSize: 25),
+                style: TextStyle(fontSize: 25,
+                color: Theme.of(context).colorScheme.onBackground),
                 textAlign: TextAlign.left,
               )
           ),
@@ -210,14 +224,16 @@ class _AccountPageState extends State<AccountPage> {
           Container(
             height: 40,
             width: 300,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 border: Border(
-                    bottom: BorderSide(color: Color(0xff917248), width:2)
+                    bottom: BorderSide(color: Theme.of(context).colorScheme.secondary,
+                        width:2)
                 )
             ),
             child: Text(
               email,
-              style: const TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20,
+              color: Theme.of(context).colorScheme.onBackground),
               textAlign: TextAlign.left,
             ),
           ),
@@ -235,9 +251,10 @@ class _AccountPageState extends State<AccountPage> {
                 );
             },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff043673)),
-              child: const Text('Save')
-
+                  backgroundColor: Theme.of(context).colorScheme.primary),
+              child: Text('Save', style:
+                TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 16)
+                ,)
           )
         ],
       ),
