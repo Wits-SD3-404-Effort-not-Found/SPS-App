@@ -74,7 +74,7 @@ class ModalScreenState extends State<ModalScreen> {
       _focusedDay = focusedDay;
       _rangeStart = start;
       _rangeEnd = end;
-      _rangeSelectionMode = RangeSelectionMode.toggledOn;
+      _rangeSelectionMode = RangeSelectionMode.toggledOff;
     });
     // `start` or `end` could be null
     if (start != null && end != null) {
