@@ -123,6 +123,17 @@ class HTTPManager {
     return eventsList;
   }
 
+  //http delete function to delete an event form the database
+  static Future<bool> deleteEvent(int eventID) async {
+    final response = await http
+        .delete(Uri.parse('http://$serverAddress:$serverPort/events/$eventID'));
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to delete event");
+    }
+  }
+
   // http get function to get the list of notes from database
   static Future<List<Map>> getNotes() async {
     int accountID = AccountManager.getID();
@@ -247,4 +258,64 @@ class HTTPManager {
       throw Exception('Session Token failed to be removed $code : $message');
     }
   }
+
+  static Future<bool> postNewEvent(Events event) async {
+    int accountID = AccountManager.getID();
+    var eventData = {
+      "account_id": accountID,
+      "start_date": event.startDate.toString(),
+      "end_date": event.endDate.toString(),
+      "event_name": event.eventName.toString(),
+      "description": event.description.toString()
+    };
+    final response = await http.post(
+        Uri.parse("http://$serverAddress:$serverPort/events/"),
+        body: jsonEncode(eventData));
+
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to post new event");
+      //return Future.value(false);
+    }
+  }
+
+  static Future<List> getAccountSettings() async {
+    int accountID = AccountManager.getID();
+    final response = await http.get(Uri.parse("http://$serverAddress:$serverPort/account/$accountID"));
+    if(response.statusCode == 200){
+      var details = [];
+      var accountData = jsonDecode(response.body);
+      debugPrint(response.body);
+        details.addAll({
+          accountData["username"],
+          accountData["cell_number"],
+          //accountData["profile_photo"],
+        });
+      debugPrint(details.toString());
+      return details;
+    } else {
+      throw Exception("Can't access data");
+    }
+
+  }
+
+  static Future<bool> putUpdatedAccountSettings() async {
+    var accountData = {
+      "account_id": AccountManager.getID(),
+      "username": AccountManager.getUsername(),
+      "cell_number": AccountManager.getCellNumber(),
+      "profile_photo": [0]
+    };
+    final response = await http.put(
+        Uri.parse("http://$serverAddress:$serverPort/account/"),
+        body: jsonEncode(accountData));
+    debugPrint(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to update account settings");
+    }
+  }
+
 }

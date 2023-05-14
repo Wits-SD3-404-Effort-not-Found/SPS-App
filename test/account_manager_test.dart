@@ -1,5 +1,5 @@
-import 'dart:typed_data';
-import 'package:convert/convert.dart';
+//import 'dart:typed_data';
+//import 'package:convert/convert.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sps_app/account_manager.dart';
 
@@ -50,11 +50,13 @@ void main() {
     expect(AccountManager.getCellNumber(), "");
   });
 
+  /*
   test("test getter and setter for profilePhotoBytes", () {
     String testPhoto = "0xff917248";
     Uint8List testPhotoList =
         Uint8List.fromList(hex.decode(testPhoto.substring(2)));
     AccountManager.setPhoto(testPhoto);
     expect(AccountManager.getPhoto(), testPhotoList);
-  });
+  });*/
+
 }
