@@ -38,57 +38,8 @@ class _CalendarPageState extends State<CalendarPage> {
                 child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Center(
-                      //child: Column(children: [
-                      //Container(
-                      // height: 50,
-                      // width: double.infinity,
-                      //  alignment: Alignment.bottomLeft,
-                      //   decoration: const BoxDecoration(
-                      //      border: Border(
-                      //         bottom: BorderSide(
-                      //              color: Color(0xff917248), width: 2)))),
                       child: SfCalendar(
                         view: CalendarView.month,
-                        /*loadMoreWidgetBuilder: (BuildContext context,
-                            LoadMoreCallback loadMoreAppointments) {
-                          return Container(
-                              height: 50,
-                              width: double.infinity,
-                              color: Colors.white38,
-                              alignment: Alignment.bottomRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                          title: const Text("Add an Event"),
-                                          content: const Text(
-                                              "Stuff to add event here"),
-                                          actions: [
-                                            TextButton(
-                                              child: const Text("Cancel"),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            TextButton(
-                                              child: const Text("Delete"),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ]);
-                                    },
-                                  );
-                                },
-                                child: const Icon(
-                                  Icons.add,
-                                  color: Color(0xFF043673),
-                                  size: 34,
-                                ),
-                              ));
-                        },*/
                         onSelectionChanged: selectionChanged,
                         //initialSelectedDate: Problem Child -> causes things to break because the update moves
                         //the modal into view instead of staying on the calendar. This breaks things for some reason.

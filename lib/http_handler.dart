@@ -250,25 +250,20 @@ class HTTPManager {
 
   static Future<bool> postNewEvent(Events event) async {
     int accountID = AccountManager.getID();
-    debugPrint("IN HTTP FUNCTION");
     var eventData = {
       "account_id": accountID,
-      "start_data": event.startDate.toString(),
+      "start_date": event.startDate.toString(),
       "end_date": event.endDate.toString(),
       "event_name": event.eventName.toString(),
       "description": event.description.toString()
     };
     final response = await http.post(
-        Uri.parse("http://$serverAddress:$serverPort/events"),
+        Uri.parse("http://$serverAddress:$serverPort/events/"),
         body: jsonEncode(eventData));
 
     if (response.statusCode == 200) {
-      debugPrint("add note successful");
       return Future.value(true);
     } else {
-      debugPrint("add note not successful");
-      debugPrint(eventData.toString());
-      debugPrint(response.statusCode.toString());
       throw Exception("Failed to post new event");
       //return Future.value(false);
     }

@@ -33,6 +33,10 @@ class ModalScreenState extends State<ModalScreen> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+  DateTime _newStartDate = DateTime.now();
+  DateTime _newEndDate = DateTime.now();
+  TimeOfDay _newStartTime = TimeOfDay.now();
+  TimeOfDay _newEndTime = TimeOfDay.now();
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
   final addEventNameController = TextEditingController();
   final addEventDescriptionController = TextEditingController();
@@ -52,6 +56,8 @@ class ModalScreenState extends State<ModalScreen> {
     });
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
+        _newStartDate = focusedDay;
+        _newEndDate = focusedDay;
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
         _rangeStart = null;
@@ -70,10 +76,6 @@ class ModalScreenState extends State<ModalScreen> {
       _rangeEnd = end;
       _rangeSelectionMode = RangeSelectionMode.toggledOn;
     });
-    debugPrint("start");
-    debugPrint(start as String?);
-    debugPrint("end");
-    debugPrint(end as String?);
     // `start` or `end` could be null
     if (start != null && end != null) {
       _selectedEvents.value = _getEventsForRange(start, end);
@@ -96,6 +98,8 @@ class ModalScreenState extends State<ModalScreen> {
     super.initState();
     _focusedDay = focusDay;
     _selectedDay = _focusedDay;
+    _newStartDate = _focusedDay;
+    _newEndDate = _focusedDay;
     getEvents();
     _selectedEvents =
         ValueNotifier(ModalManager.getEventsForDay(_selectedDay!));
@@ -106,15 +110,12 @@ class ModalScreenState extends State<ModalScreen> {
   void dispose() {
     _selectedEvents.dispose();
     _selectedEvents.value.clear();
+    addEventDescriptionController.dispose();
+    addEventNameController.dispose();
     ModalManager.allEvents.clear();
     // This is to clear duplication of events in the modal
     super.dispose();
   }
-
-  TimeOfDay _startTime = TimeOfDay.now();
-  TimeOfDay _endTime = TimeOfDay.now();
-  DateTime _newStartDate = DateTime.now();
-  DateTime _newEndDate = DateTime.now();
 
   void _selectStartTime() async {
     final TimeOfDay? newTime = await showTimePicker(
@@ -124,7 +125,7 @@ class ModalScreenState extends State<ModalScreen> {
     );
     if (newTime != null) {
       setState(() {
-        _startTime = newTime;
+        _newStartTime = newTime;
       });
     }
   }
@@ -138,7 +139,7 @@ class ModalScreenState extends State<ModalScreen> {
     );
     if (newTime != null) {
       setState(() {
-        _endTime = newTime;
+        _newEndTime = newTime;
       });
     }
   }
@@ -287,6 +288,10 @@ class ModalScreenState extends State<ModalScreen> {
                                               height: 300,
                                               width: 275,
                                               child: SfDateRangePicker(
+                                                initialDisplayDate: _focusedDay,
+                                                initialSelectedRange:
+                                                    PickerDateRange(_focusedDay,
+                                                        _focusedDay),
                                                 startRangeSelectionColor:
                                                     const Color(0xFF043673),
                                                 endRangeSelectionColor:
@@ -321,7 +326,8 @@ class ModalScreenState extends State<ModalScreen> {
                                                           const Size(100, 3)),
                                                   onPressed: _selectStartTime,
                                                   child: Text(
-                                                    _startTime.format(context),
+                                                    _newStartTime
+                                                        .format(context),
                                                     style: const TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 14),
@@ -348,7 +354,7 @@ class ModalScreenState extends State<ModalScreen> {
                                                           const Size(100, 3)),
                                                   onPressed: _selectEndTime,
                                                   child: Text(
-                                                    _endTime.format(context),
+                                                    _newEndTime.format(context),
                                                     style: const TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 14),
@@ -373,8 +379,8 @@ class ModalScreenState extends State<ModalScreen> {
                                                 addEventNameController.clear();
                                                 addEventDescriptionController
                                                     .clear();
-                                                _startTime = TimeOfDay.now();
-                                                _endTime = TimeOfDay.now();
+                                                _newStartTime = TimeOfDay.now();
+                                                _newEndTime = TimeOfDay.now();
                                               },
                                             ),
                                             TextButton(
@@ -388,14 +394,14 @@ class ModalScreenState extends State<ModalScreen> {
                                                         _newStartDate.year,
                                                         _newStartDate.month,
                                                         _newStartDate.day,
-                                                        _startTime.hour,
-                                                        _startTime.minute);
+                                                        _newStartTime.hour,
+                                                        _newStartTime.minute);
                                                 final addEndDateTime = DateTime(
                                                     _newEndDate.year,
                                                     _newEndDate.month,
                                                     _newEndDate.day,
-                                                    _endTime.hour,
-                                                    _endTime.minute);
+                                                    _newEndTime.hour,
+                                                    _newEndTime.minute);
                                                 final newEvent = Events(
                                                     eventId: 0,
                                                     startDate: addStartDateTime,
@@ -406,22 +412,14 @@ class ModalScreenState extends State<ModalScreen> {
                                                     description:
                                                         addEventDescriptionController
                                                             .text);
-                                                // call http function here
-                                                //debugPrint(newEvent.startDate
-                                                //   .toString());
-                                                //debugPrint(newEvent.endDate
-                                                //    .toString());
-                                                // debugPrint(newEvent.eventName);
-                                                // debugPrint(
-                                                //     newEvent.description);
                                                 HTTPManager.postNewEvent(
                                                     newEvent);
                                                 Navigator.of(context).pop();
                                                 addEventNameController.clear();
                                                 addEventDescriptionController
                                                     .clear();
-                                                _startTime = TimeOfDay.now();
-                                                _endTime = TimeOfDay.now();
+                                                _newStartTime = TimeOfDay.now();
+                                                _newEndTime = TimeOfDay.now();
                                               },
                                             ),
                                           ])
@@ -438,7 +436,6 @@ class ModalScreenState extends State<ModalScreen> {
                           ))
                     ],
                   )),
-              ////////////////////////////////////////////////////////
               TableCalendar<Events>(
                 eventLoader: ModalManager.getEventsForDay,
                 focusedDay: focusDay,
