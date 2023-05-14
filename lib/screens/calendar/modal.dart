@@ -163,36 +163,39 @@ class ModalScreenState extends State<ModalScreen> {
               Container(
                   height: 50,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       border: Border(
-                          bottom:
-                              BorderSide(color: Color(0xff917248), width: 2))),
+                          bottom: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 2))),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
                         height: 50,
                         width: 50,
-                        color: Colors.white38,
+                        color: Theme.of(context).colorScheme.background,
                         alignment: Alignment.centerLeft,
                         child: GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: const Icon(
+                          child: Icon(
                             Icons.arrow_back_ios_rounded,
-                            color: Colors.black,
+                            color: Theme.of(context).colorScheme.onBackground,
                             size: 30,
                           ),
                         ),
                       ),
-                      const Text("Daily Schedule",
+                      Text("Daily Schedule",
                           textAlign: TextAlign.left,
-                          style: TextStyle(color: Colors.black, fontSize: 25)),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onBackground,
+                              fontSize: 25)),
                       Container(
                           height: 50,
                           width: 50,
-                          color: Colors.white38,
+                          color: Theme.of(context).colorScheme.background,
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
                             onTap: () {
@@ -213,26 +216,30 @@ class ModalScreenState extends State<ModalScreen> {
                                                         const Size(275, 50)),
                                                 child: TextFormField(
                                                     // styles user input text box
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      focusedBorder:
-                                                          UnderlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                  color: Color(
-                                                                      0xff917248),
-                                                                  width: 1.5)),
-                                                      enabledBorder:
-                                                          UnderlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                  color: Color(
-                                                                      0xff917248),
-                                                                  width: 1.5)),
+                                                    decoration: InputDecoration(
+                                                      focusedBorder: UnderlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                              width: 1.5)),
+                                                      enabledBorder: UnderlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                              width: 1.5)),
                                                       hintText: 'Event Name',
-                                                      hintStyle: TextStyle(
-                                                          fontSize: 14),
+                                                      hintStyle:
+                                                          const TextStyle(
+                                                              fontSize: 14),
                                                     ),
                                                     cursorColor:
-                                                        const Color(0xff917248),
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
                                                     // to retrieve the user input text from the TextFormField
                                                     controller:
                                                         addEventNameController))),
@@ -246,27 +253,31 @@ class ModalScreenState extends State<ModalScreen> {
                                                         const Size(275, 50)),
                                                 child: TextFormField(
                                                     // styles user input text box
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      focusedBorder:
-                                                          UnderlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                  color: Color(
-                                                                      0xff917248),
-                                                                  width: 1.5)),
-                                                      enabledBorder:
-                                                          UnderlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                  color: Color(
-                                                                      0xff917248),
-                                                                  width: 1.5)),
+                                                    decoration: InputDecoration(
+                                                      focusedBorder: UnderlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                              width: 1.5)),
+                                                      enabledBorder: UnderlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                              width: 1.5)),
                                                       hintText:
                                                           'Event Description',
-                                                      hintStyle: TextStyle(
-                                                          fontSize: 14),
+                                                      hintStyle:
+                                                          const TextStyle(
+                                                              fontSize: 14),
                                                     ),
                                                     cursorColor:
-                                                        const Color(0xff917248),
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
                                                     // to retrieve the user input text from the TextFormField
                                                     controller:
                                                         addEventDescriptionController))),
@@ -295,12 +306,17 @@ class ModalScreenState extends State<ModalScreen> {
                                                     PickerDateRange(_focusedDay,
                                                         _focusedDay),
                                                 startRangeSelectionColor:
-                                                    const Color(0xFF043673),
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
                                                 endRangeSelectionColor:
-                                                    const Color(0xFF043673),
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
                                                 rangeSelectionColor:
-                                                    const Color.fromRGBO(
-                                                        4, 54, 115, 0.3),
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
                                                 view: DateRangePickerView.month,
                                                 selectionMode:
                                                     DateRangePickerSelectionMode
@@ -323,15 +339,19 @@ class ModalScreenState extends State<ModalScreen> {
                                                 TextButton(
                                                   style: TextButton.styleFrom(
                                                       backgroundColor:
-                                                          Colors.grey[400],
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .surface,
                                                       fixedSize:
                                                           const Size(100, 3)),
                                                   onPressed: _selectStartTime,
                                                   child: Text(
                                                     _newStartTime
                                                         .format(context),
-                                                    style: const TextStyle(
-                                                        color: Colors.black,
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onSurface,
                                                         fontSize: 14),
                                                   ),
                                                 ),
@@ -351,14 +371,18 @@ class ModalScreenState extends State<ModalScreen> {
                                                 TextButton(
                                                   style: TextButton.styleFrom(
                                                       backgroundColor:
-                                                          Colors.grey[400],
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .surface,
                                                       fixedSize:
                                                           const Size(100, 3)),
                                                   onPressed: _selectEndTime,
                                                   child: Text(
                                                     _newEndTime.format(context),
-                                                    style: const TextStyle(
-                                                        color: Colors.black,
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onSurface,
                                                         fontSize: 14),
                                                   ),
                                                 ),
@@ -370,11 +394,13 @@ class ModalScreenState extends State<ModalScreen> {
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             TextButton(
-                                              child: const Text(
+                                              child: Text(
                                                 "Cancel",
                                                 style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onBackground),
                                               ),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
@@ -386,10 +412,12 @@ class ModalScreenState extends State<ModalScreen> {
                                               },
                                             ),
                                             TextButton(
-                                              child: const Text("Confirm",
+                                              child: Text("Confirm",
                                                   style: TextStyle(
                                                       fontSize: 16,
-                                                      color: Colors.black)),
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onBackground)),
                                               onPressed: () {
                                                 final addStartDateTime =
                                                     DateTime(
@@ -430,9 +458,9 @@ class ModalScreenState extends State<ModalScreen> {
                                 },
                               );
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.add,
-                              color: Colors.black,
+                              color: Theme.of(context).colorScheme.onBackground,
                               size: 34,
                             ),
                           ))
@@ -465,13 +493,13 @@ class ModalScreenState extends State<ModalScreen> {
                 rowHeight: 60,
                 headerStyle: HeaderStyle(
                     formatButtonVisible: false,
-                    titleTextStyle: const TextStyle(
-                        color: Colors.black,
+                    titleTextStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground,
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold),
-                    decoration: const BoxDecoration(
-                        color: Color(0xFFFFFFFF),
-                        borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.background,
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10))),
                     leftChevronIcon: Icon(
@@ -485,8 +513,8 @@ class ModalScreenState extends State<ModalScreen> {
                       size: 28,
                     )),
                 daysOfWeekStyle: DaysOfWeekStyle(
-                    weekdayStyle: const TextStyle(
-                        color: Colors.black,
+                    weekdayStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 15,
                         fontWeight: FontWeight.bold),
                     weekendStyle: TextStyle(
@@ -494,11 +522,14 @@ class ModalScreenState extends State<ModalScreen> {
                         fontSize: 15,
                         fontWeight: FontWeight.bold)),
                 calendarStyle: CalendarStyle(
-                    todayDecoration: const BoxDecoration(
-                        color: Color(0xFF043673), shape: BoxShape.circle),
+                    todayDecoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        shape: BoxShape.circle),
                     selectedDecoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.secondary,
-                        shape: BoxShape.circle)),
+                        shape: BoxShape.circle),
+                    defaultTextStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground)),
               ),
               SingleChildScrollView(
                   child: ListView.builder(
@@ -521,15 +552,19 @@ class ModalScreenState extends State<ModalScreen> {
                               dense: true,
                               title: Text(
                                 '${ModalManager.allEvents[_selectedDay]![index].eventName}',
-                                style: const TextStyle(
-                                    color: Colors.black,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold),
                               ),
                               subtitle: Text(
                                 '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString()} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString()}',
-                                style: const TextStyle(
-                                    color: Colors.black,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -595,10 +630,12 @@ class ModalScreenState extends State<ModalScreen> {
                                             });
                                       }
                                     },
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.delete_forever,
                                       size: 30,
-                                      color: Colors.black,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
                                     ),
                                   )
                                 ],
