@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-List<String> list1 = <String>['One', 'Two', 'Three', 'Four'];
-List<String> list2 = <String>['One', 'Two', 'Three', 'Four'];
+import 'package:sps_app/http_handler.dart';
 
 class ChangeSecurityQuestionPage extends StatefulWidget {
   const ChangeSecurityQuestionPage({super.key});
@@ -13,11 +11,14 @@ class ChangeSecurityQuestionPage extends StatefulWidget {
 
 class _ChangeSecurityQuestionPageState
     extends State<ChangeSecurityQuestionPage> {
-  String dropdownValue1 = list1.first;
-  String dropdownValue2 = list2.first;
-
   final q1Controller = TextEditingController();
   final q2Controller = TextEditingController();
+
+  List<Map> questions = [];
+  List<String> q1Texts = [];
+  List<String> q2Texts = [];
+  String dropdownValue1 = "";
+  String dropdownValue2 = "";
 
   @override
   void dispose() {

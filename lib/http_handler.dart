@@ -259,6 +259,25 @@ class HTTPManager {
     }
   }
 
+  static Future<List<Map>> fetchAllSecurityQuestions() async {
+    final response = await http
+        .get(Uri.parse('http://$serverAddress:$serverPort/security/questions'));
+
+    List<Map> questions = [];
+    if (response.statusCode == 200) {
+      var jsonQuestions = jsonDecode(response.body);
+      for (var q in jsonQuestions) {
+        questions.add({
+          "questionsID": q["secques_id"],
+          "questionText": q["question"],
+        });
+      }
+      return questions;
+    } else {
+      throw Exception("Can't fetch questions");
+    }
+  }
+
   static Future<bool> postNewEvent(Events event) async {
     int accountID = AccountManager.getID();
     var eventData = {
