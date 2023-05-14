@@ -268,4 +268,22 @@ class HTTPManager {
 
   }
 
+  static Future<bool> putUpdatedAccountSettings() async {
+    var accountData = {
+      "account_id": AccountManager.getID(),
+      "username": AccountManager.getUsername(),
+      "cell_number": AccountManager.getCellNumber(),
+      "profile_photo": [0]
+    };
+    final response = await http.put(
+        Uri.parse("http://$serverAddress:$serverPort/account/"),
+        body: jsonEncode(accountData));
+    debugPrint(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to update account settings");
+    }
+  }
+
 }

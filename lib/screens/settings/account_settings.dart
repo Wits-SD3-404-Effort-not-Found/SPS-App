@@ -1,6 +1,8 @@
 //import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:sps_app/http_handler.dart';
+import 'package:sps_app/screens/authentication/login_manager.dart';
+import 'package:sps_app/screens/settings/settings.dart';
 import '../../account_manager.dart';
 
 class AccountPage extends StatefulWidget {
@@ -13,7 +15,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   var usernameController = TextEditingController();
   var cellNumberController = TextEditingController();
-  var email = ''; //come back
+  var email = LoginManager.getUsername();
   //Uint8List photo = Uint8List(0);
 
   @override
@@ -34,6 +36,13 @@ class _AccountPageState extends State<AccountPage> {
     AccountManager.setCellNumber(cellNumberController.text);
   }
 
+  Future<bool> _autoSave() async {
+    AccountManager.setUsername(usernameController.text);
+    AccountManager.setCellNumber(cellNumberController.text);
+    HTTPManager.putUpdatedAccountSettings();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -51,6 +60,7 @@ class _AccountPageState extends State<AccountPage> {
         } else {
           AccountManager.setUsername(snapshot.data[0]);
           AccountManager.setCellNumber(snapshot.data[1]);
+          debugPrint(email);
           //AccountManager.setPhoto(snapshot.data[2]);
           //debugPrint(snapshot.data[2]);
         }
@@ -170,11 +180,25 @@ class _AccountPageState extends State<AccountPage> {
                     bottom: BorderSide(color: Color(0xff917248), width:2)
                 )
             ),
-            child: const Text(
-              "email",
-              style: TextStyle(fontSize: 20),
+            child: Text(
+              email,
+              style: const TextStyle(fontSize: 20),
               textAlign: TextAlign.left,
             ),
+          ),
+          ElevatedButton(
+            onPressed: (){
+              _autoSave();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SettingsPage()),
+                );
+            },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xff043673)),
+              child: const Text('Save')
+
           )
         ],
       ),
