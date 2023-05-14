@@ -76,6 +76,7 @@ class ModalScreenState extends State<ModalScreen> {
       _rangeEnd = end;
       _rangeSelectionMode = RangeSelectionMode.toggledOff;
     });
+
     // `start` or `end` could be null
     if (start != null && end != null) {
       _selectedEvents.value = _getEventsForRange(start, end);
@@ -91,6 +92,7 @@ class ModalScreenState extends State<ModalScreen> {
     List<Events> events = await data;
     ModalManager.allTheEvents(
         events); //populates allEvents Method with List<Events> through allTheEvents method
+    _selectedEvents.value = ModalManager.getEventsForDay(focusDay); //
   }
 
   @override
@@ -497,48 +499,123 @@ class ModalScreenState extends State<ModalScreen> {
                     selectedDecoration: BoxDecoration(
                         color: Color(0xFF917248), shape: BoxShape.circle)),
               ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _selectedEvents.value.length, //
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.zero,
-                      ),
-                      child: ListTile(
-                        onTap: () =>
-                            '${ModalManager.allEvents[_selectedDay]![index]}',
-                        minVerticalPadding: 18.0,
-                        dense: true,
-                        title: Text(
-                          '${ModalManager.allEvents[_selectedDay]![index].eventName}',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString()} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString()}',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        isThreeLine: true,
-                        tileColor: ModalManager
-                            .allEvents[_selectedDay]![index].background,
-                      ),
-                    );
-                  })
+              SingleChildScrollView(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _selectedEvents.value.length, //
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 4.0,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          child: ListTile(
+                              onTap: () =>
+                                  '${ModalManager.allEvents[_selectedDay]![index]}',
+                              minVerticalPadding: 18.0,
+                              dense: true,
+                              title: Text(
+                                '${ModalManager.allEvents[_selectedDay]![index].eventName}',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString()} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString()}',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              isThreeLine: true,
+                              tileColor: ModalManager
+                                  .allEvents[_selectedDay]![index].background,
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      if (!isRotation(ModalManager
+                                          .allEvents[_selectedDay]![index])) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title:
+                                                    const Text("Delete Event"),
+                                                content: const Text(
+                                                    "Are you sure you want to delete this event?"),
+                                                actions: [
+                                                  TextButton(
+                                                    child: const Text("Cancel"),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: const Text("Delete"),
+                                                    onPressed: () {
+                                                      HTTPManager.deleteEvent(
+                                                          ModalManager
+                                                              .allEvents[
+                                                                  _selectedDay]![
+                                                                  index]
+                                                              .eventId);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      } else {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    "Cannot Delete a Rotation!"),
+                                                actions: [
+                                                  TextButton(
+                                                    child: const Text("OK"),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      }
+                                    },
+                                    child: const Icon(
+                                      Icons.delete_forever,
+                                      size: 30,
+                                      color: Colors.black,
+                                    ),
+                                  )
+                                ],
+                              )),
+                        );
+                      }))
             ],
           ),
         ),
       ),
     );
   }
+}
+
+//create a function that checks if its a rotation
+bool isRotation(Events event) {
+  if (event is Rotations) {
+    return true;
+  }
+  return false;
 }

@@ -123,6 +123,17 @@ class HTTPManager {
     return eventsList;
   }
 
+  //http delete function to delete an event form the database
+  static Future<bool> deleteEvent(int eventID) async {
+    final response = await http
+        .delete(Uri.parse('http://$serverAddress:$serverPort/events/$eventID'));
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to delete event");
+    }
+  }
+
   // http get function to get the list of notes from database
   static Future<List<Map>> getNotes() async {
     int accountID = AccountManager.getID();
