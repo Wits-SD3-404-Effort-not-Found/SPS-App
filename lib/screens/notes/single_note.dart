@@ -51,15 +51,17 @@ class _SingleNotePageState extends State<SingleNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Column(children: <Widget>[
           Container(
               height: 60,
               width: double.infinity,
               alignment: Alignment.bottomLeft,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   border: Border(
-                      bottom: BorderSide(color: Color(0xff917248), width: 2))),
+                      bottom: BorderSide(
+                          color: Theme.of(context).colorScheme.secondary,
+                          width: 2))),
               child: Row(children: [
                 Align(
                     alignment: Alignment.center,
@@ -72,11 +74,14 @@ class _SingleNotePageState extends State<SingleNotePage> {
                                 context,
                               );
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.arrow_back_ios_rounded,
                               size: 30,
-                              color: Colors.black,
-                            )))),
+                              color: Theme.of(context).colorScheme.onBackground,
+                            )
+                        )
+                    )
+                ),
                 Container(
                     height: 60,
                     width: 300,
@@ -85,7 +90,8 @@ class _SingleNotePageState extends State<SingleNotePage> {
                       decoration:
                           const InputDecoration(border: InputBorder.none),
                       controller: _titleController,
-                      style: const TextStyle(fontSize: 30),
+                      style: TextStyle(fontSize: 30,
+                      color: Theme.of(context).colorScheme.onBackground),
                       textAlign: TextAlign.left,
                     )),
                 Align(
@@ -99,18 +105,33 @@ class _SingleNotePageState extends State<SingleNotePage> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                      title: const Text("Delete Note"),
-                                      content: const Text(
-                                          "Are you sure you want to delete this note?"),
+                                    backgroundColor: Theme.of(context).colorScheme.background,
+                                      title: Text("Delete Note",
+                                        style: TextStyle(
+                                          color: Theme.of(context).colorScheme.onBackground
+                                        ),
+                                      ),
+                                      content: Text(
+                                          "Are you sure you want to delete this note?",
+                                      style: TextStyle(
+                                        color: Theme.of(context).colorScheme.onBackground
+                                      ),
+                                      ),
                                       actions: [
                                         TextButton(
-                                          child: const Text("Cancel"),
+                                          child: Text("Cancel", style:
+                                            TextStyle(color: Theme.of(context).colorScheme.onBackground),
+                                          ),
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
                                         ),
                                         TextButton(
-                                          child: const Text("Delete"),
+                                          child: Text("Delete",
+                                            style: TextStyle(
+                                              color: Theme.of(context).colorScheme.onBackground
+                                            ),
+                                          ),
                                           onPressed: () {
                                             HTTPManager.deleteNote(
                                                 widget.noteContent);
@@ -121,12 +142,16 @@ class _SingleNotePageState extends State<SingleNotePage> {
                                 },
                               );
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.delete_outline,
                               size: 30,
-                              color: Colors.black,
-                            )))),
-              ])),
+                              color: Theme.of(context).colorScheme.onBackground,
+                            )
+                        )
+                    )
+                ),
+              ])
+          ),
           Center(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

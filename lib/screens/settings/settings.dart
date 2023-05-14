@@ -5,6 +5,7 @@ import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/screens/settings/account_settings.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:sps_app/screens/settings/security.dart';
+import 'package:sps_app/screens/settings/appearance.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -17,15 +18,18 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Column(children: <Widget>[
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: Text(
                 'Settings',
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onBackground),
               ),
             ),
           ),
@@ -46,21 +50,28 @@ class _SettingsPageState extends State<SettingsPage> {
                               );
                             },
                             style: TextButton.styleFrom(
-                                side:
-                                    const BorderSide(color: Color(0xff043673))),
+                                side: BorderSide(
+                                    width: 3,
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children: [
                                   Text(
                                     'Account',
                                     style: TextStyle(
-                                        color: Colors.black, fontSize: 22),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                        fontSize: 22),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
                                 ])))),
                 ConstrainedBox(
@@ -69,23 +80,37 @@ class _SettingsPageState extends State<SettingsPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 4, vertical: 6),
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AppearancePage()),
+                              );
+                            },
                             style: TextButton.styleFrom(
-                                side:
-                                    const BorderSide(color: Color(0xff043673))),
+                                side: BorderSide(
+                                    width: 3,
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children: [
                                   Text(
                                     'Appearance',
                                     style: TextStyle(
-                                        color: Colors.black, fontSize: 22),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                        fontSize: 22),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
                                 ])))),
                 ConstrainedBox(
@@ -102,21 +127,28 @@ class _SettingsPageState extends State<SettingsPage> {
                               );
                             },
                             style: TextButton.styleFrom(
-                                side:
-                                    const BorderSide(color: Color(0xff043673))),
+                                side: BorderSide(
+                                    width: 3,
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children: [
                                   Text(
                                     'Security',
                                     style: TextStyle(
-                                        color: Colors.black, fontSize: 22),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                        fontSize: 22),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
                                 ])))),
                 ConstrainedBox(
@@ -136,21 +168,28 @@ class _SettingsPageState extends State<SettingsPage> {
                               Phoenix.rebirth(context);
                             },
                             style: TextButton.styleFrom(
-                                side:
-                                    const BorderSide(color: Color(0xff043673))),
+                                side: BorderSide(
+                                    width: 3,
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children: [
                                   Text(
                                     'Logout',
                                     style: TextStyle(
-                                        color: Colors.black, fontSize: 22),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                        fontSize: 22),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
                                 ])))),
               ],

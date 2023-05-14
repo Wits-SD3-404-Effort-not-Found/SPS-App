@@ -10,15 +10,15 @@ int accountID = AccountManager.getID();
 class Events {
   Events(
       {required this.eventId,
-      this.startDate,
-      this.endDate,
+      required this.startDate,
+      required this.endDate,
       this.eventName,
       this.description,
       this.background});
 
   int eventId;
-  DateTime? startDate;
-  DateTime? endDate;
+  DateTime startDate = DateTime(2000);
+  DateTime endDate = DateTime(2000);
   String? eventName;
   String? description;
   Color? background;
@@ -90,6 +90,22 @@ List<Rotations> getRotations(List<Events> eventsList) {
   return rotations;
 }
 
+//Filtering function used in Dropdown in Calendar
+Future<List<Events>> getFiltering(String type, List<Events> eventsList) async {
+  List<Events> filteredEvents = [];
+  for (var event in eventsList) {
+    if (event is Rotations && type == "Rotations") {
+      filteredEvents.add(event);
+    } else if (event is! Rotations && type == "Events") {
+      filteredEvents.add(event);
+    } else if (type == "All") {
+      filteredEvents.add(event);
+    }
+  }
+
+  return filteredEvents;
+}
+
 Future<List<Events>> getEventsHardcodedData() async {
   List<Events> eventsList = <Events>[];
 
@@ -145,8 +161,7 @@ class ModalManager {
   //populates the allEvents
   static void allTheEvents(List<Events> events) {
     for (var event in events) {
-      final days = daysInRange(
-          event.startDate as DateTime, event.endDate as DateTime); //
+      final days = daysInRange(event.startDate, event.endDate); //
       for (final d in days) {
         if (allEvents[d] == null) {
           allEvents[d] = [];

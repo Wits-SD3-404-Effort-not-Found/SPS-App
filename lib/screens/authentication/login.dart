@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xfffcfbfb),
+        backgroundColor: Theme.of(context).colorScheme.background,
         // to center the widgets/UI elements on the page
         body: Center(
             // to structure the UI elements in a single column
@@ -65,7 +65,6 @@ class _LoginPageState extends State<LoginPage> {
             // inserts the medical school logo
             Image.asset('lib/assets/images/health_science_logo.png',
                 height: 200, scale: 0.5),
-            const Text('SPS-App', style: TextStyle(fontSize: 18)),
             // padding for email text box for better UI layout
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -73,18 +72,25 @@ class _LoginPageState extends State<LoginPage> {
                 child: ConstrainedBox(
                   constraints: BoxConstraints.tight(const Size(300, 70)),
                   child: TextFormField(
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground),
                       // styles user input text box
-                      decoration: const InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
-                        labelText: 'Enter your email',
-                        labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                      cursorColor: const Color(0xff917248),
+                      decoration: InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  width: 3)),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  width: 3)),
+                          labelText: 'Enter your email',
+                          labelStyle: TextStyle(
+                              color:
+                                  Theme.of(context).colorScheme.onBackground)),
+                      cursorColor: Theme.of(context).colorScheme.primary,
                       // to retrieve the user input text from the TextFormField
                       controller: myUsernameController),
                 )),
@@ -95,19 +101,24 @@ class _LoginPageState extends State<LoginPage> {
               child: ConstrainedBox(
                 constraints: BoxConstraints.tight(const Size(300, 70)),
                 child: TextFormField(
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground),
                   obscureText: true,
                   // styles user input text box
-                  decoration: const InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xff917248), width: 3)),
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xff917248), width: 3)),
-                    labelText: 'Enter your password',
-                    labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  cursorColor: const Color(0xff917248),
+                  decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 3)),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 3)),
+                      labelText: 'Enter your password',
+                      labelStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground)),
+                  cursorColor: Theme.of(context).colorScheme.primary,
+
                   // to retrieve the user input text from the TextFormField
                   controller: myPasswordController,
                 ),
@@ -118,7 +129,9 @@ class _LoginPageState extends State<LoginPage> {
                 child: ConstrainedBox(
                     constraints: BoxConstraints.tight(const Size(300, 25)),
                     child: Text(_invalidMessage,
-                        style: const TextStyle(color: Colors.red, fontSize: 16),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                            fontSize: 16),
                         textAlign: TextAlign.center))),
             // creates forgot password object
             // login button to validate,login and transfer user to next page
@@ -130,7 +143,11 @@ class _LoginPageState extends State<LoginPage> {
                       builder: (context) => const ForgotPasswordPage()),
                 );
               },
-              child: const Text('Forgot Password?'),
+              child: Text(
+                'Forgot Password?',
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
@@ -151,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
               },
               // styles login button
               style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff043673)),
+                  backgroundColor: Theme.of(context).colorScheme.primary),
               child: const Text('Login'),
             ),
           ],

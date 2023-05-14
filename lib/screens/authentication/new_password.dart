@@ -35,7 +35,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xfffcfbfb),
+        backgroundColor: Theme.of(context).colorScheme.background,
         // to center the widgets/UI elements on the page
         body: Center(
             // to structure the UI elements in a single column
@@ -61,17 +61,20 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                   constraints: BoxConstraints.tight(const Size(300, 80)),
                   child: TextFormField(
                       // styles user input text box
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                                width: 3)),
                         enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                                width: 3)),
                         labelText: 'New Password',
-                        labelStyle: TextStyle(fontWeight: FontWeight.w500),
+                        labelStyle:
+                            const TextStyle(fontWeight: FontWeight.w500),
                       ),
-                      cursorColor: const Color(0xff917248),
+                      cursorColor: Theme.of(context).colorScheme.secondary,
                       controller: newPasswordController),
                 )),
             Padding(
@@ -83,17 +86,20 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                   child: TextFormField(
                       obscureText: true,
                       // styles user input text box
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                                width: 3)),
                         enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                                width: 3)),
                         labelText: 'Confirm Password',
-                        labelStyle: TextStyle(fontWeight: FontWeight.w500),
+                        labelStyle:
+                            const TextStyle(fontWeight: FontWeight.w500),
                       ),
-                      cursorColor: const Color(0xff917248),
+                      cursorColor: Theme.of(context).colorScheme.secondary,
                       controller: confirmPasswordController),
                 )),
             Padding(
@@ -117,7 +123,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                   },
                   // styles login button
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff043673)),
+                      backgroundColor: Theme.of(context).colorScheme.primary),
                   child: const Text('Cancel'),
                 ),
                 const SizedBox(width: 20),
@@ -148,7 +154,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                   },
                   // styles login button
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff043673)),
+                      backgroundColor: Theme.of(context).colorScheme.primary),
                   child: const Text('Confirm'),
                 ),
               ],

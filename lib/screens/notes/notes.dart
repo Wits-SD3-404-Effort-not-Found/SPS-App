@@ -13,15 +13,18 @@ class _NotesPageState extends State<NotesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Column(children: <Widget>[
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: Text(
                 'Notes',
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color:Theme.of(context).colorScheme.onBackground),
               ),
             ),
           ),
@@ -41,21 +44,25 @@ class _NotesPageState extends State<NotesPage> {
                             );
                           },
                           style: TextButton.styleFrom(
-                              side: const BorderSide(color: Color(0xff043673))),
+                              side: BorderSide(width: 3,
+                                  color: Theme.of(context).colorScheme.primary)),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children: [
                                 Text(
                                   'Protocols',
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 22),
+                                      color: Theme.of(context).colorScheme.onBackground, fontSize: 22),
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   size: 20,
-                                  color: Colors.black,
+                                  color: Theme.of(context).colorScheme.onBackground,
                                 ),
-                              ])))),
+                              ])
+                      )
+                  )
+              ),
               ConstrainedBox(
                   constraints: BoxConstraints.tight(const Size(360, 60)),
                   child: Padding(
@@ -71,44 +78,26 @@ class _NotesPageState extends State<NotesPage> {
                             );
                           },
                           style: TextButton.styleFrom(
-                              side: const BorderSide(color: Color(0xff043673))),
+                              side: BorderSide(width: 3,
+                                  color: Theme.of(context).colorScheme.primary)),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children: [
                                 Text(
                                   'Personal Notes',
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 22),
+                                      color: Theme.of(context).colorScheme.onBackground,
+                                      fontSize: 22),
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   size: 20,
-                                  color: Colors.black,
+                                  color: Theme.of(context).colorScheme.onBackground,
                                 ),
-                              ])))),
-              ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(360, 60)),
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 6),
-                      child: TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                              side: const BorderSide(color: Color(0xff043673))),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text(
-                                  'Logbook',
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 22),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 20,
-                                  color: Colors.black,
-                                ),
-                              ])))),
+                              ])
+                      )
+                  )
+              ),
             ]),
           )
         ]));
