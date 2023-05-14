@@ -247,4 +247,25 @@ class HTTPManager {
       throw Exception('Session Token failed to be removed $code : $message');
     }
   }
+
+  static Future<List> getAccountSettings() async {
+    int accountID = AccountManager.getID();
+    final response = await http.get(Uri.parse("http://$serverAddress:$serverPort/account/$accountID"));
+    if(response.statusCode == 200){
+      var details = [];
+      var accountData = jsonDecode(response.body);
+      debugPrint(response.body);
+        details.addAll({
+          accountData["username"],
+          accountData["cell_number"],
+          //accountData["profile_photo"],
+        });
+      debugPrint(details.toString());
+      return details;
+    } else {
+      throw Exception("Can't access data");
+    }
+
+  }
+
 }

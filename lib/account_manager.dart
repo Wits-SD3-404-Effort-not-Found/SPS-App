@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'package:convert/convert.dart';
+//import 'package:convert/convert.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -73,8 +73,9 @@ class AccountManager {
     _cellNumber = cellNumber;
   }
 
-  static void setPhoto(String byteString) {
-    _profilePhotoBytes =
-        Uint8List.fromList(hex.decode(byteString.substring(2)));
+
+  static void setPhoto(List<dynamic> bytes) {
+    _profilePhotoBytes = Uint8List.fromList(bytes.cast<int>());
+    //_profilePhotoBytes = Uint8List.fromList(List<int>.filled(256 * 256 * 4, 255));
   }
 }

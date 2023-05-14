@@ -1,6 +1,7 @@
-import 'dart:typed_data';
-
+//import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:sps_app/http_handler.dart';
+import '../../account_manager.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -10,14 +11,50 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  var username = TextEditingController();
-  var cellNumber = TextEditingController();
+  var usernameController = TextEditingController();
+  var cellNumberController = TextEditingController();
   var email = ''; //come back
-  final Uint8List photo = Uint8List(0);
+  //Uint8List photo = Uint8List(0);
 
+  @override
+  void initState() {
+    super.initState();
+    usernameController = TextEditingController.fromValue(
+      TextEditingValue(
+        text: AccountManager.getUsername(),
+      ),
+    );
+    AccountManager.setUsername(usernameController.text);
+
+    cellNumberController = TextEditingController.fromValue(
+      TextEditingValue(
+        text: AccountManager.getCellNumber(),
+      ),
+    );
+    AccountManager.setCellNumber(cellNumberController.text);
+  }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: HTTPManager.getAccountSettings(),
+        builder: (BuildContext ctx, AsyncSnapshot snapshot) {
+          //debugPrint(snapshot.data['username']);
+        if (snapshot.data == null) {
+          return const Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(
+            child: CircularProgressIndicator(
+            color: Color(0xff917248),
+            ),
+          ));
+        } else {
+          AccountManager.setUsername(snapshot.data[0]);
+          AccountManager.setCellNumber(snapshot.data[1]);
+          //AccountManager.setPhoto(snapshot.data[2]);
+          //debugPrint(snapshot.data[2]);
+        }
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -65,22 +102,26 @@ class _AccountPageState extends State<AccountPage> {
             padding:
             EdgeInsets.symmetric(horizontal: 10, vertical: 20),
           ),
+          /*
           Container(
             width: 150,
             height: 150,
             decoration: BoxDecoration(
-              color: const Color(0xFF043673),
+              //color: const Color(0xFF043673),
+              color: Colors.lightGreen,
               border: Border.all(
                 color: const Color(0xff917248),
                 width: 3.0,
               ),
               borderRadius: BorderRadius.circular(75),
             ),
-            //child: CircleAvatar(
+
+            child: Image(
               //radius: 25,
-              //backgroundImage: MemoryImage(bytes, {scale: 1}),
-            //),
-          ),
+              //backgroundImage: MemoryImage(AccountManager.getPhoto()),
+              image: MemoryImage(AccountManager.getPhoto()),
+            ),
+          ),*/
           const Padding(
             padding:
             EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -93,9 +134,9 @@ class _AccountPageState extends State<AccountPage> {
                 bottom: BorderSide(color: Color(0xff917248), width:2)
               )
             ),
-            child: const Text(
-                "username",
-              style: TextStyle(fontSize: 20),
+            child: TextField(
+              controller: usernameController,
+              style: const TextStyle(fontSize: 20),
               textAlign: TextAlign.left,
             ),
           ),
@@ -111,9 +152,9 @@ class _AccountPageState extends State<AccountPage> {
                     bottom: BorderSide(color: Color(0xff917248), width:2)
                 )
             ),
-            child: const Text(
-              "phone number",
-              style: TextStyle(fontSize: 20),
+            child: TextField(
+              controller: cellNumberController,
+              style: const TextStyle(fontSize: 20),
               textAlign: TextAlign.left,
             ),
           ),
@@ -137,6 +178,8 @@ class _AccountPageState extends State<AccountPage> {
           )
         ],
       ),
+    );
+        }
     );
   }
 }
