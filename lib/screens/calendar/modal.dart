@@ -173,44 +173,45 @@ class ModalScreenState extends State<ModalScreen> {
                     selectedDecoration: BoxDecoration(
                         color: Color(0xFF917248), shape: BoxShape.circle)),
               ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _selectedEvents.value.length, //
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.zero,
-                      ),
-                      child: ListTile(
-                        onTap: () =>
-                            '${ModalManager.allEvents[_selectedDay]![index]}',
-                        minVerticalPadding: 18.0,
-                        dense: true,
-                        title: Text(
-                          '${ModalManager.allEvents[_selectedDay]![index].eventName}',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString()} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString()}',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        isThreeLine: true,
-                        tileColor: ModalManager
-                            .allEvents[_selectedDay]![index].background,
-                      ),
-                    );
-                  })
+              SingleChildScrollView(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _selectedEvents.value.length, //
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 4.0,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          child: ListTile(
+                            onTap: () =>
+                                '${ModalManager.allEvents[_selectedDay]![index]}',
+                            minVerticalPadding: 18.0,
+                            dense: true,
+                            title: Text(
+                              '${ModalManager.allEvents[_selectedDay]![index].eventName}',
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                              '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString()} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString()}',
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            isThreeLine: true,
+                            tileColor: ModalManager
+                                .allEvents[_selectedDay]![index].background,
+                          ),
+                        );
+                      }))
             ],
           ),
         ),
