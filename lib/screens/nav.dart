@@ -68,17 +68,19 @@ class _NavBar extends State<NavBar> {
           automaticallyImplyLeading: false,
           leading: Image.asset('lib/assets/images/wits_logo_blue.png',
               fit: BoxFit.fitHeight),
-          title: const Text(
+          title: Text(
             'Wits University',
-            style: TextStyle(fontSize: 25),
+            style: TextStyle(
+                fontSize: 25, color: Theme.of(context).colorScheme.onPrimary),
           ),
           backgroundColor: Theme.of(context).colorScheme.primary,
           actions: <Widget>[
             IconButton(
               onPressed: () {},
-              icon: const Icon(
+              icon: Icon(
                 Icons.notifications_none,
                 size: 35,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
               alignment: Alignment.topRight,
               padding: const EdgeInsets.fromLTRB(
