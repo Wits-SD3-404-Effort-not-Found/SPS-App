@@ -132,9 +132,19 @@ class _AccountPageState extends State<AccountPage> {
               image: MemoryImage(AccountManager.getPhoto()),
             ),
           ),*/
+          Container(
+              height: 40,
+              width: 300,
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                "Username:",
+                style: TextStyle(fontSize: 25),
+                textAlign: TextAlign.left,
+              )
+          ),
           const Padding(
             padding:
-            EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           ),
           Container(
             height: 40,
@@ -152,7 +162,21 @@ class _AccountPageState extends State<AccountPage> {
           ),
           const Padding(
             padding:
-            EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          ),
+          Container(
+              height: 50,
+              width: 300,
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                "Cellphone Number:",
+                style: TextStyle(fontSize: 25),
+                textAlign: TextAlign.left,
+              )
+          ),
+          const Padding(
+            padding:
+            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           ),
           Container(
             height: 40,
@@ -170,7 +194,21 @@ class _AccountPageState extends State<AccountPage> {
           ),
           const Padding(
             padding:
-            EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          ),
+          Container(
+              height: 40,
+              width: 300,
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                "Email:",
+                style: TextStyle(fontSize: 25),
+                textAlign: TextAlign.left,
+              )
+          ),
+          const Padding(
+            padding:
+            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           ),
           Container(
             height: 40,
@@ -185,6 +223,10 @@ class _AccountPageState extends State<AccountPage> {
               style: const TextStyle(fontSize: 20),
               textAlign: TextAlign.left,
             ),
+          ),
+          const Padding(
+            padding:
+            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           ),
           ElevatedButton(
             onPressed: (){
