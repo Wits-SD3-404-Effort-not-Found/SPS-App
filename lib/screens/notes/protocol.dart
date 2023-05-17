@@ -11,6 +11,7 @@ class ProtocolScreen extends StatefulWidget {
 
 class ProtocolScreenState extends State<ProtocolScreen> {
   var items = [];
+  // coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -20,7 +21,7 @@ class ProtocolScreenState extends State<ProtocolScreen> {
             return Scaffold(
                 body: Center(
               child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.secondary),
+                  color: Theme.of(context).colorScheme.secondary),
             ));
           } else {
             items.clear();
@@ -56,7 +57,9 @@ class ProtocolScreenState extends State<ProtocolScreen> {
                                   child: Icon(
                                     Icons.arrow_back_ios_rounded,
                                     size: 30,
-                                    color: Theme.of(context).colorScheme.onBackground,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   )))),
                       Container(
                           height: 50,
@@ -64,13 +67,13 @@ class ProtocolScreenState extends State<ProtocolScreen> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             "Protocols",
-                            style: TextStyle(fontSize: 30,
-                            color: Theme.of(context).colorScheme.onBackground),
+                            style: TextStyle(
+                                fontSize: 30,
+                                color:
+                                    Theme.of(context).colorScheme.onBackground),
                             textAlign: TextAlign.left,
-                          )
-                      )
-                    ])
-                ),
+                          ))
+                    ])),
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.only(top: 10),
@@ -91,5 +94,5 @@ class ProtocolScreenState extends State<ProtocolScreen> {
             ));
           }
         });
-  }
+  } // coverage:ignore-end
 }

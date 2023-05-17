@@ -31,4 +31,4 @@ macos/
 windows/
 linux/
 android/
-ios/
+*.lock

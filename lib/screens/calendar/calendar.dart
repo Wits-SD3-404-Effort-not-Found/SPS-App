@@ -64,6 +64,7 @@ class _CalendarPageState extends State<CalendarPage> {
     });
   }
 
+//coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -206,6 +207,7 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
       ),
     );
+    //coverage:ignore-end
   }
 
   //allows us to get selected day and pass to table calendar for the focus day

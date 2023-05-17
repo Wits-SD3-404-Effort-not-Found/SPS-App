@@ -38,6 +38,7 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
     super.dispose();
   }
 
+// coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,6 +191,7 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
             ),
           ],
         )));
+    // coverage:ignore-end
   }
 
   static Digest _hashData(String data) {

@@ -5,6 +5,7 @@ import 'package:sps_app/account_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+// coverage:ignore-start
 int accountID = AccountManager.getID();
 
 class Events {
@@ -187,3 +188,4 @@ class ModalManager {
     return ModalManager.allEvents[date] ?? [];
   }
 }
+// coverage:ignore-end

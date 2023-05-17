@@ -52,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  // coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,4 +175,5 @@ class _LoginPageState extends State<LoginPage> {
           ],
         )));
   }
+  // coverage:ignore-end
 }

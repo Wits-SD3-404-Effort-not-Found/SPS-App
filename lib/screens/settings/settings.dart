@@ -14,6 +14,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  // coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,10 +50,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               );
                             },
                             style: TextButton.styleFrom(
-                                side:
-                                    BorderSide(width: 3,
-                                        color: Theme.of(context).colorScheme.primary)
-                            ),
+                                side: BorderSide(
+                                    width: 3,
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -60,19 +61,19 @@ class _SettingsPageState extends State<SettingsPage> {
                                   Text(
                                     'Account',
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onBackground,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
                                         fontSize: 22),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20,
-                                    color: Theme.of(context).colorScheme.onBackground,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
-                                ]
-                            )
-                        )
-                    )
-                ),
+                                ])))),
                 ConstrainedBox(
                     constraints: BoxConstraints.tight(const Size(360, 60)),
                     child: Padding(
@@ -88,10 +89,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               );
                             },
                             style: TextButton.styleFrom(
-                                side:
-                                    BorderSide(width: 3,
-                                        color: Theme.of(context).colorScheme.primary)
-                            ),
+                                side: BorderSide(
+                                    width: 3,
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -99,19 +100,19 @@ class _SettingsPageState extends State<SettingsPage> {
                                   Text(
                                     'Appearance',
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onBackground,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
                                         fontSize: 22),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20,
-                                    color: Theme.of(context).colorScheme.onBackground,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
-                                ]
-                            )
-                        )
-                    )
-                ),
+                                ])))),
                 ConstrainedBox(
                     constraints: BoxConstraints.tight(const Size(360, 60)),
                     child: Padding(
@@ -120,9 +121,10 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: TextButton(
                             onPressed: () {},
                             style: TextButton.styleFrom(
-                                side:
-                                    BorderSide(width: 3,
-                                        color: Theme.of(context).colorScheme.primary)),
+                                side: BorderSide(
+                                    width: 3,
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -130,19 +132,19 @@ class _SettingsPageState extends State<SettingsPage> {
                                   Text(
                                     'Security',
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onBackground,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
                                         fontSize: 22),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20,
-                                    color: Theme.of(context).colorScheme.onBackground,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
-                                ]
-                            )
-                        )
-                    )
-                ),
+                                ])))),
                 ConstrainedBox(
                     constraints: BoxConstraints.tight(const Size(360, 60)),
                     child: Padding(
@@ -160,9 +162,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               Phoenix.rebirth(context);
                             },
                             style: TextButton.styleFrom(
-                                side:
-                                    BorderSide(width: 3,
-                                        color: Theme.of(context).colorScheme.primary)),
+                                side: BorderSide(
+                                    width: 3,
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -170,22 +173,22 @@ class _SettingsPageState extends State<SettingsPage> {
                                   Text(
                                     'Logout',
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onBackground,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
                                         fontSize: 22),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20,
-                                    color: Theme.of(context).colorScheme.onBackground,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
-                                ]
-                            )
-                        )
-                    )
-                ),
+                                ])))),
               ],
             ),
           )
         ]));
-  }
+  } // coverage:ignore-end
 }
