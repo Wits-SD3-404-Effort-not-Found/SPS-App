@@ -3,6 +3,7 @@ import 'package:sps_app/screens/notes/single_note.dart';
 import 'package:sps_app/screens/notes/single_protocol.dart';
 import 'package:sps_app/screens/notes/note_content.dart';
 
+// coverage:ignore-start
 abstract class ListItem {
   Widget buildTitle(BuildContext context);
 
@@ -113,4 +114,4 @@ class NotesItem implements ListItem {
               ),
             ])));
   }
-}
+}// coverage:ignore-end

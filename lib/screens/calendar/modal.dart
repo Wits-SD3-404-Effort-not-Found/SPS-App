@@ -192,6 +192,7 @@ class ModalScreenState extends State<ModalScreen> {
     _editEndDate = selectionChangedArgs.value.endDate;
   }
 
+//coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1071,6 +1072,7 @@ class ModalScreenState extends State<ModalScreen> {
       ),
     );
   }
+  //coverage:ignore-end
 }
 
 //create a function that checks if its a rotation

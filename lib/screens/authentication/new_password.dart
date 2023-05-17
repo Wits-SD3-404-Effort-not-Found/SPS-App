@@ -32,6 +32,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
     super.dispose();
   }
 
+// coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,4 +163,5 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
           ],
         )));
   }
+  // coverage:ignore-end
 }

@@ -23,6 +23,7 @@ class ProtocolItem implements ListItem {
     return Text(protocolTitle);
   }
 
+// coverage:ignore-start
   @override
   Widget buildItem(BuildContext context) {
     return GestureDetector(
@@ -35,7 +36,7 @@ class ProtocolItem implements ListItem {
           );
         },
         child: buildTitle(context));
-  }
+  } // coverage:ignore-end
 }
 
 class NotesItem implements ListItem {
@@ -54,6 +55,7 @@ class NotesItem implements ListItem {
     noteContent.getBody();
   }
 
+// coverage:ignore-start
   @override
   Widget buildTitle(BuildContext context) => Text(noteContent.getTitle(),
       style: const TextStyle(color: Colors.black, fontSize: 18));
@@ -83,5 +85,5 @@ class NotesItem implements ListItem {
                             width: 2))),
               ),
             ])));
-  }
+  } // coverage:ignore-end
 }

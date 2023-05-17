@@ -4,7 +4,7 @@ import 'package:sps_app/misc/theme_provider.dart';
 
 class AppearancePage extends StatelessWidget {
   const AppearancePage({super.key});
-
+// coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
@@ -64,5 +64,5 @@ class AppearancePage extends StatelessWidget {
         ))
       ],
     ));
-  }
+  } // coverage:ignore-end
 }

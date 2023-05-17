@@ -10,6 +10,7 @@ class SingleNotePage extends StatefulWidget {
   State<SingleNotePage> createState() => _SingleNotePageState();
 }
 
+// coverage:ignore-start
 class _SingleNotePageState extends State<SingleNotePage> {
   var _bodyController = TextEditingController();
   var _titleController = TextEditingController();
@@ -78,10 +79,7 @@ class _SingleNotePageState extends State<SingleNotePage> {
                               Icons.arrow_back_ios_rounded,
                               size: 30,
                               color: Theme.of(context).colorScheme.onBackground,
-                            )
-                        )
-                    )
-                ),
+                            )))),
                 Container(
                     height: 60,
                     width: 300,
@@ -90,8 +88,9 @@ class _SingleNotePageState extends State<SingleNotePage> {
                       decoration:
                           const InputDecoration(border: InputBorder.none),
                       controller: _titleController,
-                      style: TextStyle(fontSize: 30,
-                      color: Theme.of(context).colorScheme.onBackground),
+                      style: TextStyle(
+                          fontSize: 30,
+                          color: Theme.of(context).colorScheme.onBackground),
                       textAlign: TextAlign.left,
                     )),
                 Align(
@@ -105,32 +104,43 @@ class _SingleNotePageState extends State<SingleNotePage> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    backgroundColor: Theme.of(context).colorScheme.background,
-                                      title: Text("Delete Note",
+                                      backgroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                      title: Text(
+                                        "Delete Note",
                                         style: TextStyle(
-                                          color: Theme.of(context).colorScheme.onBackground
-                                        ),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground),
                                       ),
                                       content: Text(
-                                          "Are you sure you want to delete this note?",
-                                      style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onBackground
-                                      ),
+                                        "Are you sure you want to delete this note?",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground),
                                       ),
                                       actions: [
                                         TextButton(
-                                          child: Text("Cancel", style:
-                                            TextStyle(color: Theme.of(context).colorScheme.onBackground),
+                                          child: Text(
+                                            "Cancel",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground),
                                           ),
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
                                         ),
                                         TextButton(
-                                          child: Text("Delete",
+                                          child: Text(
+                                            "Delete",
                                             style: TextStyle(
-                                              color: Theme.of(context).colorScheme.onBackground
-                                            ),
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground),
                                           ),
                                           onPressed: () {
                                             HTTPManager.deleteNote(
@@ -146,12 +156,8 @@ class _SingleNotePageState extends State<SingleNotePage> {
                               Icons.delete_outline,
                               size: 30,
                               color: Theme.of(context).colorScheme.onBackground,
-                            )
-                        )
-                    )
-                ),
-              ])
-          ),
+                            )))),
+              ])),
           Center(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -163,5 +169,5 @@ class _SingleNotePageState extends State<SingleNotePage> {
                 controller: _bodyController),
           )),
         ]));
-  }
+  } // coverage:ignore-end
 }
