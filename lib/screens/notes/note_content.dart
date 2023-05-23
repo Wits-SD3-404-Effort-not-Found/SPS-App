@@ -3,6 +3,7 @@ class NoteContent {
   String title = "";
   String body = "";
   bool isNewNote = false;
+  bool isPublicNote = false;
 
   NoteContent();
 
@@ -12,6 +13,14 @@ class NoteContent {
 
   bool getIsNewNote() {
     return isNewNote;
+  }
+
+  void setIsPublicNote(bool isPublicNote) {
+    this.isPublicNote = isPublicNote;
+  }
+
+  bool getIsPublicNote() {
+    return isPublicNote;
   }
 
   void setNoteID(int noteID) {
