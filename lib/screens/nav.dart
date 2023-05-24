@@ -24,7 +24,7 @@ class _NavBar extends State<NavBar> {
   List<Widget> _buildScreens() => [
         const CalendarPage(),
         const NotesPage(),
-        const MessagingPage(),
+        const CommunicationScreen(),
         const SettingsPage(),
       ];
 
@@ -43,7 +43,7 @@ class _NavBar extends State<NavBar> {
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(UniconsLine.comments, size: 35),
-          title: "Messages",
+          title: "Contact",
           activeColorPrimary: Theme.of(context).colorScheme.secondary,
           inactiveColorPrimary: Theme.of(context).colorScheme.onPrimary,
         ),
