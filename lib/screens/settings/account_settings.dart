@@ -16,7 +16,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   var usernameController = TextEditingController();
   var cellNumberController = TextEditingController();
-  var email = LoginManager.getUsername();
+  var email = AccountManager.getEmail();
   //Uint8List photo = Uint8List(0);
 
   @override
@@ -63,9 +63,6 @@ class _AccountPageState extends State<AccountPage> {
           } else {
             AccountManager.setUsername(snapshot.data[0]);
             AccountManager.setCellNumber(snapshot.data[1]);
-            debugPrint(email);
-            //AccountManager.setPhoto(snapshot.data[2]);
-            //debugPrint(snapshot.data[2]);
           }
 
           return Scaffold(
