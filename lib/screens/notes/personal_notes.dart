@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/screens/notes/single_note.dart';
 import 'package:sps_app/widgets/primitive/list_item.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 import '../../http_handler.dart';
 
 class PersonalNotesPage extends StatefulWidget {
@@ -25,6 +26,7 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
         builder: (BuildContext ctx, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return Scaffold(
+                appBar: WitsAppBar(context: context),
                 backgroundColor: Theme.of(context).colorScheme.background,
                 body: Center(
                   child: CircularProgressIndicator(
@@ -42,6 +44,7 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
               }
             }
             return Scaffold(
+                appBar: WitsAppBar(context: context),
                 backgroundColor: Theme.of(context).colorScheme.background,
                 body: Column(children: [
                   Container(

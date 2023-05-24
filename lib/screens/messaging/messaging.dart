@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
 class MessagingPage extends StatefulWidget {
   const MessagingPage({Key? key}) : super(key: key);
@@ -11,9 +12,10 @@ class MessagingPage extends StatefulWidget {
 class _MessagingPageState extends State<MessagingPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      appBar: WitsAppBar(context: context),
       backgroundColor: Colors.white,
-      body: Padding(
+      body: const Padding(
           padding: EdgeInsets.only(bottom: 25),
           child: Align(
               alignment: Alignment.bottomCenter,

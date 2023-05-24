@@ -4,7 +4,6 @@ import 'package:sps_app/screens/calendar/calendar.dart';
 import 'package:sps_app/screens/messaging/messaging.dart';
 import 'package:sps_app/screens/notes/notes.dart';
 import 'package:sps_app/screens/settings/settings.dart';
-import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 import 'package:unicons/unicons.dart';
 
 //BuildContext testContext;
@@ -64,7 +63,6 @@ class _NavBar extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: WitsAppBar(context: context),
       body: PersistentTabView(
         context,
         controller: _controller,

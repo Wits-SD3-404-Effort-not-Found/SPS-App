@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/screens/notes/personal_notes.dart';
 import 'package:sps_app/screens/notes/protocol.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
 class NotesPage extends StatefulWidget {
   const NotesPage({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class _NotesPageState extends State<NotesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: WitsAppBar(context: context),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Column(children: <Widget>[
           Align(

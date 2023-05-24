@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sps_app/http_handler.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/screens/settings/settings.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 import '../../account_manager.dart';
 
 class AccountPage extends StatefulWidget {
@@ -52,6 +53,7 @@ class _AccountPageState extends State<AccountPage> {
           //debugPrint(snapshot.data['username']);
           if (snapshot.data == null) {
             return Scaffold(
+                appBar: WitsAppBar(context: context),
                 backgroundColor: Theme.of(context).colorScheme.background,
                 body: Center(
                   child: CircularProgressIndicator(
@@ -67,6 +69,7 @@ class _AccountPageState extends State<AccountPage> {
           }
 
           return Scaffold(
+            appBar: WitsAppBar(context: context),
             backgroundColor: Theme.of(context).colorScheme.background,
             body: Column(
               children: <Widget>[
