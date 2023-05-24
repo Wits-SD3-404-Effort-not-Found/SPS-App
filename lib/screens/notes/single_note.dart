@@ -4,6 +4,8 @@ import 'package:sps_app/screens/notes/note_content.dart';
 
 enum SampleItem { itemOne, itemTwo }
 
+enum Commands { publicNote }
+
 class SingleNotePage extends StatefulWidget {
   final NoteContent noteContent;
   const SingleNotePage({Key? key, required this.noteContent}) : super(key: key);
@@ -52,6 +54,8 @@ class _SingleNotePageState extends State<SingleNotePage> {
   }
 
   SampleItem? selectedMenu;
+  Commands? commandsMenu;
+  bool _publicNote = false;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +73,7 @@ class _SingleNotePageState extends State<SingleNotePage> {
                           width: 2))),
               child: Row(children: [
                 Align(
-                    alignment: Alignment.center,
+                    alignment: Alignment.centerLeft,
                     child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
@@ -86,7 +90,7 @@ class _SingleNotePageState extends State<SingleNotePage> {
                             )))),
                 Container(
                     height: 60,
-                    width: 300,
+                    width: 270,
                     alignment: Alignment.bottomLeft,
                     child: TextField(
                       decoration:
@@ -97,12 +101,27 @@ class _SingleNotePageState extends State<SingleNotePage> {
                           color: Theme.of(context).colorScheme.onBackground),
                       textAlign: TextAlign.left,
                     )),
+                GestureDetector(
+                  child: Icon(
+                    Icons.info_outline_rounded,
+                    size: 30,
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+                  onTap: () {
+                    debugPrint("info tapped");
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const AlertDialog();
+                        });
+                  },
+                ),
                 Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5, vertical: 5),
-                      child: /* GestureDetector(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5, vertical: 5),
+                        child: /* GestureDetector(
                             onTap: () {
                               showDialog(
                                 context: context,
@@ -161,7 +180,7 @@ class _SingleNotePageState extends State<SingleNotePage> {
                               size: 30,
                               color: Theme.of(context).colorScheme.onBackground,
                             )))),*/
-                          PopupMenuButton<SampleItem>(
+                            /* PopupMenuButton<SampleItem>(
                         position: PopupMenuPosition.over,
                         initialValue: selectedMenu,
                         color: Colors.white,
@@ -292,8 +311,94 @@ class _SingleNotePageState extends State<SingleNotePage> {
                             },
                           ),
                         ],
-                      ),
-                    ))
+                      ),*/
+                            PopupMenuButton<Commands>(
+                          icon: const Icon(
+                            Icons.keyboard_control_rounded,
+                            color: Colors.black,
+                          ),
+                          iconSize: 30,
+                          color: Colors.white,
+                          onSelected: (Commands result) {
+                            switch (result) {
+                              case Commands.publicNote:
+                                setState(() {
+                                  _publicNote = !_publicNote;
+                                  widget.noteContent
+                                      .setIsPublicNote(_publicNote);
+                                  debugPrint(widget.noteContent
+                                      .getIsPublicNote()
+                                      .toString());
+                                });
+                                break;
+                            }
+                          },
+                          itemBuilder: (BuildContext context) =>
+                              <PopupMenuEntry<Commands>>[
+                            CheckedPopupMenuItem<Commands>(
+                              checked: _publicNote,
+                              value: Commands.publicNote,
+                              child: const Text('Public Note'),
+                            ),
+                            const PopupMenuDivider(),
+                            PopupMenuItem<Commands>(
+                              child: const ListTile(title: Text('Delete Note')),
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .background,
+                                          title: Text(
+                                            "Delete Note",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground),
+                                          ),
+                                          content: Text(
+                                            "Are you sure you want to delete this note?.",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              child: Text(
+                                                "Cancel",
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onBackground),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text(
+                                                "Delete",
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onBackground),
+                                              ),
+                                              onPressed: () {
+                                                HTTPManager.deleteNote(
+                                                    widget.noteContent);
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ]);
+                                    });
+                              },
+                            ),
+                            // ...other items listed here
+                          ],
+                        )))
               ])),
           Center(
               child: Padding(
