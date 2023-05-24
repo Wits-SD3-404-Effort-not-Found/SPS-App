@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sps_app/http_handler.dart';
+import 'package:sps_app/screens/admin/admin_home.dart';
 import 'package:sps_app/screens/authentication/forgot_password.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/account_manager.dart';
@@ -146,6 +147,17 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Text(
                 'Forgot Password?',
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const AdminHome()));
+              },
+              child: Text(
+                "Login as supervisor",
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.onBackground),
               ),
