@@ -232,7 +232,8 @@ class ModalScreenState extends State<ModalScreen> {
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.onBackground,
-                              fontSize: 25)),
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold)),
                       Container(
                           height: 50,
                           width: 50,
@@ -534,6 +535,7 @@ class ModalScreenState extends State<ModalScreen> {
                 calendarFormat: CalendarFormat.week,
                 rowHeight: 60,
                 headerStyle: HeaderStyle(
+                    titleCentered: true,
                     formatButtonVisible: false,
                     titleTextStyle: TextStyle(
                         color: Theme.of(context).colorScheme.onBackground,
@@ -556,10 +558,12 @@ class ModalScreenState extends State<ModalScreen> {
                     )),
                 daysOfWeekStyle: DaysOfWeekStyle(
                     weekdayStyle: TextStyle(
+                        height: 1,
                         color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 15,
                         fontWeight: FontWeight.bold),
                     weekendStyle: TextStyle(
+                        height: 1,
                         color: Theme.of(context).colorScheme.secondary,
                         fontSize: 15,
                         fontWeight: FontWeight.bold)),
