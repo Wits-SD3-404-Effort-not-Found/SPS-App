@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:sps_app/screens/admin/admin_notes.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
 class AdminHome extends StatelessWidget {
   const AdminHome({super.key});
@@ -7,16 +9,8 @@ class AdminHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: Image.asset('lib/assets/images/wits_logo_blue.png',
-            fit: BoxFit.fitHeight),
-        title: Text(
-          'Wits University',
-          style: TextStyle(
-              fontSize: 25, color: Theme.of(context).colorScheme.onPrimary),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+      appBar: WitsAppBar(
+        context: context,
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(children: [
@@ -41,7 +35,12 @@ class AdminHome extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
                     child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AdminNotes()));
+                        },
                         style: TextButton.styleFrom(
                             side: BorderSide(
                                 width: 3,

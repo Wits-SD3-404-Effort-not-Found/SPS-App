@@ -10,8 +10,8 @@ import 'package:sps_app/screens/calendar/calendar_manager.dart';
 class HTTPManager {
   HTTPManager();
 
-  static const String serverAddress = '164.92.183.156';
-  static const String serverPort = '80';
+  static const String serverAddress = '10.0.2.2'; //'164.92.183.156';
+  static const String serverPort = '8000'; //'80';
 
   // posts user credentials to validate them
   // Returns true if its a newly created account
@@ -139,6 +139,27 @@ class HTTPManager {
     int accountID = AccountManager.getID();
     final response = await http
         .get(Uri.parse("http://$serverAddress:$serverPort/notes/$accountID"));
+    var notesList = [{}];
+    debugPrint(response.reasonPhrase);
+    if (response.statusCode == 200) {
+      var responseVec = jsonDecode(response.body);
+      debugPrint(responseVec.toString());
+      for (var note in responseVec) {
+        notesList.add({
+          "noteID": note["note_id"],
+          "noteTitle": note["note_title"],
+          "noteContent": note["note_content"],
+        });
+      }
+      return notesList;
+    } else {
+      throw Exception("Can't retrieve notes");
+    }
+  }
+
+  static Future<List<Map>> getPublicNotes() async {
+    final response = await http
+        .get(Uri.parse("http://$serverAddress:$serverPort/notes/public"));
     var notesList = [{}];
     debugPrint(response.reasonPhrase);
     if (response.statusCode == 200) {
