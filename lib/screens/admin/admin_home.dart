@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:sps_app/account_manager.dart';
 import 'package:sps_app/screens/admin/admin_notes.dart';
 import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
@@ -71,6 +72,7 @@ class AdminHome extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
                     child: TextButton(
                         onPressed: () {
+                          AccountManager.clearAccount();
                           Phoenix.rebirth(context);
                         },
                         style: TextButton.styleFrom(

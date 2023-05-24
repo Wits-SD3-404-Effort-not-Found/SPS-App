@@ -1,7 +1,6 @@
 //import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:sps_app/http_handler.dart';
-import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/screens/settings/settings.dart';
 import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 import '../../account_manager.dart';

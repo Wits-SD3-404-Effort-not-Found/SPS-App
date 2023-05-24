@@ -151,17 +151,6 @@ class _LoginPageState extends State<LoginPage> {
                     color: Theme.of(context).colorScheme.onBackground),
               ),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const AdminHome()));
-              },
-              child: Text(
-                "Login as supervisor",
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onBackground),
-              ),
-            ),
             ElevatedButton(
               onPressed: () {
                 LoginManager.setUsername(myUsernameController.text);
@@ -169,20 +158,31 @@ class _LoginPageState extends State<LoginPage> {
                 // to check if users credentials are correct
                 // to control access into the app
                 LoginManager.validateLogin()
-                    .then((value) => {
-                          if (!value)
-                            {AccountManager.saveAccount(), moveToApp(context)}
-                          else
-                            {
-                              // This is for a new account
-                            }
-                        })
+                    .then((_) =>
+                        {AccountManager.saveAccount(), moveToApp(context)})
                     .catchError((_) => {_isValidMessage(false), null});
               },
               // styles login button
               style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary),
-              child: const Text('Login'),
+              child: const Text('Login as Student'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                LoginManager.setUsername(myUsernameController.text);
+                LoginManager.setPassword(myPasswordController.text);
+                LoginManager.validateSupervisorLogin()
+                    .then((_) => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AdminHome()))
+                        })
+                    .catchError((_) => {_isValidMessage(false), null});
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary),
+              child: const Text("Login as Supervisor"),
             ),
           ],
         )));
