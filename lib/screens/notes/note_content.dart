@@ -15,8 +15,8 @@ class NoteContent {
     return isNewNote;
   }
 
-  void setIsPublicNote(bool isPublicNote) {
-    this.isPublicNote = isPublicNote;
+  void setIsPublicNote(bool? isPublicNote) {
+    this.isPublicNote = isPublicNote!;
   }
 
   bool getIsPublicNote() {
