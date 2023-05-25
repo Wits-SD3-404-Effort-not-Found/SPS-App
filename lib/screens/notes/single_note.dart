@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/http_handler.dart';
 import 'package:sps_app/screens/notes/note_content.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 import 'package:sps_app/widgets/primitive/public_note_menu_item.dart';
 
 enum SampleItem { itemOne, itemTwo }
@@ -67,6 +68,7 @@ class _SingleNotePageState extends State<SingleNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: WitsAppBar(context: context),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Column(children: <Widget>[
           Container(
