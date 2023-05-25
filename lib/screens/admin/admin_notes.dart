@@ -1,28 +1,18 @@
 import 'package:flutter/material.dart';
+
+import 'package:sps_app/http_handler.dart';
 import 'package:sps_app/screens/notes/single_note.dart';
 import 'package:sps_app/widgets/primitive/list_item.dart';
 import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
-import '../../http_handler.dart';
 
-class PersonalNotesPage extends StatefulWidget {
-  const PersonalNotesPage({super.key});
-  @override
-  State<PersonalNotesPage> createState() => PersonalNotesPageState();
-}
-
-// coverage:ignore-start
-class PersonalNotesPageState extends State<PersonalNotesPage> {
-  @override
-  void setState(VoidCallback fn) {
-    super.setState(fn);
-  }
-
-  var items = [];
+class AdminNotes extends StatelessWidget {
+  const AdminNotes({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var items = [];
     return FutureBuilder(
-        future: HTTPManager.getNotes(),
+        future: HTTPManager.getPublicNotes(),
         builder: (BuildContext ctx, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return Scaffold(
@@ -79,7 +69,7 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                             width: 250,
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Personal Notes",
+                              "Public Notes",
                               style: TextStyle(
                                   fontSize: 30,
                                   color: Theme.of(context)
@@ -114,24 +104,6 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
                                           .colorScheme
                                           .onBackground,
                                     )))),
-                        Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        build(context);
-                                      });
-                                    },
-                                    child: Icon(
-                                      Icons.refresh,
-                                      size: 30,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    )))),
                       ])),
                   Expanded(
                     child: ListView.builder(
@@ -154,4 +126,4 @@ class PersonalNotesPageState extends State<PersonalNotesPage> {
           }
         });
   }
-}// coverage:ignore-end
+}
