@@ -204,8 +204,8 @@ class ModalScreenState extends State<ModalScreen> {
               Card(
                   elevation: 20,
                   borderOnForeground: true,
-                  margin: const EdgeInsets.all(0.5),
-                  color: Colors.white,
+                  margin: const EdgeInsets.all(0.05),
+                  color: Theme.of(context).colorScheme.background,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -509,8 +509,8 @@ class ModalScreenState extends State<ModalScreen> {
               Card(
                 elevation: 20,
                 borderOnForeground: true,
-                margin: const EdgeInsets.all(1),
-                color: Colors.white,
+                margin: const EdgeInsets.all(0.2),
+                color: Theme.of(context).colorScheme.background,
                 child: TableCalendar<Events>(
                   eventLoader: ModalManager.getEventsForDay,
                   focusedDay: focusDay,
@@ -607,7 +607,7 @@ class ModalScreenState extends State<ModalScreen> {
                                       style: TextStyle(
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .onBackground,
+                                              .onPrimary,
                                           fontSize: 22,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -616,7 +616,7 @@ class ModalScreenState extends State<ModalScreen> {
                                       style: TextStyle(
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .onBackground,
+                                              .onPrimary,
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -843,10 +843,12 @@ class ModalScreenState extends State<ModalScreen> {
                                                               );
                                                             });
                                                       },
-                                                      child: const Icon(
+                                                      child: Icon(
                                                         Icons.edit_outlined,
                                                         size: 30,
-                                                        color: Colors.black,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onPrimary,
                                                       ),
                                                     ),
 
@@ -898,7 +900,7 @@ class ModalScreenState extends State<ModalScreen> {
                                                         size: 30,
                                                         color: Theme.of(context)
                                                             .colorScheme
-                                                            .onBackground,
+                                                            .onPrimary,
                                                       ),
                                                     )
                                                   ])

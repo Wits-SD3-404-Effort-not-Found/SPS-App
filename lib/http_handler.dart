@@ -90,10 +90,10 @@ class HTTPManager {
 
       for (var data in jsonData) {
         Events eventData = Events(
-            eventId: data['event_id'], // check this actually gets the ID
+            eventId: data['event_id'],
             startDate: convertDateFromString(data['start_date']),
             endDate: convertDateFromString(data['end_date']),
-            eventName: data['name'],
+            eventName: data['event_name'],
             description: data['description'],
             background: const Color(0xFF8B1FA9));
         eventsList.add(eventData);

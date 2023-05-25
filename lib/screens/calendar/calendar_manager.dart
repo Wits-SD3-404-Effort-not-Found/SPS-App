@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:ui';
 
+import 'package:intl/intl.dart';
 import 'package:sps_app/account_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -51,7 +52,7 @@ class Rotations extends Events {
 }
 
 DateTime convertDateFromString(String date) {
-  String newDate = date.substring(0, 19);
+  String newDate = date.substring(0, 16);
   return DateTime.parse(newDate);
 }
 
