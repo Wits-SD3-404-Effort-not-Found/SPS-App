@@ -149,6 +149,7 @@ class HTTPManager {
           "noteID": note["note_id"],
           "noteTitle": note["note_title"],
           "noteContent": note["note_content"],
+          "publicNote": note["note_public"],
         });
       }
       return notesList;
@@ -180,10 +181,13 @@ class HTTPManager {
 
   // http put function to put edited note in the database
   static Future<bool> putUpdatedNote(NoteContent note) async {
+    debugPrint("value from in update http function");
+    debugPrint(note.getIsPublicNote().toString());
     var noteData = {
       "note_id": note.getNoteID(),
       "note_title": note.getTitle(),
-      "note_content": note.getBody()
+      "note_content": note.getBody(),
+      "note_public": note.getIsPublicNote(),
     };
     final response = await http.put(
         Uri.parse("http://$serverAddress:$serverPort/notes/"),
@@ -235,7 +239,8 @@ class HTTPManager {
     var noteData = {
       "account_id": accountID,
       "note_title": note.getTitle(),
-      "note_content": note.getBody()
+      "note_content": note.getBody(),
+      "note_public": note.getIsPublicNote(),
     };
     final response = await http.post(
         Uri.parse("http://$serverAddress:$serverPort/notes/"),

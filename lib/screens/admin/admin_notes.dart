@@ -29,8 +29,8 @@ class AdminNotes extends StatelessWidget {
               if (note["noteID"] != null &&
                   note["noteTitle"] != null &&
                   note["noteContent"] != null) {
-                items.add(NotesItem(
-                    note["noteTitle"], note["noteContent"], note["noteID"]));
+                items.add(NotesItem(note["noteTitle"], note["noteContent"],
+                    note["publicNote"], note["noteID"]));
               }
             }
             return Scaffold(
@@ -84,7 +84,8 @@ class AdminNotes extends StatelessWidget {
                                     horizontal: 10, vertical: 5),
                                 child: GestureDetector(
                                     onTap: () {
-                                      var newNote = NotesItem("Note Title", "");
+                                      var newNote =
+                                          NotesItem("Note Title", "", false);
                                       newNote
                                           .getNoteContent()
                                           .setIsNewNote(true);
