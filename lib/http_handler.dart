@@ -341,4 +341,28 @@ class HTTPManager {
       //return Future.value(false);
     }
   }
+
+  //gets all the details off the staff/professors for students to contact from the backend
+  static Future<List<Map>> getProfessors() async {
+    final response = await http.get(
+      Uri.parse('http://$serverAddress:$serverPort/staff'),
+    );
+    var professorsList = [{}];
+    if (response.statusCode == 200) {
+      var responseVec = jsonDecode(response.body);
+      debugPrint(response.body);
+      for (var professor in responseVec) {
+        professorsList.add({
+          "staffID": professor["staff_id"],
+          "firstName": professor["first_name"],
+          "lastName": professor["last_name"],
+          "email": professor["email"],
+          "cellNumber": professor["cell_number"]
+        });
+      }
+      return professorsList;
+    } else {
+      throw Exception("Can't access data");
+    }
+  }
 }
