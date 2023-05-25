@@ -612,7 +612,7 @@ class ModalScreenState extends State<ModalScreen> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     subtitle: Text(
-                                      '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString()} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString()}',
+                                      '${ModalManager.allEvents[_selectedDay]![index].description}\n${ModalManager.allEvents[_selectedDay]![index].startDate.toString().substring(0, 16)} to ${ModalManager.allEvents[_selectedDay]![index].endDate.toString().substring(0, 16)}',
                                       style: TextStyle(
                                           color: Theme.of(context)
                                               .colorScheme
