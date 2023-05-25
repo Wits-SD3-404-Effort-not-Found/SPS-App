@@ -29,8 +29,8 @@ class AdminNotes extends StatelessWidget {
               if (note["noteID"] != null &&
                   note["noteTitle"] != null &&
                   note["noteContent"] != null) {
-                items.add(NotesItem(
-                    note["noteTitle"], note["noteContent"], note["noteID"]));
+                items.add(NotesItem(note["noteTitle"], note["noteContent"],
+                    note["publicNote"], note["noteID"]));
               }
             }
             return Scaffold(
