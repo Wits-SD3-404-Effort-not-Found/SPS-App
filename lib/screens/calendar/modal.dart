@@ -198,17 +198,14 @@ class ModalScreenState extends State<ModalScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(1.0),
           child: Column(
             children: [
-              Container(
-                  height: 50,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary,
-                              width: 2))),
+              Card(
+                  elevation: 20,
+                  borderOnForeground: true,
+                  margin: const EdgeInsets.all(0.5),
+                  color: Colors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -509,73 +506,79 @@ class ModalScreenState extends State<ModalScreen> {
                           ))
                     ],
                   )),
-              TableCalendar<Events>(
-                eventLoader: ModalManager.getEventsForDay,
-                focusedDay: focusDay,
-                onPageChanged: (focusedDay) {
-                  //focuses on new selected day
-                  focusDay = focusedDay;
-                  _focusedDay = focusDay;
-                },
-                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                rangeStartDay: _rangeStart,
-                rangeEndDay: _rangeEnd,
-                rangeSelectionMode: _rangeSelectionMode,
-                onRangeSelected: _onRangeSelected,
-                onDaySelected: _onDaySelected,
-                onFormatChanged: (format) {
-                  if (_calendarFormat != format) {
-                    setState(() {
-                      _calendarFormat = format;
-                    });
-                  }
-                },
-                firstDay: DateTime.utc(2015, 1, 1),
-                lastDay: DateTime.utc(2030, 12, 31),
-                calendarFormat: CalendarFormat.week,
-                rowHeight: 60,
-                headerStyle: HeaderStyle(
-                    titleCentered: true,
-                    formatButtonVisible: false,
-                    titleTextStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10))),
-                    leftChevronIcon: Icon(
-                      Icons.chevron_left,
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 28,
-                    ),
-                    rightChevronIcon: Icon(
-                      Icons.chevron_right,
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 28,
-                    )),
-                daysOfWeekStyle: DaysOfWeekStyle(
-                    weekdayStyle: TextStyle(
-                        height: 1,
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    weekendStyle: TextStyle(
-                        height: 1,
+              Card(
+                elevation: 20,
+                borderOnForeground: true,
+                margin: const EdgeInsets.all(1),
+                color: Colors.white,
+                child: TableCalendar<Events>(
+                  eventLoader: ModalManager.getEventsForDay,
+                  focusedDay: focusDay,
+                  onPageChanged: (focusedDay) {
+                    //focuses on new selected day
+                    focusDay = focusedDay;
+                    _focusedDay = focusDay;
+                  },
+                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                  rangeStartDay: _rangeStart,
+                  rangeEndDay: _rangeEnd,
+                  rangeSelectionMode: _rangeSelectionMode,
+                  onRangeSelected: _onRangeSelected,
+                  onDaySelected: _onDaySelected,
+                  onFormatChanged: (format) {
+                    if (_calendarFormat != format) {
+                      setState(() {
+                        _calendarFormat = format;
+                      });
+                    }
+                  },
+                  firstDay: DateTime.utc(2015, 1, 1),
+                  lastDay: DateTime.utc(2030, 12, 31),
+                  calendarFormat: CalendarFormat.week,
+                  rowHeight: 60,
+                  headerStyle: HeaderStyle(
+                      titleCentered: true,
+                      formatButtonVisible: false,
+                      titleTextStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.background,
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10))),
+                      leftChevronIcon: Icon(
+                        Icons.chevron_left,
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold)),
-                calendarStyle: CalendarStyle(
-                    todayDecoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        shape: BoxShape.circle),
-                    selectedDecoration: BoxDecoration(
+                        size: 28,
+                      ),
+                      rightChevronIcon: Icon(
+                        Icons.chevron_right,
                         color: Theme.of(context).colorScheme.secondary,
-                        shape: BoxShape.circle),
-                    defaultTextStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground)),
+                        size: 28,
+                      )),
+                  daysOfWeekStyle: DaysOfWeekStyle(
+                      weekdayStyle: TextStyle(
+                          height: 1,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                      weekendStyle: TextStyle(
+                          height: 1,
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold)),
+                  calendarStyle: CalendarStyle(
+                      todayDecoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          shape: BoxShape.circle),
+                      selectedDecoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.secondary,
+                          shape: BoxShape.circle),
+                      defaultTextStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground)),
+                ),
               ),
               Expanded(
                   child: ValueListenableBuilder(
@@ -583,7 +586,7 @@ class ModalScreenState extends State<ModalScreen> {
                       builder: (context, value, _) {
                         return ListView.builder(
                             shrinkWrap: true,
-                            itemCount: _selectedEvents.value.length, //
+                            itemCount: _selectedEvents.value.length,
                             itemBuilder: (context, index) {
                               return Container(
                                   margin: const EdgeInsets.symmetric(
