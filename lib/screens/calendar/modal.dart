@@ -244,9 +244,11 @@ class ModalScreenState extends State<ModalScreen> {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return SimpleDialog(
+                                  return AlertDialog(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.onPrimary,
                                     title: const Text("New Event"),
-                                    children: [
+                                    actions: [
                                       Column(children: [
                                         Padding(
                                             padding: const EdgeInsets.symmetric(
@@ -343,6 +345,10 @@ class ModalScreenState extends State<ModalScreen> {
                                               height: 300,
                                               width: 275,
                                               child: SfDateRangePicker(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .surface,
                                                 initialDisplayDate: _focusedDay,
                                                 initialSelectedRange:
                                                     PickerDateRange(_focusedDay,
@@ -442,7 +448,7 @@ class ModalScreenState extends State<ModalScreen> {
                                                     fontSize: 16,
                                                     color: Theme.of(context)
                                                         .colorScheme
-                                                        .onBackground),
+                                                        .primary),
                                               ),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
@@ -459,7 +465,7 @@ class ModalScreenState extends State<ModalScreen> {
                                                       fontSize: 16,
                                                       color: Theme.of(context)
                                                           .colorScheme
-                                                          .onBackground)),
+                                                          .primary)),
                                               onPressed: () {
                                                 final addStartDateTime =
                                                     DateTime(
@@ -690,14 +696,14 @@ class ModalScreenState extends State<ModalScreen> {
                                                             builder:
                                                                 (BuildContext
                                                                     context) {
-                                                              return SimpleDialog(
+                                                              return AlertDialog(
                                                                 backgroundColor: Theme.of(
                                                                         context)
                                                                     .colorScheme
                                                                     .onPrimary,
                                                                 title: const Text(
                                                                     "Edit Event"),
-                                                                children: [
+                                                                actions: [
                                                                   Column(
                                                                       children: [
                                                                         Padding(
@@ -738,7 +744,7 @@ class ModalScreenState extends State<ModalScreen> {
                                                                             alignment:
                                                                                 Alignment.centerLeft,
                                                                             child: Padding(
-                                                                                padding: EdgeInsets.only(left: 30, top: 30, right: 30, bottom: 8),
+                                                                                padding: EdgeInsets.only(left: 30, top: 30, right: 30, bottom: 12),
                                                                                 child: Text(
                                                                                   "Select start and end dates:",
                                                                                   style: TextStyle(fontSize: 18),
@@ -750,11 +756,12 @@ class ModalScreenState extends State<ModalScreen> {
                                                                               height: 300,
                                                                               width: 275,
                                                                               child: SfDateRangePicker(
+                                                                                backgroundColor: Theme.of(context).colorScheme.surface,
                                                                                 initialDisplayDate: _focusedDay,
                                                                                 initialSelectedRange: PickerDateRange(ModalManager.allEvents[_selectedDay]![index].startDate, ModalManager.allEvents[_selectedDay]![index].endDate),
                                                                                 startRangeSelectionColor: const Color(0xFF043673),
                                                                                 endRangeSelectionColor: const Color(0xFF043673),
-                                                                                rangeSelectionColor: const Color.fromRGBO(4, 54, 115, 0.3),
+                                                                                rangeSelectionColor: const Color(0xFF043673),
                                                                                 view: DateRangePickerView.month,
                                                                                 selectionMode: DateRangePickerSelectionMode.range,
                                                                                 onSelectionChanged: editSelectionChanged,
@@ -805,7 +812,7 @@ class ModalScreenState extends State<ModalScreen> {
                                                                               const Text(
                                                                             "Cancel",
                                                                             style:
-                                                                                TextStyle(fontSize: 16, color: Colors.black),
+                                                                                TextStyle(fontSize: 16, color: Color(0xff043673)),
                                                                           ),
                                                                           onPressed:
                                                                               () {
@@ -817,7 +824,7 @@ class ModalScreenState extends State<ModalScreen> {
                                                                         TextButton(
                                                                           child: const Text(
                                                                               "Confirm",
-                                                                              style: TextStyle(fontSize: 16, color: Colors.black)),
+                                                                              style: TextStyle(fontSize: 16, color: Color(0xff043673))),
                                                                           onPressed:
                                                                               () {
                                                                             final editStartDateTime = DateTime(
