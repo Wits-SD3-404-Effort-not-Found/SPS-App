@@ -863,6 +863,10 @@ class ModalScreenState extends State<ModalScreen> {
                                                                 (BuildContext
                                                                     context) {
                                                               return AlertDialog(
+                                                                backgroundColor: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .onPrimary,
                                                                 title: const Text(
                                                                     "Delete Event"),
                                                                 content: const Text(
