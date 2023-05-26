@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 import 'package:sps_app/http_handler.dart';
 import 'communication_item.dart';
 
@@ -19,6 +20,7 @@ class CommunicationScreenState extends State<CommunicationScreen> {
         builder: (BuildContext ctx, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return Scaffold(
+                appBar: WitsAppBar(context: context),
                 body: Center(
                   child: CircularProgressIndicator(
                       color: Theme.of(context).colorScheme.secondary),
@@ -41,6 +43,7 @@ class CommunicationScreenState extends State<CommunicationScreen> {
               }
             }
             return Scaffold(
+                appBar: WitsAppBar(context: context),
                 body: Column(
                   children: <Widget>[
                     Container(

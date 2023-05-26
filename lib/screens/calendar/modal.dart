@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/http_handler.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 //import 'package:sps_app/account_manager.dart';
 //import 'package:sps_app/http_handler.dart';
 //import 'package:sps_app/screens/calendar/calendar.dart'; //this is needed
@@ -196,6 +197,7 @@ class ModalScreenState extends State<ModalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: WitsAppBar(context: context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(1.0),
