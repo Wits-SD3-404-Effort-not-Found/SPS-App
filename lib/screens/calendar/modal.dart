@@ -691,6 +691,10 @@ class ModalScreenState extends State<ModalScreen> {
                                                                 (BuildContext
                                                                     context) {
                                                               return SimpleDialog(
+                                                                backgroundColor: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .onPrimary,
                                                                 title: const Text(
                                                                     "Edit Event"),
                                                                 children: [
