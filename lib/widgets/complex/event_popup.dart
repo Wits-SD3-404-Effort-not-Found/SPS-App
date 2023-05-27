@@ -130,6 +130,8 @@ class _EventsPopupState extends State<EventsPopup> {
                             fontSize: 14,
                             color: Theme.of(context).colorScheme.onBackground),
                       ),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground),
                       cursorColor: Theme.of(context).colorScheme.secondary,
                       // to retrieve the user input text from the TextFormField
                       controller: widget.controller.nameController))),
@@ -154,6 +156,8 @@ class _EventsPopupState extends State<EventsPopup> {
                             fontSize: 14,
                             color: Theme.of(context).colorScheme.onBackground),
                       ),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground),
                       cursorColor: Theme.of(context).colorScheme.secondary,
                       // to retrieve the user input text from the TextFormField
                       controller: widget.controller.descriptionController))),
