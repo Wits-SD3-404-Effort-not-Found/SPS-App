@@ -11,10 +11,7 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox('account');
 
-  var accountBox = Hive.box('account');
-  AccountManager.setSessionToken(
-      accountBox.get('session_token', defaultValue: ""));
-  AccountManager.setID(accountBox.get('account_id', defaultValue: 0));
+  AccountManager.loadAccount();
 
   runApp(Phoenix(
       child: ChangeNotifierProvider<ThemeNotifier>(

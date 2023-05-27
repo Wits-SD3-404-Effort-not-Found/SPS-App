@@ -5,6 +5,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:sps_app/account_manager.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
 import 'package:sps_app/screens/calendar/modal.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart';
 
@@ -64,12 +65,14 @@ class _CalendarPageState extends State<CalendarPage> {
     });
   }
 
+//coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     cellWidthHeader = width! / 2;
     cellWidthDrop = width! / 4;
     return Scaffold(
+      appBar: WitsAppBar(context: context),
       body: Center(
         child: FutureBuilder(
           future: eventsList,
@@ -206,6 +209,7 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
       ),
     );
+    //coverage:ignore-end
   }
 
   //allows us to get selected day and pass to table calendar for the focus day

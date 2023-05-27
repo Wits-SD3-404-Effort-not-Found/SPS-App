@@ -6,6 +6,7 @@ import 'package:sps_app/screens/settings/account_settings.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:sps_app/screens/settings/security.dart';
 import 'package:sps_app/screens/settings/appearance.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -15,9 +16,11 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  // coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: WitsAppBar(context: context),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Column(children: <Widget>[
           Align(
@@ -196,5 +199,5 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           )
         ]));
-  }
+  } // coverage:ignore-end
 }

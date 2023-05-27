@@ -28,7 +28,7 @@ class HTTPManager {
       var mapAuthResponse = jsonDecode(response.body);
       AccountManager.setID(mapAuthResponse['account_id']);
       AccountManager.setSessionToken(mapAuthResponse['session_token']);
-      return Future.value(mapAuthResponse['new_account']);
+      return true;
     } else {
       var responseCode = response.statusCode;
       var responseMessage = response.body;
@@ -91,10 +91,9 @@ class HTTPManager {
       for (var data in jsonData) {
         Events eventData = Events(
             eventId: data['event_id'],
-            // check this actually gets the ID
             startDate: convertDateFromString(data['start_date']),
             endDate: convertDateFromString(data['end_date']),
-            eventName: data['name'],
+            eventName: data['event_name'],
             description: data['description'],
             background: const Color(0xFF8B1FA9));
         eventsList.add(eventData);
@@ -150,6 +149,28 @@ class HTTPManager {
           "noteID": note["note_id"],
           "noteTitle": note["note_title"],
           "noteContent": note["note_content"],
+          "publicNote": note["note_public"],
+        });
+      }
+      return notesList;
+    } else {
+      throw Exception("Can't retrieve notes");
+    }
+  }
+
+  static Future<List<Map>> getPublicNotes() async {
+    final response = await http
+        .get(Uri.parse("http://$serverAddress:$serverPort/notes/public"));
+    var notesList = [{}];
+    debugPrint(response.reasonPhrase);
+    if (response.statusCode == 200) {
+      var responseVec = jsonDecode(response.body);
+      debugPrint(responseVec.toString());
+      for (var note in responseVec) {
+        notesList.add({
+          "noteID": note["note_id"],
+          "noteTitle": note["note_title"],
+          "noteContent": note["note_content"],
         });
       }
       return notesList;
@@ -160,10 +181,13 @@ class HTTPManager {
 
   // http put function to put edited note in the database
   static Future<bool> putUpdatedNote(NoteContent note) async {
+    debugPrint("value from in update http function");
+    debugPrint(note.getIsPublicNote().toString());
     var noteData = {
       "note_id": note.getNoteID(),
       "note_title": note.getTitle(),
-      "note_content": note.getBody()
+      "note_content": note.getBody(),
+      "note_public": note.getIsPublicNote(),
     };
     final response = await http.put(
         Uri.parse("http://$serverAddress:$serverPort/notes/"),
@@ -215,7 +239,8 @@ class HTTPManager {
     var noteData = {
       "account_id": accountID,
       "note_title": note.getTitle(),
-      "note_content": note.getBody()
+      "note_content": note.getBody(),
+      "note_public": note.getIsPublicNote(),
     };
     final response = await http.post(
         Uri.parse("http://$serverAddress:$serverPort/notes/"),
@@ -382,5 +407,29 @@ class HTTPManager {
       return Future.value(false);
     }
     return Future.value(false);
+  }
+
+  //gets all the details off the staff/professors for students to contact from the backend
+  static Future<List<Map>> getProfessors() async {
+    final response = await http.get(
+      Uri.parse('http://$serverAddress:$serverPort/staff'),
+    );
+    var professorsList = [{}];
+    if (response.statusCode == 200) {
+      var responseVec = jsonDecode(response.body);
+      debugPrint(response.body);
+      for (var professor in responseVec) {
+        professorsList.add({
+          "staffID": professor["staff_id"],
+          "firstName": professor["first_name"],
+          "lastName": professor["last_name"],
+          "email": professor["email"],
+          "cellNumber": professor["cell_number"]
+        });
+      }
+      return professorsList;
+    } else {
+      throw Exception("Can't access data");
+    }
   }
 }

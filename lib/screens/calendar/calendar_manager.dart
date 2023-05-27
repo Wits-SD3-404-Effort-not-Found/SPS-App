@@ -1,10 +1,10 @@
 import 'dart:collection';
 import 'dart:ui';
-
 import 'package:sps_app/account_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+// coverage:ignore-start
 int accountID = AccountManager.getID();
 
 class Events {
@@ -50,8 +50,8 @@ class Rotations extends Events {
 }
 
 DateTime convertDateFromString(String date) {
-  String newDate = date.substring(0, 19);
-  return DateTime.parse(newDate);
+  String dateTime = date.substring(0, 16);
+  return DateTime.parse(dateTime);
 }
 
 class EventsDataSource extends CalendarDataSource {
@@ -187,3 +187,4 @@ class ModalManager {
     return ModalManager.allEvents[date] ?? [];
   }
 }
+// coverage:ignore-end
