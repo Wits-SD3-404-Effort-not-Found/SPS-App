@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/screens/settings/settings.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -36,6 +37,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: WitsAppBar(
+          context: context,
+        ),
         backgroundColor: const Color(0xfffcfbfb),
         // to center the widgets/UI elements on the page
         body: Column(
@@ -75,34 +79,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         textAlign: TextAlign.left,
                       ))
                 ])),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                // constrained box to encapsulate user input text box
-                child: ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 70)),
-                  child: TextFormField(
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground),
-                      // styles user input text box
-                      decoration: InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  width: 3)),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  width: 3)),
-                          labelText: 'Enter Current Password',
-                          labelStyle: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.onBackground)),
-                      cursorColor: Theme.of(context).colorScheme.primary,
-                      // to retrieve the user input text from the TextFormField
-                      controller: newPasswordController),
-                )),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 // constrained box to encapsulate user input text box

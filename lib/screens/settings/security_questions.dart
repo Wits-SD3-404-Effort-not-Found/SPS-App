@@ -1,5 +1,10 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:sps_app/http_handler.dart';
+
+import '../../widgets/primitive/wits_app_bar.dart';
 
 class ChangeSecurityQuestionPage extends StatefulWidget {
   const ChangeSecurityQuestionPage({super.key});
@@ -21,6 +26,17 @@ class _ChangeSecurityQuestionPageState
   String dropdownValue1 = "";
   String dropdownValue2 = "";
   List<Map> newQuestions = [];
+  String _sucessfulMessage = "";
+
+  void _isSucessfulMessage(bool value) {
+    setState(() {
+      if (value == true) {
+        _sucessfulMessage = "Change security questions successful";
+      } else {
+        _sucessfulMessage = "Change security questions Unsuccessful";
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -70,6 +86,7 @@ class _ChangeSecurityQuestionPageState
             // questions2 = snapshot.data;
 
             return Scaffold(
+                appBar: WitsAppBar(context: context),
                 backgroundColor: Theme.of(context).colorScheme.background,
                 body: Column(
                   // to structure the UI elements in a single column
@@ -115,38 +132,41 @@ class _ChangeSecurityQuestionPageState
                                 textAlign: TextAlign.left,
                               ))
                         ])),
-                    DropdownButton(
-                      dropdownColor: Theme.of(context).colorScheme.background,
-                      focusColor: Theme.of(context).colorScheme.secondary,
-                      value: dropdownValue1,
-                      icon: Icon(
-                        Icons.arrow_downward,
-                        color: Theme.of(context).colorScheme.onBackground,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 40, 10, 10),
+                      child: DropdownButton(
+                        dropdownColor: Theme.of(context).colorScheme.background,
+                        focusColor: Theme.of(context).colorScheme.secondary,
+                        value: dropdownValue1,
+                        icon: Icon(
+                          Icons.arrow_downward,
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                        elevation: 16,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.onBackground),
+                        underline: Container(
+                          height: 2,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        items: questions1
+                            .map<DropdownMenuItem<String>>((String m) {
+                          return DropdownMenuItem<String>(
+                            value: m,
+                            child: Text(m),
+                          );
+                        }).toList(),
+                        onChanged: (String? newvalue) {
+                          debugPrint(newvalue);
+                          // This is called when the user selects an item.
+                          setState(() {
+                            dropdownValue1 = newvalue!;
+                            q1ID = questions1.indexOf(dropdownValue1) + 1;
+                            debugPrint(dropdownValue1);
+                          });
+                        },
                       ),
-                      elevation: 16,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).colorScheme.onBackground),
-                      underline: Container(
-                        height: 2,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      items:
-                          questions1.map<DropdownMenuItem<String>>((String m) {
-                        return DropdownMenuItem<String>(
-                          value: m,
-                          child: Text(m),
-                        );
-                      }).toList(),
-                      onChanged: (String? newvalue) {
-                        debugPrint(newvalue);
-                        // This is called when the user selects an item.
-                        setState(() {
-                          dropdownValue1 = newvalue!;
-                          q1ID = questions1.indexOf(dropdownValue1) + 1;
-                          debugPrint(dropdownValue1);
-                        });
-                      },
                     ),
                     Padding(
                         padding: const EdgeInsets.symmetric(
@@ -154,7 +174,7 @@ class _ChangeSecurityQuestionPageState
                         // constrained box to encapsulate user input text box
                         child: ConstrainedBox(
                           constraints:
-                              BoxConstraints.tight(const Size(300, 80)),
+                              BoxConstraints.tight(const Size(350, 80)),
                           child: TextFormField(
                               // styles user input text box
                               decoration: InputDecoration(
@@ -221,7 +241,7 @@ class _ChangeSecurityQuestionPageState
                         // constrained box to encapsulate user input text box
                         child: ConstrainedBox(
                           constraints:
-                              BoxConstraints.tight(const Size(300, 80)),
+                              BoxConstraints.tight(const Size(350, 80)),
                           child: TextFormField(
                               // styles user input text box
                               decoration: InputDecoration(
@@ -248,14 +268,37 @@ class _ChangeSecurityQuestionPageState
                                   Theme.of(context).colorScheme.secondary,
                               controller: q2Controller),
                         )),
+                    Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 2, vertical: 2),
+                        child: ConstrainedBox(
+                            constraints:
+                                BoxConstraints.tight(const Size(400, 40)),
+                            child: Text(_sucessfulMessage,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                    fontSize: 14),
+                                textAlign: TextAlign.center))),
                     ElevatedButton(
                       onPressed: () {
-                        newQuestions.add(
-                            {"questionID": q1ID, "answer": q1Controller.text});
-                        newQuestions.add(
-                            {"questionID": q2ID, "answer": q2Controller.text});
-                        //debugPrint(newQuestions.toString());
-                        HTTPManager.postNewQuestions(newQuestions);
+                        if (q1Controller.text != "" ||
+                            q2Controller.text != "") {
+                          var answer1 = _hashData(q1Controller.text).toString();
+                          var answer2 = _hashData(q2Controller.text).toString();
+                          newQuestions
+                              .add({"questionID": q1ID, "answer": answer1});
+                          newQuestions
+                              .add({"questionID": q2ID, "answer": answer2});
+                          //debugPrint(newQuestions.toString());
+                          HTTPManager.postNewQuestions(newQuestions)
+                              .then((_) => {_isSucessfulMessage(true)})
+                              .catchError(
+                                  (_) => {_isSucessfulMessage(false), null});
+                        } else {
+                          (_isSucessfulMessage(false));
+                        }
                       },
                       // styles login button
                       style: ElevatedButton.styleFrom(
@@ -267,5 +310,10 @@ class _ChangeSecurityQuestionPageState
                 ));
           }
         });
+  }
+
+  static Digest _hashData(String data) {
+    var bytes = utf8.encode(data);
+    return sha256.convert(bytes);
   }
 }

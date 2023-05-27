@@ -4,6 +4,7 @@ import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/screens/authentication/fp_security_questions.dart';
 import 'package:sps_app/screens/settings/cp_security_questions.dart';
 import 'package:sps_app/screens/settings/security.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
 class ChangePasswordEmailPage extends StatefulWidget {
   const ChangePasswordEmailPage({super.key});
@@ -36,6 +37,9 @@ class _ChangePasswordEmailPage extends State<ChangePasswordEmailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: WitsAppBar(
+          context: context,
+        ),
         backgroundColor: Theme.of(context).colorScheme.background,
         // to center the widgets/UI elements on the page
         body: Center(

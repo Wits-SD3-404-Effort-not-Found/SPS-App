@@ -4,6 +4,8 @@ import 'package:sps_app/screens/settings/cp_email.dart';
 import 'package:sps_app/screens/settings/cp_security_questions.dart';
 import 'package:sps_app/screens/settings/security_questions.dart';
 
+import '../../widgets/primitive/wits_app_bar.dart';
+
 class SecurityPage extends StatefulWidget {
   const SecurityPage({Key? key}) : super(key: key);
 
@@ -15,6 +17,9 @@ class _SecurityPageState extends State<SecurityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: WitsAppBar(
+          context: context,
+        ),
         backgroundColor: Colors.white,
         body: Column(children: <Widget>[
           Center(

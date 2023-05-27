@@ -8,6 +8,7 @@ import 'package:sps_app/screens/authentication/new_password.dart';
 import 'package:sps_app/screens/settings/change_password.dart';
 import 'package:sps_app/screens/settings/security.dart';
 import 'package:sps_app/screens/settings/settings.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
 class CPSecurityQuestionsPage extends StatefulWidget {
   const CPSecurityQuestionsPage({super.key});
@@ -43,6 +44,9 @@ class _CPSecurityQuestionsPage extends State<CPSecurityQuestionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: WitsAppBar(
+          context: context,
+        ),
         backgroundColor: Theme.of(context).colorScheme.background,
         // to center the widgets/UI elements on the page
         body: Center(
