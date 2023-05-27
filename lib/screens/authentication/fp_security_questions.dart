@@ -166,11 +166,12 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                 ElevatedButton(
                   onPressed: () {
                     //authenticate answers
-                    var areCorrectAnswers =
-                        _question1['answer'].toString().toLowerCase() !=
-                                _hashData(q1Controller.text).toString() ||
-                            _question2['answer'].toString().toLowerCase() !=
-                                _hashData(q2Controller.text).toString();
+                    var areCorrectAnswers = _question1['answer'].toString() ==
+                            _hashData(q1Controller.text.toLowerCase())
+                                .toString() &&
+                        _question2['answer'].toString() ==
+                            _hashData(q2Controller.text.toLowerCase())
+                                .toString();
                     _isValidMessage(areCorrectAnswers);
 
                     if (areCorrectAnswers) {
