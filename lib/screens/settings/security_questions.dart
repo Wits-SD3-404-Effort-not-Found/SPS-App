@@ -15,9 +15,12 @@ class _ChangeSecurityQuestionPageState
   final q2Controller = TextEditingController();
 
   List<String> questions1 = [];
-  List<Map> questions2 = [];
+  List<String> questions2 = [];
+  int q1ID = 0;
+  int q2ID = 0;
   String dropdownValue1 = "";
   String dropdownValue2 = "";
+  List<Map> newQuestions = [];
 
   @override
   void dispose() {
@@ -30,7 +33,6 @@ class _ChangeSecurityQuestionPageState
   void setState(VoidCallback fn) {
     super.setState(fn);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -47,21 +49,28 @@ class _ChangeSecurityQuestionPageState
             questions1.clear();
             dropdownValue1 = "";
             for (var q in snapshot.data) {
-              if(q["questionText"] != null){
+              if (q["questionText"] != null) {
                 questions1.add(
                   q["questionText"],
                 );
               }
             }
+            questions2.clear();
+            dropdownValue2 = "";
+            for (var q in snapshot.data) {
+              if (q["questionText"] != null) {
+                questions2.add(
+                  q["questionText"],
+                );
+              }
+            }
             dropdownValue1 = questions1[0];
+            dropdownValue2 = questions2[0];
             //questions1 = List.from(snapshot.data);
             // questions2 = snapshot.data;
 
             return Scaffold(
-                backgroundColor: Theme
-                    .of(context)
-                    .colorScheme
-                    .background,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 body: Column(
                   // to structure the UI elements in a single column
                   children: <Widget>[
@@ -73,10 +82,7 @@ class _ChangeSecurityQuestionPageState
                             border: Border(
                                 bottom: BorderSide(
                                     color:
-                                    Theme
-                                        .of(context)
-                                        .colorScheme
-                                        .secondary,
+                                        Theme.of(context).colorScheme.secondary,
                                     width: 2))),
                         child: Row(children: [
                           Align(
@@ -91,8 +97,7 @@ class _ChangeSecurityQuestionPageState
                                       child: Icon(
                                         Icons.arrow_back_ios_rounded,
                                         size: 30,
-                                        color: Theme
-                                            .of(context)
+                                        color: Theme.of(context)
                                             .colorScheme
                                             .onBackground,
                                       )))),
@@ -104,37 +109,30 @@ class _ChangeSecurityQuestionPageState
                                 "Security Questions",
                                 style: TextStyle(
                                     fontSize: 30,
-                                    color: Theme
-                                        .of(context)
+                                    color: Theme.of(context)
                                         .colorScheme
                                         .onBackground),
                                 textAlign: TextAlign.left,
                               ))
                         ])),
                     DropdownButton(
+                      dropdownColor: Theme.of(context).colorScheme.background,
+                      focusColor: Theme.of(context).colorScheme.secondary,
                       value: dropdownValue1,
                       icon: Icon(
                         Icons.arrow_downward,
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .onBackground,
+                        color: Theme.of(context).colorScheme.onBackground,
                       ),
                       elevation: 16,
                       style: TextStyle(
                           fontSize: 16,
-                          color: Theme
-                              .of(context)
-                              .colorScheme
-                              .onBackground),
+                          color: Theme.of(context).colorScheme.onBackground),
                       underline: Container(
                         height: 2,
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .secondary,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
-                      items: questions1.map<DropdownMenuItem<String>>((String m) {
+                      items:
+                          questions1.map<DropdownMenuItem<String>>((String m) {
                         return DropdownMenuItem<String>(
                           value: m,
                           child: Text(m),
@@ -145,6 +143,7 @@ class _ChangeSecurityQuestionPageState
                         // This is called when the user selects an item.
                         setState(() {
                           dropdownValue1 = newvalue!;
+                          q1ID = questions1.indexOf(dropdownValue1) + 1;
                           debugPrint(dropdownValue1);
                         });
                       },
@@ -154,113 +153,114 @@ class _ChangeSecurityQuestionPageState
                             horizontal: 8, vertical: 16),
                         // constrained box to encapsulate user input text box
                         child: ConstrainedBox(
-                          constraints: BoxConstraints.tight(
-                              const Size(300, 80)),
+                          constraints:
+                              BoxConstraints.tight(const Size(300, 80)),
                           child: TextFormField(
-                            // styles user input text box
+                              // styles user input text box
                               decoration: InputDecoration(
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Theme
-                                            .of(context)
+                                        color: Theme.of(context)
                                             .colorScheme
                                             .secondary,
                                         width: 3)),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Theme
-                                            .of(context)
+                                        color: Theme.of(context)
                                             .colorScheme
                                             .secondary,
                                         width: 3)),
                                 labelText: 'Answer',
                                 labelStyle: TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    color: Theme
-                                        .of(context)
+                                    color: Theme.of(context)
                                         .colorScheme
                                         .onBackground),
                               ),
                               cursorColor:
-                              Theme
-                                  .of(context)
-                                  .colorScheme
-                                  .secondary,
+                                  Theme.of(context).colorScheme.secondary,
                               controller: q1Controller),
                         )),
-                    // DropdownButton(
-                    //   value: dropdownValue2,
-                    //   icon: Icon(Icons.arrow_downward,
-                    //       color: Theme.of(context).colorScheme.onBackground),
-                    //   elevation: 16,
-                    //   style: TextStyle(
-                    //       fontSize: 16,
-                    //       color: Theme.of(context).colorScheme.onBackground),
-                    //   underline: Container(
-                    //     height: 2,
-                    //     color: Theme.of(context).colorScheme.secondary,
-                    //   ),
-                    //   onChanged: (String? value) {
-                    //     // This is called when the user selects an item.
-                    //     setState(() {
-                    //       dropdownValue2 = value!;
-                    //     });
-                    //   },
-                    //   items: questions2.map<DropdownMenuItem<String>>((Map m) {
-                    //     return DropdownMenuItem<String>(
-                    //       value: m["questionID"].toString(),
-                    //       child: Text(m["questionText"]),
-                    //     );
-                    //   }).toList(),
-                    // ),
+                    DropdownButton(
+                      dropdownColor: Theme.of(context).colorScheme.background,
+                      focusColor: Theme.of(context).colorScheme.secondary,
+                      value: dropdownValue2,
+                      icon: Icon(
+                        Icons.arrow_downward,
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                      elevation: 16,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.onBackground),
+                      underline: Container(
+                        height: 2,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      items:
+                          questions2.map<DropdownMenuItem<String>>((String m) {
+                        return DropdownMenuItem<String>(
+                          value: m,
+                          child: Text(m),
+                        );
+                      }).toList(),
+                      onChanged: (String? newvalue) {
+                        debugPrint(newvalue);
+                        // This is called when the user selects an item.
+                        setState(() {
+                          dropdownValue2 = newvalue!;
+                          q2ID = questions2.indexOf(dropdownValue2) + 1;
+                          debugPrint(dropdownValue2);
+                        });
+                      },
+                    ),
                     // padding for email text box for better UI layout
                     Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 16),
                         // constrained box to encapsulate user input text box
                         child: ConstrainedBox(
-                          constraints: BoxConstraints.tight(
-                              const Size(300, 80)),
+                          constraints:
+                              BoxConstraints.tight(const Size(300, 80)),
                           child: TextFormField(
-                            // styles user input text box
+                              // styles user input text box
                               decoration: InputDecoration(
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Theme
-                                            .of(context)
+                                        color: Theme.of(context)
                                             .colorScheme
                                             .secondary,
                                         width: 3)),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Theme
-                                            .of(context)
+                                        color: Theme.of(context)
                                             .colorScheme
                                             .secondary,
                                         width: 3)),
                                 labelText: 'Answer',
                                 labelStyle: TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    color: Theme
-                                        .of(context)
+                                    color: Theme.of(context)
                                         .colorScheme
                                         .onBackground),
                               ),
                               cursorColor:
-                              Theme
-                                  .of(context)
-                                  .colorScheme
-                                  .secondary,
+                                  Theme.of(context).colorScheme.secondary,
                               controller: q2Controller),
                         )),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        newQuestions.add(
+                            {"questionID": q1ID, "answer": q1Controller.text});
+                        newQuestions.add(
+                            {"questionID": q2ID, "answer": q2Controller.text});
+                        //debugPrint(newQuestions.toString());
+                        HTTPManager.postNewQuestions(newQuestions);
+                      },
                       // styles login button
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme
-                              .of(context)
-                              .colorScheme
-                              .primary),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary),
                       child: const Text('Confirm'),
                     ),
                   ],

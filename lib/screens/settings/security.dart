@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/screens/settings/change_password.dart';
+import 'package:sps_app/screens/settings/cp_email.dart';
+import 'package:sps_app/screens/settings/cp_security_questions.dart';
 import 'package:sps_app/screens/settings/security_questions.dart';
 
 class SecurityPage extends StatefulWidget {
@@ -24,13 +26,14 @@ class _SecurityPageState extends State<SecurityPage> {
                     alignment: Alignment.bottomLeft,
                     decoration: const BoxDecoration(
                         border: Border(
-                            bottom: BorderSide(color: Color(0xff917248), width: 2))),
+                            bottom: BorderSide(
+                                color: Color(0xff917248), width: 2))),
                     child: Row(children: [
                       Align(
                           alignment: Alignment.center,
                           child: Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: GestureDetector(
                                   onTap: () {
                                     Navigator.pop(context);
@@ -49,8 +52,7 @@ class _SecurityPageState extends State<SecurityPage> {
                             style: TextStyle(fontSize: 30),
                             textAlign: TextAlign.left,
                           ))
-                    ])
-                ),
+                    ])),
                 ConstrainedBox(
                     constraints: BoxConstraints.tight(const Size(360, 60)),
                     child: Padding(
@@ -61,15 +63,16 @@ class _SecurityPageState extends State<SecurityPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const ChangePasswordPage()),
+                                    builder: (context) =>
+                                        const ChangePasswordEmailPage()),
                               );
                             },
                             style: TextButton.styleFrom(
                                 side:
-                                const BorderSide(color: Color(0xff043673))),
+                                    const BorderSide(color: Color(0xff043673))),
                             child: Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: const [
                                   Text(
                                     'Change Password',
@@ -81,10 +84,7 @@ class _SecurityPageState extends State<SecurityPage> {
                                     size: 20,
                                     color: Colors.black,
                                   ),
-                                ])
-                        )
-                    )
-                ),
+                                ])))),
                 ConstrainedBox(
                     constraints: BoxConstraints.tight(const Size(360, 60)),
                     child: Padding(
@@ -95,15 +95,16 @@ class _SecurityPageState extends State<SecurityPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const ChangeSecurityQuestionPage()),
+                                    builder: (context) =>
+                                        const ChangeSecurityQuestionPage()),
                               );
                             },
                             style: TextButton.styleFrom(
                                 side:
-                                const BorderSide(color: Color(0xff043673))),
+                                    const BorderSide(color: Color(0xff043673))),
                             child: Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: const [
                                   Text(
                                     'Change Security Questions',
@@ -115,10 +116,7 @@ class _SecurityPageState extends State<SecurityPage> {
                                     size: 20,
                                     color: Colors.black,
                                   ),
-                                ])
-                        )
-                    )
-                ),
+                                ])))),
               ],
             ),
           )

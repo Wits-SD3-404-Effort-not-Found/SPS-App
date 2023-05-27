@@ -39,7 +39,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         backgroundColor: const Color(0xfffcfbfb),
         // to center the widgets/UI elements on the page
         body: Column(
-            // to structure the UI elements in a single column
+          // to structure the UI elements in a single column
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
@@ -88,17 +88,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                   color:
-                                  Theme.of(context).colorScheme.secondary,
+                                      Theme.of(context).colorScheme.secondary,
                                   width: 3)),
                           enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                   color:
-                                  Theme.of(context).colorScheme.secondary,
+                                      Theme.of(context).colorScheme.secondary,
                                   width: 3)),
                           labelText: 'Enter Current Password',
                           labelStyle: TextStyle(
                               color:
-                              Theme.of(context).colorScheme.onBackground)),
+                                  Theme.of(context).colorScheme.onBackground)),
                       cursorColor: Theme.of(context).colorScheme.primary,
                       // to retrieve the user input text from the TextFormField
                       controller: newPasswordController),
@@ -116,17 +116,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                   color:
-                                  Theme.of(context).colorScheme.secondary,
+                                      Theme.of(context).colorScheme.secondary,
                                   width: 3)),
                           enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                   color:
-                                  Theme.of(context).colorScheme.secondary,
+                                      Theme.of(context).colorScheme.secondary,
                                   width: 3)),
                           labelText: 'Enter New Password',
                           labelStyle: TextStyle(
                               color:
-                              Theme.of(context).colorScheme.onBackground)),
+                                  Theme.of(context).colorScheme.onBackground)),
                       cursorColor: Theme.of(context).colorScheme.primary,
                       // to retrieve the user input text from the TextFormField
                       controller: newPasswordController),
@@ -144,22 +144,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                   color:
-                                  Theme.of(context).colorScheme.secondary,
+                                      Theme.of(context).colorScheme.secondary,
                                   width: 3)),
                           enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                   color:
-                                  Theme.of(context).colorScheme.secondary,
+                                      Theme.of(context).colorScheme.secondary,
                                   width: 3)),
                           labelText: 'Confirm Password',
                           labelStyle: TextStyle(
                               color:
-                              Theme.of(context).colorScheme.onBackground)),
+                                  Theme.of(context).colorScheme.onBackground)),
                       cursorColor: Theme.of(context).colorScheme.primary,
                       // to retrieve the user input text from the TextFormField
                       controller: confirmPasswordController),
-                )
-            ),
+                )),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                 child: ConstrainedBox(
@@ -204,7 +203,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                     _isValidMessage(value)
                                   }
                                 else
-                                  {debugPrint("reset pass word failed")}
+                                  {debugPrint("reset password failed")}
                               });
                     } else {
                       _isValidMessage(false);
@@ -218,7 +217,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               ],
             ),
           ],
-      )
-    );
+        ));
   }
 }

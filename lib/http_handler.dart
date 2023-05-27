@@ -90,7 +90,8 @@ class HTTPManager {
 
       for (var data in jsonData) {
         Events eventData = Events(
-            eventId: data['event_id'], // check this actually gets the ID
+            eventId: data['event_id'],
+            // check this actually gets the ID
             startDate: convertDateFromString(data['start_date']),
             endDate: convertDateFromString(data['end_date']),
             eventName: data['name'],
@@ -353,5 +354,33 @@ class HTTPManager {
       throw Exception("Failed to edit event");
       //return Future.value(false);
     }
+  }
+
+  static Future<bool> postNewQuestions(List<Map> questions) async {
+    var questionData = {
+      "account_id": AccountManager.getID(),
+      "questions": [
+        {
+          "question_id": questions[0]["questionID"],
+          "user_answer": questions[0]["answer"]
+        },
+        {
+          "question_id": questions[1]["questionID"],
+          "user_answer": questions[1]["answer"]
+        },
+      ]
+    };
+    debugPrint(questionData.toString());
+    final response = await http.post(
+        Uri.parse("http://$serverAddress:$serverPort/account/security"),
+        body: jsonEncode(questionData));
+
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to post new questions and answers");
+      return Future.value(false);
+    }
+    return Future.value(false);
   }
 }
