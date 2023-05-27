@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class EventPopupController extends ChangeNotifier {
   DateTime _startDate = DateTime.now();
@@ -54,10 +53,11 @@ class EventPopupController extends ChangeNotifier {
 }
 
 class EventsPopup extends StatefulWidget {
-  EventsPopup(this.title, this.controller, this.confirmOnPress, {super.key});
+  const EventsPopup(this.title, this.controller, this.confirmOnPress,
+      {super.key});
 
-  EventPopupController controller;
-  String title;
+  final EventPopupController controller;
+  final String title;
   final VoidCallback confirmOnPress;
 
   @override

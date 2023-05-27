@@ -7,7 +7,6 @@ import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 //import 'package:sps_app/screens/calendar/calendar.dart'; //this is needed
 import 'package:table_calendar/table_calendar.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ModalScreen extends StatefulWidget {
   final DateTime focusDay;
