@@ -50,7 +50,9 @@ class HTTPManager {
       LoginManager.setAccountID(responseMap['account_id']);
       for (var questionMap in responseMap['questions']) {
         LoginManager.addQuestion(questionMap);
+        debugPrint(questionMap.toString());
       }
+
       return Future.value(true);
     } else {
       //throw Exception('Invalid Email');
