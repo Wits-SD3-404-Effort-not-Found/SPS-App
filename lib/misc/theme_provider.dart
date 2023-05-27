@@ -23,7 +23,7 @@ class ThemeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  int themeToInt(ThemeMode mode) {
+  static int themeToInt(ThemeMode mode) {
     switch (mode) {
       case ThemeMode.system:
         return 0;
@@ -36,7 +36,7 @@ class ThemeNotifier extends ChangeNotifier {
     }
   }
 
-  ThemeMode intToTheme(int themeIdx) {
+  static ThemeMode intToTheme(int themeIdx) {
     switch (themeIdx) {
       case 0:
         return ThemeMode.system;
