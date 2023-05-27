@@ -91,7 +91,7 @@ ColorScheme darkColours() {
   const onErrorColor = Color(0xffffffff);
   const backgroundColor = Color(0xff18181c);
   const onBackgroundColor = Color(0xffffffff);
-  const surfaceColor = Color(0xff606070);
+  const surfaceColor = Color(0xffbbbbbb);
   const onSurfaceColor = Color(0xffffffff);
 
   return const ColorScheme(

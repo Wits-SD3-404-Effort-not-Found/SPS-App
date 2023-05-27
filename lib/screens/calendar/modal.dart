@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/http_handler.dart';
+import 'package:sps_app/widgets/complex/event_popup.dart';
 import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 //import 'package:sps_app/account_manager.dart';
 //import 'package:sps_app/http_handler.dart';
@@ -33,19 +34,8 @@ class ModalScreenState extends State<ModalScreen> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
-  DateTime _newStartDate = DateTime.now();
-  DateTime _newEndDate = DateTime.now();
-  DateTime _editStartDate = DateTime.now();
-  DateTime _editEndDate = DateTime.now();
-  TimeOfDay _newStartTime = TimeOfDay.now();
-  TimeOfDay _newEndTime = TimeOfDay.now();
-  TimeOfDay _editStartTime = TimeOfDay.now();
-  TimeOfDay _editEndTime = TimeOfDay.now();
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
-  final addEventNameController = TextEditingController();
-  final addEventDescriptionController = TextEditingController();
-  var _editEventNameController = TextEditingController();
-  var _editEventDescriptionController = TextEditingController();
+  EventPopupController newEventController = EventPopupController();
+  EventPopupController editEventController = EventPopupController();
 
   List<Events> _getEventsForRange(DateTime start, DateTime end) {
     final days = ModalManager.daysInRange(start, end);
@@ -62,13 +52,10 @@ class ModalScreenState extends State<ModalScreen> {
     });
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
-        _newStartDate = focusedDay;
-        _newEndDate = focusedDay;
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
         _rangeStart = null;
         _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
       _selectedEvents.value = ModalManager.getEventsForDay(selectedDay);
     }
@@ -80,7 +67,6 @@ class ModalScreenState extends State<ModalScreen> {
       _focusedDay = focusedDay;
       _rangeStart = start;
       _rangeEnd = end;
-      _rangeSelectionMode = RangeSelectionMode.toggledOff;
     });
 
     // `start` or `end` could be null
@@ -106,8 +92,6 @@ class ModalScreenState extends State<ModalScreen> {
     super.initState();
     _focusedDay = focusDay;
     _selectedDay = _focusedDay;
-    _newStartDate = _focusedDay;
-    _newEndDate = _focusedDay;
     getEvents();
     _selectedEvents =
         ValueNotifier(ModalManager.getEventsForDay(_selectedDay!));
@@ -118,79 +102,9 @@ class ModalScreenState extends State<ModalScreen> {
   void dispose() {
     _selectedEvents.dispose();
     _selectedEvents.value.clear();
-    addEventDescriptionController.dispose();
-    addEventNameController.dispose();
-    _editEventDescriptionController.dispose();
-    _editEventNameController.dispose();
     ModalManager.allEvents.clear();
     // This is to clear duplication of events in the modal
     super.dispose();
-  }
-
-  void _selectStartTime() async {
-    final TimeOfDay? newTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      initialEntryMode: TimePickerEntryMode.inputOnly,
-    );
-    if (newTime != null) {
-      setState(() {
-        _newStartTime = newTime;
-      });
-    }
-  }
-
-  void _selectEndTime() async {
-    final TimeOfDay? newTime = await showTimePicker(
-      context: context,
-      helpText: "",
-      initialTime: TimeOfDay.now(),
-      initialEntryMode: TimePickerEntryMode.inputOnly,
-    );
-    if (newTime != null) {
-      setState(() {
-        _newEndTime = newTime;
-      });
-    }
-  }
-
-  void _selectEditStartTime() async {
-    final TimeOfDay? newTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      initialEntryMode: TimePickerEntryMode.inputOnly,
-    );
-    if (newTime != null) {
-      setState(() {
-        _editStartTime = newTime;
-      });
-    }
-  }
-
-  void _selectEditEndTime() async {
-    final TimeOfDay? newTime = await showTimePicker(
-      context: context,
-      helpText: "",
-      initialTime: TimeOfDay.now(),
-      initialEntryMode: TimePickerEntryMode.inputOnly,
-    );
-    if (newTime != null) {
-      setState(() {
-        _editEndTime = newTime;
-      });
-    }
-  }
-
-  void selectionChanged(
-      DateRangePickerSelectionChangedArgs selectionChangedArgs) {
-    _newStartDate = selectionChangedArgs.value.startDate;
-    _newEndDate = selectionChangedArgs.value.endDate;
-  }
-
-  void editSelectionChanged(
-      DateRangePickerSelectionChangedArgs selectionChangedArgs) {
-    _editStartDate = selectionChangedArgs.value.startDate;
-    _editEndDate = selectionChangedArgs.value.endDate;
   }
 
 //coverage:ignore-start
@@ -244,287 +158,31 @@ class ModalScreenState extends State<ModalScreen> {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    backgroundColor: Theme.of(context)
-                                        .colorScheme
-                                        .background,
-                                    title: Text(
-                                      "New Event",
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onBackground),
-                                    ),
-                                    actions: [
-                                      Column(children: [
-                                        Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 8),
-                                            // constrained box to encapsulate user input text box
-                                            child: ConstrainedBox(
-                                                constraints:
-                                                    BoxConstraints.tight(
-                                                        const Size(275, 50)),
-                                                child: TextFormField(
-                                                    // styles user input text box
-                                                    decoration: InputDecoration(
-                                                      focusedBorder: UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .secondary,
-                                                              width: 1.5)),
-                                                      enabledBorder: UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .secondary,
-                                                              width: 1.5)),
-                                                      hintText: 'Event Name',
-                                                      hintStyle: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .colorScheme
-                                                              .onBackground),
-                                                    ),
-                                                    cursorColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                    // to retrieve the user input text from the TextFormField
-                                                    controller:
-                                                        addEventNameController))),
-                                        Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 8),
-                                            // constrained box to encapsulate user input text box
-                                            child: ConstrainedBox(
-                                                constraints:
-                                                    BoxConstraints.tight(
-                                                        const Size(275, 50)),
-                                                child: TextFormField(
-                                                    // styles user input text box
-                                                    decoration: InputDecoration(
-                                                      focusedBorder: UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .secondary,
-                                                              width: 1.5)),
-                                                      enabledBorder: UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .secondary,
-                                                              width: 1.5)),
-                                                      hintText:
-                                                          'Event Description',
-                                                      hintStyle: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .colorScheme
-                                                              .onBackground),
-                                                    ),
-                                                    cursorColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                    // to retrieve the user input text from the TextFormField
-                                                    controller:
-                                                        addEventDescriptionController))),
-                                        Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 30,
-                                                    top: 30,
-                                                    right: 30,
-                                                    bottom: 8),
-                                                child: Text(
-                                                  "Select start and end dates:",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onBackground),
-                                                ))),
-                                        Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 4),
-                                            child: SizedBox(
-                                              height: 300,
-                                              width: 275,
-                                              child: SfDateRangePicker(
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .background,
-                                                initialDisplayDate: _focusedDay,
-                                                initialSelectedRange:
-                                                    PickerDateRange(_focusedDay,
-                                                        _focusedDay),
-                                                startRangeSelectionColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .tertiary,
-                                                endRangeSelectionColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .tertiary,
-                                                rangeSelectionColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .tertiary,
-                                                view: DateRangePickerView.month,
-                                                selectionMode:
-                                                    DateRangePickerSelectionMode
-                                                        .range,
-                                                onSelectionChanged:
-                                                    selectionChanged,
-                                              ),
-                                            )),
-                                        Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 30, vertical: 8),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text('Start time:',
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .onBackground)),
-                                                TextButton(
-                                                  style: TextButton.styleFrom(
-                                                      backgroundColor:
-                                                          Theme.of(context)
-                                                              .colorScheme
-                                                              .background,
-                                                      fixedSize:
-                                                          const Size(100, 3)),
-                                                  onPressed: _selectStartTime,
-                                                  child: Text(
-                                                    _newStartTime
-                                                        .format(context),
-                                                    style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .onBackground,
-                                                        fontSize: 14),
-                                                  ),
-                                                ),
-                                              ],
-                                            )),
-                                        Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 30, vertical: 8),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text('End time:',
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .onBackground)),
-                                                TextButton(
-                                                  style: TextButton.styleFrom(
-                                                      backgroundColor:
-                                                          Theme.of(context)
-                                                              .colorScheme
-                                                              .background,
-                                                      fixedSize:
-                                                          const Size(100, 3)),
-                                                  onPressed: _selectEndTime,
-                                                  child: Text(
-                                                    _newEndTime.format(context),
-                                                    style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .onBackground,
-                                                        fontSize: 14),
-                                                  ),
-                                                ),
-                                              ],
-                                            ))
-                                      ]),
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            TextButton(
-                                              child: Text(
-                                                "Cancel",
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .primary),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                addEventNameController.clear();
-                                                addEventDescriptionController
-                                                    .clear();
-                                                _newStartTime = TimeOfDay.now();
-                                                _newEndTime = TimeOfDay.now();
-                                              },
-                                            ),
-                                            TextButton(
-                                              child: Text("Confirm",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary)),
-                                              onPressed: () {
-                                                final addStartDateTime =
-                                                    DateTime(
-                                                        _newStartDate.year,
-                                                        _newStartDate.month,
-                                                        _newStartDate.day,
-                                                        _newStartTime.hour,
-                                                        _newStartTime.minute);
-                                                final addEndDateTime = DateTime(
-                                                    _newEndDate.year,
-                                                    _newEndDate.month,
-                                                    _newEndDate.day,
-                                                    _newEndTime.hour,
-                                                    _newEndTime.minute);
-                                                final newEvent = Events(
-                                                    eventId: 0,
-                                                    startDate: addStartDateTime,
-                                                    endDate: addEndDateTime,
-                                                    eventName:
-                                                        addEventNameController
-                                                            .text,
-                                                    description:
-                                                        addEventDescriptionController
-                                                            .text);
-                                                HTTPManager.postNewEvent(
-                                                    newEvent);
-                                                Navigator.of(context).pop();
-                                                addEventNameController.clear();
-                                                addEventDescriptionController
-                                                    .clear();
-                                                _newStartTime = TimeOfDay.now();
-                                                _newEndTime = TimeOfDay.now();
-                                              },
-                                            ),
-                                          ])
-                                    ],
-                                  );
+                                  return EventsPopup(
+                                      'New Event', newEventController, () {
+                                    final addStartDateTime = DateTime(
+                                        newEventController.startDate.year,
+                                        newEventController.startDate.month,
+                                        newEventController.startDate.day,
+                                        newEventController.startTime.hour,
+                                        newEventController.startTime.minute);
+                                    final addEndDateTime = DateTime(
+                                        newEventController.endDate.year,
+                                        newEventController.endDate.month,
+                                        newEventController.endDate.day,
+                                        newEventController.endTime.hour,
+                                        newEventController.endTime.minute);
+                                    final newEvent = Events(
+                                        eventId: 0,
+                                        startDate: addStartDateTime,
+                                        endDate: addEndDateTime,
+                                        eventName: newEventController
+                                            .nameController.text,
+                                        description: newEventController
+                                            .descriptionController.text);
+                                    HTTPManager.postNewEvent(newEvent);
+                                    Navigator.of(context).pop();
+                                  });
                                 },
                               );
                             },
@@ -552,7 +210,7 @@ class ModalScreenState extends State<ModalScreen> {
                   selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
                   rangeStartDay: _rangeStart,
                   rangeEndDay: _rangeEnd,
-                  rangeSelectionMode: _rangeSelectionMode,
+                  // rangeSelectionMode: _rangeSelectionMode,
                   onRangeSelected: _onRangeSelected,
                   onDaySelected: _onDaySelected,
                   onFormatChanged: (format) {
@@ -654,40 +312,43 @@ class ModalScreenState extends State<ModalScreen> {
                                     tileColor: ModalManager
                                         .allEvents[_selectedDay]![index]
                                         .background,
-                                    trailing:
-                                        !isRotation(ModalManager.allEvents[
-                                                _selectedDay]![index])
-                                            ? Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                    // popup code for edit an event
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        _editEventNameController =
-                                                            TextEditingController
-                                                                .fromValue(
-                                                          TextEditingValue(
-                                                            text: ModalManager
-                                                                .allEvents[
-                                                                    _selectedDay]![
-                                                                    index]
-                                                                .eventName
-                                                                .toString(),
-                                                          ),
-                                                        );
-                                                        _editEventDescriptionController =
-                                                            TextEditingController
-                                                                .fromValue(
-                                                          TextEditingValue(
-                                                            text: ModalManager
-                                                                .allEvents[
-                                                                    _selectedDay]![
-                                                                    index]
-                                                                .description
-                                                                .toString(),
-                                                          ),
-                                                        );
-                                                        _editStartTime = TimeOfDay(
+                                    trailing: !isRotation(ModalManager
+                                            .allEvents[_selectedDay]![index])
+                                        ? Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                                // popup code for edit an event
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    editEventController
+                                                            .nameController =
+                                                        TextEditingController
+                                                            .fromValue(
+                                                      TextEditingValue(
+                                                        text: ModalManager
+                                                            .allEvents[
+                                                                _selectedDay]![
+                                                                index]
+                                                            .eventName
+                                                            .toString(),
+                                                      ),
+                                                    );
+                                                    editEventController
+                                                            .descriptionController =
+                                                        TextEditingController
+                                                            .fromValue(
+                                                      TextEditingValue(
+                                                        text: ModalManager
+                                                            .allEvents[
+                                                                _selectedDay]![
+                                                                index]
+                                                            .description
+                                                            .toString(),
+                                                      ),
+                                                    );
+                                                    editEventController
+                                                            .startTime =
+                                                        TimeOfDay(
                                                             hour: ModalManager
                                                                 .allEvents[
                                                                     _selectedDay]![
@@ -700,7 +361,9 @@ class ModalScreenState extends State<ModalScreen> {
                                                                     index]
                                                                 .startDate
                                                                 .minute);
-                                                        _editEndTime = TimeOfDay(
+                                                    editEventController
+                                                            .endTime =
+                                                        TimeOfDay(
                                                             hour: ModalManager
                                                                 .allEvents[
                                                                     _selectedDay]![
@@ -713,259 +376,157 @@ class ModalScreenState extends State<ModalScreen> {
                                                                     index]
                                                                 .endDate
                                                                 .minute);
-                                                        showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                backgroundColor: Theme.of(
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return EventsPopup(
+                                                              'Edit Event',
+                                                              editEventController,
+                                                              () {
+                                                            final editStartDateTime = DateTime(
+                                                                editEventController
+                                                                    .startDate
+                                                                    .year,
+                                                                editEventController
+                                                                    .startDate
+                                                                    .month,
+                                                                editEventController
+                                                                    .startDate
+                                                                    .day,
+                                                                editEventController
+                                                                    .startTime
+                                                                    .hour,
+                                                                editEventController
+                                                                    .startTime
+                                                                    .minute);
+                                                            final editEndDateTime = DateTime(
+                                                                editEventController
+                                                                    .endDate
+                                                                    .year,
+                                                                editEventController
+                                                                    .endDate
+                                                                    .month,
+                                                                editEventController
+                                                                    .endDate
+                                                                    .day,
+                                                                editEventController
+                                                                    .endTime
+                                                                    .hour,
+                                                                editEventController
+                                                                    .endTime
+                                                                    .minute);
+                                                            final editedEvent = Events(
+                                                                eventId: ModalManager
+                                                                    .allEvents[
+                                                                        _selectedDay]![
+                                                                        index]
+                                                                    .eventId,
+                                                                startDate:
+                                                                    editStartDateTime,
+                                                                endDate:
+                                                                    editEndDateTime,
+                                                                eventName:
+                                                                    editEventController
+                                                                        .nameController
+                                                                        .text,
+                                                                description:
+                                                                    editEventController
+                                                                        .descriptionController
+                                                                        .text);
+                                                            HTTPManager
+                                                                .putEditedEvent(
+                                                                    editedEvent);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          });
+                                                        });
+                                                  },
+                                                  child: Icon(
+                                                    Icons.edit_outlined,
+                                                    size: 30,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onPrimary,
+                                                  ),
+                                                ),
+
+                                                // pop up code for delete event
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return AlertDialog(
+                                                            backgroundColor:
+                                                                Theme.of(
                                                                         context)
                                                                     .colorScheme
                                                                     .background,
-                                                                title: Text(
-                                                                    "Edit Event",
+                                                            title: Text(
+                                                              "Delete Event",
+                                                              style: TextStyle(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .onBackground),
+                                                            ),
+                                                            content: Text(
+                                                              "Are you sure you want to delete this event?",
+                                                              style: TextStyle(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .onBackground),
+                                                            ),
+                                                            actions: [
+                                                              TextButton(
+                                                                child: Text(
+                                                                    "Cancel",
                                                                     style: TextStyle(
                                                                         color: Theme.of(context)
                                                                             .colorScheme
                                                                             .onBackground)),
-                                                                actions: [
-                                                                  Column(
-                                                                      children: [
-                                                                        Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                                                                            // constrained box to encapsulate user input text box
-                                                                            child: ConstrainedBox(
-                                                                                constraints: BoxConstraints.tight(const Size(275, 50)),
-                                                                                child: TextFormField(
-                                                                                    // styles user input text box
-                                                                                    decoration: InputDecoration(
-                                                                                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1.5)),
-                                                                                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1.5)),
-                                                                                      hintText: 'Event Name',
-                                                                                      hintStyle: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.onBackground),
-                                                                                    ),
-                                                                                    cursorColor: Theme.of(context).colorScheme.onBackground,
-                                                                                    // to retrieve the user input text from the TextFormField
-                                                                                    controller: _editEventNameController))),
-                                                                        Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                                                                            // constrained box to encapsulate user input text box
-                                                                            child: ConstrainedBox(
-                                                                                constraints: BoxConstraints.tight(const Size(275, 50)),
-                                                                                child: TextFormField(
-                                                                                    // styles user input text box
-                                                                                    decoration: InputDecoration(
-                                                                                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1.5)),
-                                                                                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1.5)),
-                                                                                      hintText: 'Event Description',
-                                                                                      hintStyle: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.secondary),
-                                                                                    ),
-                                                                                    cursorColor: Theme.of(context).colorScheme.secondary,
-                                                                                    // to retrieve the user input text from the TextFormField
-                                                                                    controller: _editEventDescriptionController))),
-                                                                        Align(
-                                                                            alignment:
-                                                                                Alignment.centerLeft,
-                                                                            child: Padding(
-                                                                                padding: const EdgeInsets.only(left: 30, top: 30, right: 30, bottom: 12),
-                                                                                child: Text(
-                                                                                  "Select start and end dates:",
-                                                                                  style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onBackground),
-                                                                                ))),
-                                                                        Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                                                            child: SizedBox(
-                                                                              height: 300,
-                                                                              width: 275,
-                                                                              child: SfDateRangePicker(
-                                                                                backgroundColor: Theme.of(context).colorScheme.surface,
-                                                                                initialDisplayDate: _focusedDay,
-                                                                                initialSelectedRange: PickerDateRange(ModalManager.allEvents[_selectedDay]![index].startDate, ModalManager.allEvents[_selectedDay]![index].endDate),
-                                                                                startRangeSelectionColor: Theme.of(context).colorScheme.tertiary,
-                                                                                endRangeSelectionColor: Theme.of(context).colorScheme.tertiary,
-                                                                                rangeSelectionColor: Theme.of(context).colorScheme.tertiary,
-                                                                                view: DateRangePickerView.month,
-                                                                                selectionMode: DateRangePickerSelectionMode.range,
-                                                                                onSelectionChanged: editSelectionChanged,
-                                                                              ),
-                                                                            )),
-                                                                        Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-                                                                            child: Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                              children: [
-                                                                                Text('Start time:', style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onBackground)),
-                                                                                TextButton(
-                                                                                  style: TextButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.background, fixedSize: const Size(100, 3)),
-                                                                                  onPressed: _selectEditStartTime,
-                                                                                  child: Text(
-                                                                                    _editStartTime.format(context),
-                                                                                    style: TextStyle(color: Theme.of(context).colorScheme.onBackground, fontSize: 14),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            )),
-                                                                        Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-                                                                            child: Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                              children: [
-                                                                                const Text('End time:', style: TextStyle(fontSize: 18)),
-                                                                                TextButton(
-                                                                                  style: TextButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.background, fixedSize: const Size(100, 3)),
-                                                                                  onPressed: _selectEditEndTime,
-                                                                                  child: Text(
-                                                                                    _editEndTime.format(context),
-                                                                                    style: TextStyle(color: Theme.of(context).colorScheme.onBackground, fontSize: 14),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ))
-                                                                      ]),
-                                                                  Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceEvenly,
-                                                                      children: [
-                                                                        TextButton(
-                                                                          child:
-                                                                              Text(
-                                                                            "Cancel",
-                                                                            style:
-                                                                                TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.primary),
-                                                                          ),
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.of(context).pop();
-                                                                            _editEventNameController.clear();
-                                                                            _editEventDescriptionController.clear();
-                                                                          },
-                                                                        ),
-                                                                        TextButton(
-                                                                          child: Text(
-                                                                              "Confirm",
-                                                                              style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.primary)),
-                                                                          onPressed:
-                                                                              () {
-                                                                            final editStartDateTime = DateTime(
-                                                                                _editStartDate.year,
-                                                                                _editStartDate.month,
-                                                                                _editStartDate.day,
-                                                                                _editStartTime.hour,
-                                                                                _editStartTime.minute);
-                                                                            final editEndDateTime = DateTime(
-                                                                                _editEndDate.year,
-                                                                                _editEndDate.month,
-                                                                                _editEndDate.day,
-                                                                                _editEndTime.hour,
-                                                                                _editEndTime.minute);
-                                                                            final editedEvent = Events(
-                                                                                eventId: ModalManager.allEvents[_selectedDay]![index].eventId,
-                                                                                startDate: editStartDateTime,
-                                                                                endDate: editEndDateTime,
-                                                                                eventName: _editEventNameController.text,
-                                                                                description: _editEventDescriptionController.text);
-                                                                            HTTPManager.putEditedEvent(editedEvent);
-                                                                            Navigator.of(context).pop();
-                                                                            _editEventNameController.clear();
-                                                                            _editEventDescriptionController.clear();
-                                                                          },
-                                                                        ),
-                                                                      ])
-                                                                ],
-                                                              );
-                                                            });
-                                                      },
-                                                      child: Icon(
-                                                        Icons.edit_outlined,
-                                                        size: 30,
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .onPrimary,
-                                                      ),
-                                                    ),
-
-                                                    // pop up code for delete event
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                backgroundColor: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .background,
-                                                                title: Text(
-                                                                  "Delete Event",
-                                                                  style: TextStyle(
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .colorScheme
-                                                                          .onBackground),
-                                                                ),
-                                                                content: Text(
-                                                                  "Are you sure you want to delete this event?",
-                                                                  style: TextStyle(
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .colorScheme
-                                                                          .onBackground),
-                                                                ),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    child: Text(
-                                                                        "Cancel",
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Theme.of(context).colorScheme.onBackground)),
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                  ),
-                                                                  TextButton(
-                                                                    child: Text(
-                                                                        "Delete",
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Theme.of(context).colorScheme.onBackground)),
-                                                                    onPressed:
-                                                                        () {
-                                                                      HTTPManager.deleteEvent(ModalManager
-                                                                          .allEvents[
-                                                                              _selectedDay]![
-                                                                              index]
-                                                                          .eventId);
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            });
-                                                      },
-                                                      child: Icon(
-                                                        Icons.delete_forever,
-                                                        size: 30,
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .onPrimary,
-                                                      ),
-                                                    )
-                                                  ])
-                                            : null,
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                              ),
+                                                              TextButton(
+                                                                child: Text(
+                                                                    "Delete",
+                                                                    style: TextStyle(
+                                                                        color: Theme.of(context)
+                                                                            .colorScheme
+                                                                            .onBackground)),
+                                                                onPressed: () {
+                                                                  HTTPManager.deleteEvent(ModalManager
+                                                                      .allEvents[
+                                                                          _selectedDay]![
+                                                                          index]
+                                                                      .eventId);
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                              ),
+                                                            ],
+                                                          );
+                                                        });
+                                                  },
+                                                  child: Icon(
+                                                    Icons.delete_forever,
+                                                    size: 30,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onPrimary,
+                                                  ),
+                                                )
+                                              ])
+                                        : null,
                                   ));
                             });
                       }))
