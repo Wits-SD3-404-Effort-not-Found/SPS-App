@@ -263,12 +263,11 @@ class HTTPManager {
     final response = await http
         .get(Uri.parse('http://$serverAddress:$serverPort/security/questions'));
 
-    List<Map> questions = [];
+    var questions = [{}];
     if (response.statusCode == 200) {
       var jsonQuestions = jsonDecode(response.body);
       for (var q in jsonQuestions) {
         questions.add({
-          "questionID": q["secques_id"],
           "questionText": q["question"],
         });
       }

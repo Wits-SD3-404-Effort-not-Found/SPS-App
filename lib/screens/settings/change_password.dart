@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
-import 'package:sps_app/screens/settings/account_settings.dart';
 import 'package:sps_app/screens/settings/settings.dart';
 
 class ChangePasswordPage extends StatefulWidget {
@@ -11,6 +10,7 @@ class ChangePasswordPage extends StatefulWidget {
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
+  final oldPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   String _invalidMessage = "";
@@ -27,6 +27,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   void dispose() {
+    oldPasswordController.dispose();
     newPasswordController.dispose();
     confirmPasswordController.dispose();
     super.dispose();
@@ -37,10 +38,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return Scaffold(
         backgroundColor: const Color(0xfffcfbfb),
         // to center the widgets/UI elements on the page
-        body: Center(
+        body: Column(
             // to structure the UI elements in a single column
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
                 height: 50,
@@ -76,70 +76,90 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       ))
                 ])),
             Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 // constrained box to encapsulate user input text box
                 child: ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  constraints: BoxConstraints.tight(const Size(300, 70)),
                   child: TextFormField(
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground),
                       // styles user input text box
-                      decoration: const InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
-                        labelText: 'Current Password',
-                        labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                      cursorColor: const Color(0xff917248),
-                      controller: newPasswordController),
-                )),
-            // padding for email text box for better UI layout
-            Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                // constrained box to encapsulate user input text box
-                child: ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 80)),
-                  child: TextFormField(
-                      // styles user input text box
-                      decoration: const InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
-                        labelText: 'New Password',
-                        labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                      cursorColor: const Color(0xff917248),
+                      decoration: InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                  Theme.of(context).colorScheme.secondary,
+                                  width: 3)),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                  Theme.of(context).colorScheme.secondary,
+                                  width: 3)),
+                          labelText: 'Enter Current Password',
+                          labelStyle: TextStyle(
+                              color:
+                              Theme.of(context).colorScheme.onBackground)),
+                      cursorColor: Theme.of(context).colorScheme.primary,
+                      // to retrieve the user input text from the TextFormField
                       controller: newPasswordController),
                 )),
             Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 // constrained box to encapsulate user input text box
                 child: ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  constraints: BoxConstraints.tight(const Size(300, 70)),
                   child: TextFormField(
-                      obscureText: true,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground),
                       // styles user input text box
-                      decoration: const InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xff917248), width: 3)),
-                        labelText: 'Confirm Password',
-                        labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                      cursorColor: const Color(0xff917248),
+                      decoration: InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                  Theme.of(context).colorScheme.secondary,
+                                  width: 3)),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                  Theme.of(context).colorScheme.secondary,
+                                  width: 3)),
+                          labelText: 'Enter New Password',
+                          labelStyle: TextStyle(
+                              color:
+                              Theme.of(context).colorScheme.onBackground)),
+                      cursorColor: Theme.of(context).colorScheme.primary,
+                      // to retrieve the user input text from the TextFormField
+                      controller: newPasswordController),
+                )),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                // constrained box to encapsulate user input text box
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.tight(const Size(300, 70)),
+                  child: TextFormField(
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground),
+                      // styles user input text box
+                      decoration: InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                  Theme.of(context).colorScheme.secondary,
+                                  width: 3)),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                  Theme.of(context).colorScheme.secondary,
+                                  width: 3)),
+                          labelText: 'Confirm Password',
+                          labelStyle: TextStyle(
+                              color:
+                              Theme.of(context).colorScheme.onBackground)),
+                      cursorColor: Theme.of(context).colorScheme.primary,
+                      // to retrieve the user input text from the TextFormField
                       controller: confirmPasswordController),
-                )),
+                )
+            ),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                 child: ConstrainedBox(
@@ -198,6 +218,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               ],
             ),
           ],
-        )));
+      )
+    );
   }
 }
