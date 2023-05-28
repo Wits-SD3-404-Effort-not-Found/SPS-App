@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
@@ -52,5 +54,50 @@ void main() {
     DateTime actualdate = DateTime(2022, 1, 7, 0, 0);
 
     expect(convertDateFromString(stringdate), actualdate);
+  });
+
+  group('Modal', () {
+    List<Events> event = [
+      Events(
+          eventId: 1,
+          startDate: DateTime(2023, 4, 22, 8),
+          endDate: DateTime(2023, 4, 22, 10),
+          eventName: 'Tutorial',
+          description: 'Anatomy',
+          background: const Color(0xFF8B1FA9))
+    ];
+
+    test('test allTheEvents populates', () {
+      ModalManager.allTheEvents(event);
+    });
+
+    test('test getHashCode', () {
+      DateTime date = DateTime(2023, 4, 1);
+      int hashcode = 1042023;
+      expect(ModalManager.getHashCode(date), hashcode);
+    });
+
+    test('test getEventsForDay gets the events for a specific day', () {
+      DateTime date = DateTime(2023, 4, 22);
+
+      expect(ModalManager.getEventsForDay(date), event);
+    });
+    test('test getEventsForDay when there are no events', () {
+      DateTime date = DateTime(2013, 8, 1);
+      expect(ModalManager.getEventsForDay(date), isEmpty);
+    });
+
+    test('test daysInrAnge returns all days in a specific range', () {
+      DateTime startDate = DateTime(2023, 4, 5);
+      DateTime endDate = DateTime(2023, 4, 8);
+
+      List range = [
+        DateTime.utc(2023, 4, 5),
+        DateTime.utc(2023, 4, 6),
+        DateTime.utc(2023, 4, 7),
+        DateTime.utc(2023, 4, 8)
+      ];
+      expect(ModalManager.daysInRange(startDate, endDate), range);
+    });
   });
 }

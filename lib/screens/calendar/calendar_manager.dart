@@ -95,53 +95,6 @@ Future<List<Events>> getFiltering(String type, List<Events> eventsList) async {
   return filteredEvents;
 }
 
-Future<List<Events>> getEventsHardcodedData() async {
-  List<Events> eventsList = <Events>[];
-
-  Events event1 = Events(
-      eventId: 1,
-      startDate: DateTime(2023, 4, 22, 8),
-      endDate: DateTime(2023, 4, 22, 10),
-      eventName: 'Tutorial',
-      description: 'Anatomy',
-      background: const Color(0xFF8B1FA9));
-  Events event2 = Events(
-      eventId: 2,
-      startDate: DateTime(2023, 4, 24),
-      endDate: DateTime(2023, 4, 26),
-      eventName: 'Assignment',
-      description: 'physiology',
-      background: const Color(0xFF8B1FA9));
-  eventsList.add(event1);
-  eventsList.add(event2);
-
-  Rotations rotation1 = Rotations(
-      eventId: 3,
-      rotationId: 1,
-      startDate: DateTime(2023, 4, 25),
-      endDate: DateTime(2023, 5, 24),
-      eventName: '',
-      description: '',
-      hospital: 'Barrow Hospital',
-      discipline: 'General Surgery',
-      background: const Color(0xFFF00000));
-
-  Rotations rotation2 = Rotations(
-      eventId: 5,
-      rotationId: 2,
-      startDate: DateTime(2023, 6, 25),
-      endDate: DateTime(2023, 7, 24),
-      eventName: '',
-      description: '',
-      hospital: 'Morningside Hospital',
-      discipline: 'Pediatrics',
-      background: const Color(0xFFF00000));
-
-  eventsList.add(rotation1);
-  eventsList.add(rotation2);
-  return eventsList;
-}
-
 //Class for everything Modal related
 class ModalManager {
   static LinkedHashMap<DateTime, List<Events>> allEvents =
