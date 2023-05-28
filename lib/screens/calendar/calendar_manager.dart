@@ -5,7 +5,6 @@ import 'package:sps_app/account_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-// coverage:ignore-start
 int accountID = AccountManager.getID();
 
 class Events {
@@ -78,17 +77,6 @@ class EventsDataSource extends CalendarDataSource {
   Color getColor(int index) {
     return appointments![index].background;
   }
-}
-
-//Filtering the Rotations (Maybe make class for filtering?)
-List<Rotations> getRotations(List<Events> eventsList) {
-  List<Rotations> rotations = [];
-  for (var event in eventsList) {
-    if (event is Rotations) {
-      rotations.add(event);
-    }
-  }
-  return rotations;
 }
 
 //Filtering function used in Dropdown in Calendar
@@ -188,4 +176,3 @@ class ModalManager {
     return ModalManager.allEvents[date] ?? [];
   }
 }
-// coverage:ignore-end

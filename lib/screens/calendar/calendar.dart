@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:sps_app/account_manager.dart';
 import 'package:sps_app/screens/calendar/calendar_manager.dart';
@@ -10,8 +10,8 @@ import 'package:intl/intl.dart';
 
 import '../../http_handler.dart';
 
-Future<List<Events>> eventsList =
-    HTTPManager.getAllEventsData(AccountManager.getID());
+Future<List<Events>> eventsList = HTTPManager.getAllEventsData(
+    AccountManager.getID(), http.Client()); //http.Client is there for testing
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -64,7 +64,6 @@ class _CalendarPageState extends State<CalendarPage> {
     });
   }
 
-//coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -207,7 +206,6 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
       ),
     );
-    //coverage:ignore-end
   }
 
   //allows us to get selected day and pass to table calendar for the focus day

@@ -78,19 +78,20 @@ class HTTPManager {
     }
   }
 
-  static Future<List<Events>> getAllEventsData(int accountID) async {
+  static Future<List<Events>> getAllEventsData(
+      int accountID, http.Client client) async {
     final List<Events> eventsList = [];
     //might need to fix up
-    var events = await http
+    var events = await client
         .get(Uri.parse('http://$serverAddress:$serverPort/events/$accountID'));
-    var rotations = await http.get(
+    var rotations = await client.get(
         Uri.parse('http://$serverAddress:$serverPort/rotations/$accountID'));
     if (events.statusCode == 200) {
       var jsonData = json.decode(events.body);
 
       for (var data in jsonData) {
         Events eventData = Events(
-            eventId: data['event_id'], // check this actually gets the ID
+            eventId: data['event_id'],
             startDate: convertDateFromString(data['start_date']),
             endDate: convertDateFromString(data['end_date']),
             eventName: data['name'],
