@@ -10,7 +10,7 @@ import 'package:sps_app/screens/calendar/calendar_manager.dart';
 class HTTPManager {
   HTTPManager();
 
-  static const String serverAddress = '164.92.183.156';
+  static const String serverAddress = '34.175.155.67';
   static const String serverPort = '80';
 
   // posts user credentials to validate them
@@ -406,9 +406,7 @@ class HTTPManager {
       return Future.value(true);
     } else {
       throw Exception("Failed to post new questions and answers");
-      return Future.value(false);
     }
-    return Future.value(false);
   }
 
   //gets all the details off the staff/professors for students to contact from the backend
