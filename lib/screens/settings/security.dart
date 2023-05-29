@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sps_app/screens/settings/change_password.dart';
 import 'package:sps_app/screens/settings/cp_email.dart';
-import 'package:sps_app/screens/settings/cp_security_questions.dart';
 import 'package:sps_app/screens/settings/security_questions.dart';
 
 import '../../widgets/primitive/wits_app_bar.dart';
@@ -20,7 +18,7 @@ class _SecurityPageState extends State<SecurityPage> {
         appBar: WitsAppBar(
           context: context,
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Column(children: <Widget>[
           Center(
             child: Column(
@@ -29,10 +27,11 @@ class _SecurityPageState extends State<SecurityPage> {
                     height: 50,
                     width: double.infinity,
                     alignment: Alignment.bottomLeft,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
-                                color: Color(0xff917248), width: 2))),
+                                color: Theme.of(context).colorScheme.secondary,
+                                width: 2))),
                     child: Row(children: [
                       Align(
                           alignment: Alignment.center,
@@ -43,18 +42,23 @@ class _SecurityPageState extends State<SecurityPage> {
                                   onTap: () {
                                     Navigator.pop(context);
                                   },
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.arrow_back_ios_rounded,
                                     size: 30,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   )))),
                       Container(
                           height: 50,
                           width: 300,
                           alignment: Alignment.centerLeft,
-                          child: const Text(
+                          child: Text(
                             "Settings",
-                            style: TextStyle(fontSize: 30),
+                            style: TextStyle(
+                                fontSize: 30,
+                                color:
+                                    Theme.of(context).colorScheme.onBackground),
                             textAlign: TextAlign.left,
                           ))
                     ])),
@@ -73,21 +77,28 @@ class _SecurityPageState extends State<SecurityPage> {
                               );
                             },
                             style: TextButton.styleFrom(
-                                side:
-                                    const BorderSide(color: Color(0xff043673))),
+                                side: BorderSide(
+                                    width: 3,
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children: [
                                   Text(
                                     'Change Password',
                                     style: TextStyle(
-                                        color: Colors.black, fontSize: 22),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                        fontSize: 22),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
                                 ])))),
                 ConstrainedBox(
@@ -105,21 +116,28 @@ class _SecurityPageState extends State<SecurityPage> {
                               );
                             },
                             style: TextButton.styleFrom(
-                                side:
-                                    const BorderSide(color: Color(0xff043673))),
+                                side: BorderSide(
+                                    width: 3,
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children: [
                                   Text(
                                     'Change Security Questions',
                                     style: TextStyle(
-                                        color: Colors.black, fontSize: 22),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                        fontSize: 22),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
                                 ])))),
               ],
