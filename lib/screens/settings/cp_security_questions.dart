@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sps_app/screens/authentication/login.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
-
-import 'package:sps_app/screens/authentication/new_password.dart';
 import 'package:sps_app/screens/settings/change_password.dart';
-import 'package:sps_app/screens/settings/security.dart';
-import 'package:sps_app/screens/settings/settings.dart';
 import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
 class CPSecurityQuestionsPage extends StatefulWidget {
@@ -166,9 +161,9 @@ class _CPSecurityQuestionsPage extends State<CPSecurityQuestionsPage> {
                   onPressed: () {
                     //authenticate answers
                     var areCorrectAnswers =
-                        _question1['answer'].toString().toLowerCase() !=
+                        _question1['answer'].toString().toLowerCase() ==
                                 _hashData(q1Controller.text).toString() ||
-                            _question2['answer'].toString().toLowerCase() !=
+                            _question2['answer'].toString().toLowerCase() ==
                                 _hashData(q2Controller.text).toString();
                     _isValidMessage(areCorrectAnswers);
 
