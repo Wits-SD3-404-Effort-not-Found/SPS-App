@@ -10,11 +10,9 @@ import 'package:google_fonts/google_fonts.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('account');
+  await Hive.openBox('theme');
 
-  var accountBox = Hive.box('account');
-  AccountManager.setSessionToken(
-      accountBox.get('session_token', defaultValue: ""));
-  AccountManager.setID(accountBox.get('account_id', defaultValue: 0));
+  AccountManager.loadAccount();
 
   runApp(Phoenix(
       child: ChangeNotifierProvider<ThemeNotifier>(
@@ -94,7 +92,7 @@ ColorScheme darkColours() {
   const onErrorColor = Color(0xffffffff);
   const backgroundColor = Color(0xff18181c);
   const onBackgroundColor = Color(0xffffffff);
-  const surfaceColor = Color(0xff606070);
+  const surfaceColor = Color(0xffbbbbbb);
   const onSurfaceColor = Color(0xffffffff);
 
   return const ColorScheme(

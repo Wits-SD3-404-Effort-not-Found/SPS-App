@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:sps_app/http_handler.dart';
+import 'dart:core';
 
 // class to manage the user account's details and processes, and access to the app.
 class LoginManager {
@@ -78,10 +79,30 @@ class LoginManager {
   }
 
   // to control access into the app by validating credentials with backend
-  static Future<bool> validateLogin() async {
-    bool valid =
-        await HTTPManager.postLoginCredentials(getUsername(), getPassword());
-    return valid;
+  static Future<void> validateLogin() async {
+    RegExp emailRule = RegExp(r'[0-9]{7}@students\.wits\.ac\.za');
+    if (!emailRule.hasMatch(getUsername())) {
+      throw Exception("Invalid student Email");
+    }
+
+    if (await HTTPManager.postLoginCredentials(getUsername(), getPassword())) {
+      return;
+    } else {
+      throw Exception("Failed to login");
+    }
+  }
+
+  static Future<void> validateSupervisorLogin() async {
+    RegExp emailRule = RegExp(r'\S+\.\S+@wits\.ac\.za');
+    if (!emailRule.hasMatch(getUsername())) {
+      throw Exception("Invalid Supervisor Email");
+    }
+
+    if (!await HTTPManager.postLoginCredentials(getUsername(), getPassword())) {
+      return;
+    } else {
+      throw Exception("Failed to login");
+    }
   }
 
   // to validate the email, to control weather OTP will be sent

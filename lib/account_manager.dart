@@ -15,18 +15,43 @@ class AccountManager {
     var box = Hive.box('account');
     box.put('account_id', _accountId);
     box.put('session_token', _sessionToken);
+    box.put('email', _email);
+    box.put('username', _username);
+    box.put('cell_numer', _cellNumber);
+    box.put('profile_photo_bytes', _profilePhotoBytes);
+    box.close();
   }
 
   static void clearAccount() {
     _accountId = 0;
+    _sessionToken = "";
     _email = "";
     _username = "";
     _cellNumber = "";
-    _profilePhotoBytes = Uint8List.fromList([]);
+    _profilePhotoBytes = Uint8List(0);
 
     var box = Hive.box('account');
-    box.delete('account_id');
-    box.delete('session_token');
+    box.deleteAll([
+      'account_id',
+      'session_token',
+      'email',
+      'username',
+      'cell_number',
+      'profile_photo_bytes'
+    ]);
+    box.close();
+  }
+
+  static void loadAccount() {
+    var box = Hive.box('account');
+    _accountId = box.get('account_id', defaultValue: 0);
+    _sessionToken = box.get('session_token', defaultValue: "");
+    _email = box.get('email', defaultValue: "");
+    _username = box.get('username', defaultValue: "");
+    _cellNumber = box.get('cell_number', defaultValue: "");
+    _profilePhotoBytes =
+        box.get('profile_photo_bytes', defaultValue: Uint8List(0));
+    box.close();
   }
 
   static int getID() {
@@ -72,7 +97,6 @@ class AccountManager {
   static void setCellNumber(String cellNumber) {
     _cellNumber = cellNumber;
   }
-
 
   static void setPhoto(List<dynamic> bytes) {
     _profilePhotoBytes = Uint8List.fromList(bytes.cast<int>());

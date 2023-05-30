@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
 class SingleProtocolPage extends StatelessWidget {
   final String protocolHeading;
@@ -11,6 +12,7 @@ class SingleProtocolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: WitsAppBar(context: context),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Column(children: <Widget>[
           Container(

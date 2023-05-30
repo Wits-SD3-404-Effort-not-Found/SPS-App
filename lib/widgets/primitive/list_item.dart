@@ -32,7 +32,8 @@ class ProtocolItem implements ListItem {
   @override
   Widget buildTitle(BuildContext context) {
     return Text(protocolTitle,
-        style: const TextStyle(color: Colors.black, fontSize: 18));
+        style: TextStyle(
+            color: Theme.of(context).colorScheme.onBackground, fontSize: 18));
   }
 
   @override
@@ -65,9 +66,10 @@ class ProtocolItem implements ListItem {
 class NotesItem implements ListItem {
   var noteContent = NoteContent();
 
-  NotesItem(String title, String body, [int? noteID]) {
+  NotesItem(String title, String body, bool publicNote, [int? noteID]) {
     noteContent.setTitle(title);
     noteContent.setBody(body);
+    noteContent.setIsPublicNote(publicNote);
     if (noteID != null) {
       noteContent.setNoteID(noteID);
     }
@@ -86,7 +88,8 @@ class NotesItem implements ListItem {
 
   @override
   Widget buildTitle(BuildContext context) => Text(noteContent.getTitle(),
-      style: const TextStyle(color: Colors.black, fontSize: 18));
+      style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground, fontSize: 18));
 
   @override
   Widget buildItem(BuildContext context) {
@@ -114,4 +117,4 @@ class NotesItem implements ListItem {
               ),
             ])));
   }
-}// coverage:ignore-end
+} // coverage:ignore-end
