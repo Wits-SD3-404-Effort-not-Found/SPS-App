@@ -58,6 +58,13 @@ class AppearancePage extends StatelessWidget {
                       themeNotifier.setThemeMode(ThemeMode.dark);
                     } else if (themeNotifier.themeMode == ThemeMode.dark) {
                       themeNotifier.setThemeMode(ThemeMode.light);
+                    } else {
+                      if (MediaQuery.of(context).platformBrightness ==
+                          Brightness.dark) {
+                        themeNotifier.setThemeMode(ThemeMode.light);
+                      } else {
+                        themeNotifier.setThemeMode(ThemeMode.dark);
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
