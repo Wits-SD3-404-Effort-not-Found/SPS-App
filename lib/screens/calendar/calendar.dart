@@ -66,6 +66,16 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    eventsList =
+        HTTPManager.getAllEventsData(AccountManager.getID(), http.Client());
+    events = eventsList;
+    _getEventsDataSource(events);
+    build(context);
+    super.setState(fn);
+  }
+
+  @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     cellWidthHeader = width! / 2;
@@ -82,11 +92,12 @@ class _CalendarPageState extends State<CalendarPage> {
                 Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                        padding: const EdgeInsets.fromLTRB(10, 10, 5, 0),
                         color: Theme.of(context).colorScheme.background,
                         //width: width,
                         height: 60,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             SizedBox(
                               width: cellWidthHeader,
@@ -101,7 +112,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                           .onSurface)),
                             ),
                             Container(
-                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
                                 child: DropdownButton(
                                   value: dropdownValue,
                                   dropdownColor:
@@ -140,7 +151,30 @@ class _CalendarPageState extends State<CalendarPage> {
                                           events); //updates what data is in the calendar after the filter
                                     });
                                   },
-                                ))
+                                )),
+                            Align(
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 2, vertical: 5),
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          debugPrint("Pressed refresh button");
+                                          //eventsList =
+                                          //HTTPManager.getAllEventsData(
+                                          //     AccountManager.getID(),
+                                          //    http.Client());
+                                          setState(() {
+                                            //build(context);
+                                          });
+                                        },
+                                        child: Icon(
+                                          Icons.refresh,
+                                          size: 30,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
+                                        )))),
                           ],
                         ))),
                 Expanded(
