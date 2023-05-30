@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sps_app/screens/authentication/login.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
-import 'package:sps_app/screens/authentication/fp_security_questions.dart';
 import 'package:sps_app/screens/settings/cp_security_questions.dart';
-import 'package:sps_app/screens/settings/security.dart';
 import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
 class ChangePasswordEmailPage extends StatefulWidget {
