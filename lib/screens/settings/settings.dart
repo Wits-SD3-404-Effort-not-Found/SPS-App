@@ -4,6 +4,7 @@ import 'package:sps_app/http_handler.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:sps_app/screens/settings/account_settings.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:sps_app/screens/settings/security.dart';
 import 'package:sps_app/screens/settings/appearance.dart';
 import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
@@ -121,7 +122,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 4, vertical: 6),
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SecurityPage()),
+                              );
+                            },
                             style: TextButton.styleFrom(
                                 side: BorderSide(
                                     width: 3,

@@ -10,7 +10,7 @@ import 'package:sps_app/screens/calendar/calendar_manager.dart';
 class HTTPManager {
   HTTPManager();
 
-  static const String serverAddress = '164.92.183.156';
+  static const String serverAddress = '34.175.155.67';
   static const String serverPort = '80';
 
   // posts user credentials to validate them
@@ -50,7 +50,9 @@ class HTTPManager {
       LoginManager.setAccountID(responseMap['account_id']);
       for (var questionMap in responseMap['questions']) {
         LoginManager.addQuestion(questionMap);
+        debugPrint(questionMap.toString());
       }
+
       return Future.value(true);
     } else {
       //throw Exception('Invalid Email');
@@ -286,6 +288,24 @@ class HTTPManager {
     }
   }
 
+  static Future<List<Map>> fetchAllSecurityQuestions() async {
+    final response = await http
+        .get(Uri.parse('http://$serverAddress:$serverPort/security/questions'));
+
+    var questions = [{}];
+    if (response.statusCode == 200) {
+      var jsonQuestions = jsonDecode(response.body);
+      for (var q in jsonQuestions) {
+        questions.add({
+          "questionText": q["question"],
+        });
+      }
+      return questions;
+    } else {
+      throw Exception("Can't fetch questions");
+    }
+  }
+
   static Future<bool> postNewEvent(Events event) async {
     int accountID = AccountManager.getID();
     var eventData = {
@@ -361,6 +381,32 @@ class HTTPManager {
     } else {
       throw Exception("Failed to edit event");
       //return Future.value(false);
+    }
+  }
+
+  static Future<bool> postNewQuestions(List<Map> questions) async {
+    var questionData = {
+      "account_id": AccountManager.getID(),
+      "questions": [
+        {
+          "question_id": questions[0]["questionID"],
+          "user_answer": questions[0]["answer"]
+        },
+        {
+          "question_id": questions[1]["questionID"],
+          "user_answer": questions[1]["answer"]
+        },
+      ]
+    };
+    debugPrint(questionData.toString());
+    final response = await http.post(
+        Uri.parse("http://$serverAddress:$serverPort/account/security"),
+        body: jsonEncode(questionData));
+
+    if (response.statusCode == 200) {
+      return Future.value(true);
+    } else {
+      throw Exception("Failed to post new questions and answers");
     }
   }
 

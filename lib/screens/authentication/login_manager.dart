@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:sps_app/http_handler.dart';
 import 'dart:core';
 
@@ -43,6 +44,7 @@ class LoginManager {
 
   static void addQuestion(Map<String, dynamic> question) {
     _trueQAs.add(question);
+    debugPrint(_trueQAs.toString());
   }
 
   static List<String> getQuestions() {
@@ -107,6 +109,7 @@ class LoginManager {
 
   // to validate the email, to control weather OTP will be sent
   static Future<bool> validateEmail() async {
+    clearQuestions();
     bool valid = await HTTPManager.postEmail(getUsername());
     return valid;
   }

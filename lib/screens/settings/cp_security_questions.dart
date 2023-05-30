@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:sps_app/screens/authentication/login.dart';
 import 'package:sps_app/screens/authentication/login_manager.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
+import 'package:sps_app/screens/settings/change_password.dart';
+import 'package:sps_app/widgets/primitive/wits_app_bar.dart';
 
-import 'package:sps_app/screens/authentication/new_password.dart';
-
-class FPSecurityQuestionsPage extends StatefulWidget {
-  const FPSecurityQuestionsPage({super.key});
+class CPSecurityQuestionsPage extends StatefulWidget {
+  const CPSecurityQuestionsPage({super.key});
 
   @override
-  State<FPSecurityQuestionsPage> createState() =>
-      _FPSecurityQuestionsPageState();
+  State<CPSecurityQuestionsPage> createState() => _CPSecurityQuestionsPage();
 }
 
-class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
+class _CPSecurityQuestionsPage extends State<CPSecurityQuestionsPage> {
   final q1Controller = TextEditingController();
   final q2Controller = TextEditingController();
   final Map<String, dynamic> _question1 = LoginManager.getQuestion(0);
@@ -38,34 +36,36 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
     super.dispose();
   }
 
-// coverage:ignore-start
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: WitsAppBar(
+          context: context,
+        ),
         backgroundColor: Theme.of(context).colorScheme.background,
         // to center the widgets/UI elements on the page
         body: Center(
             // to structure the UI elements in a single column
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: ConstrainedBox(
-                constraints: BoxConstraints.tight(const Size(300, 60)),
+                constraints: BoxConstraints.tight(const Size(350, 80)),
                 child: Text(
-                  'Answer the following security questions.',
+                  'In order to change your password, please answer the following security questions.',
+                  textAlign: TextAlign.left,
                   style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 18,
                       color: Theme.of(context).colorScheme.onBackground),
                 ),
               ),
             ),
             // padding for questions text box for better UI layout
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 20)),
+                  constraints: BoxConstraints.tight(const Size(350, 20)),
                   child: Text(
                     _question1['question'],
                     style: TextStyle(
@@ -74,11 +74,10 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                   )),
             ),
             Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 // constrained box to encapsulate user input text box
                 child: ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  constraints: BoxConstraints.tight(const Size(350, 50)),
                   child: TextFormField(
                       // styles user input text box
                       decoration: InputDecoration(
@@ -99,9 +98,9 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                       controller: q1Controller),
                 )),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 20)),
+                  constraints: BoxConstraints.tight(const Size(350, 50)),
                   child: Text(
                     _question2['question'],
                     style: TextStyle(
@@ -110,11 +109,10 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                   )),
             ),
             Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 // constrained box to encapsulate user input text box
                 child: ConstrainedBox(
-                  constraints: BoxConstraints.tight(const Size(300, 80)),
+                  constraints: BoxConstraints.tight(const Size(350, 50)),
                   child: TextFormField(
                       // styles user input text box
                       decoration: InputDecoration(
@@ -137,7 +135,7 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                 child: ConstrainedBox(
-                    constraints: BoxConstraints.tight(const Size(300, 25)),
+                    constraints: BoxConstraints.tight(const Size(350, 50)),
                     child: Text(_invalidMessage,
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.error,
@@ -150,11 +148,7 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                 ElevatedButton(
                   onPressed: () {
                     LoginManager.clearQuestions();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()),
-                    );
+                    Navigator.pop(context);
                   },
                   // styles login button
                   style: ElevatedButton.styleFrom(
@@ -166,12 +160,11 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                 ElevatedButton(
                   onPressed: () {
                     //authenticate answers
-                    var areCorrectAnswers = _question1['answer'].toString() ==
-                            _hashData(q1Controller.text.toLowerCase())
-                                .toString() &&
-                        _question2['answer'].toString() ==
-                            _hashData(q2Controller.text.toLowerCase())
-                                .toString();
+                    var areCorrectAnswers =
+                        _question1['answer'].toString().toLowerCase() ==
+                                _hashData(q1Controller.text).toString() ||
+                            _question2['answer'].toString().toLowerCase() ==
+                                _hashData(q2Controller.text).toString();
                     _isValidMessage(areCorrectAnswers);
 
                     if (areCorrectAnswers) {
@@ -180,7 +173,8 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const NewPasswordPage()));
+                              builder: (context) =>
+                                  const ChangePasswordPage()));
                     }
                   },
                   // styles login button
@@ -192,7 +186,6 @@ class _FPSecurityQuestionsPageState extends State<FPSecurityQuestionsPage> {
             ),
           ],
         )));
-    // coverage:ignore-end
   }
 
   static Digest _hashData(String data) {
