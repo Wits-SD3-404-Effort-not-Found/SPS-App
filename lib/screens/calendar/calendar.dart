@@ -160,13 +160,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                     child: GestureDetector(
                                         onTap: () {
                                           debugPrint("Pressed refresh button");
-                                          //eventsList =
-                                          //HTTPManager.getAllEventsData(
-                                          //     AccountManager.getID(),
-                                          //    http.Client());
-                                          setState(() {
-                                            //build(context);
-                                          });
+                                          setState(() {});
                                         },
                                         child: Icon(
                                           Icons.refresh,
